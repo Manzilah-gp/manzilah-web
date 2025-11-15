@@ -18,7 +18,8 @@ const Footer = () => {
         <AntFooter style={{
             background: '#2c3e50',
             color: 'white',
-            padding: '48px 24px 24px'
+            padding: '48px 24px 24px',
+            width: '100%',
         }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <Row gutter={[32, 32]}>

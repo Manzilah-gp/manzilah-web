@@ -23,6 +23,7 @@ import {
 import useAuth from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../hooks/useLanguage';
+import { useNavigate } from 'react-router-dom'; // Add this import
 
 const { Header: AntHeader } = Layout;
 const { Option } = Select;
@@ -32,32 +33,38 @@ const Header = () => {
     const { t } = useTranslation();
     const { currentLanguage, changeLanguage, isRTL } = useLanguage();
     const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
+    const navigate = useNavigate(); // Add this hook
 
     const navigationItems = [
         {
             key: 'home',
             label: t('header.home'),
-            icon: <HomeOutlined />
+            icon: <HomeOutlined />,
+            onClick: () => navigate('/') // Add navigation
         },
         {
             key: 'about',
             label: t('header.about'),
-            icon: <InfoCircleOutlined />
+            icon: <InfoCircleOutlined />,
+            onClick: () => navigate('/about')
         },
         {
             key: 'courses',
             label: t('header.courses'),
-            icon: <BookOutlined />
+            icon: <BookOutlined />,
+            onClick: () => navigate('/courses')
         },
         {
             key: 'mosques',
             label: t('header.mosques'),
-            icon: <BankOutlined />
+            icon: <BankOutlined />,
+            onClick: () => navigate('/mosques')
         },
         {
             key: 'registration',
             label: t('header.registration'),
-            icon: <FormOutlined />
+            icon: <FormOutlined />,
+            onClick: () => navigate('/register') // This will navigate to /register
         },
     ];
 
@@ -66,6 +73,7 @@ const Header = () => {
             key: 'profile',
             icon: <UserOutlined />,
             label: t('header.profile'),
+            onClick: () => navigate('/profile')
         },
         {
             key: 'logout',
@@ -78,7 +86,10 @@ const Header = () => {
 
     const menuItems = navigationItems.map(item => ({
         ...item,
-        onClick: () => setMobileMenuVisible(false),
+        onClick: () => {
+            item.onClick(); // Call the original navigation
+            setMobileMenuVisible(false); // Close mobile menu
+        },
     }));
 
     return (
@@ -94,15 +105,20 @@ const Header = () => {
                     top: 0,
                     zIndex: 1000,
                     height: '64px',
+                    width: '100%',
                 }}
             >
-                {/* Logo */}
-                <div style={{
-                    color: 'white',
-                    fontSize: '20px',
-                    fontWeight: 'bold',
-                    minWidth: '120px'
-                }}>
+                {/* Logo - Make it clickable */}
+                <div
+                    style={{
+                        color: 'white',
+                        fontSize: '20px',
+                        fontWeight: 'bold',
+                        minWidth: '120px',
+                        cursor: 'pointer'
+                    }}
+                    onClick={() => navigate('/')}
+                >
                     Manzilah
                 </div>
 
@@ -118,7 +134,7 @@ const Header = () => {
                         justifyContent: 'center',
                         minWidth: 0,
                     }}
-                    disabledOverflow
+                    disabledOverflow={false}
                 />
 
                 {/* Right Section */}
@@ -160,7 +176,7 @@ const Header = () => {
                             </Button>
                         </Dropdown>
                     ) : (
-                        <Button type="primary" href="/login">
+                        <Button type="primary" onClick={() => navigate('/login')}>
                             {t('header.login')}
                         </Button>
                     )}
@@ -169,11 +185,6 @@ const Header = () => {
                     <Button
                         type="text"
                         icon={<MenuOutlined />}
-                        style={{
-                            color: 'white',
-                            display: 'none',
-                            '@media (max-width: 768px)': { display: 'block' }
-                        }}
                         onClick={() => setMobileMenuVisible(true)}
                         className="mobile-menu-btn"
                     />
@@ -186,7 +197,7 @@ const Header = () => {
                 placement={isRTL ? 'left' : 'right'}
                 onClose={() => setMobileMenuVisible(false)}
                 open={mobileMenuVisible}
-                bodyStyle={{ padding: 0 }}
+                styles={{ body: { padding: 0 } }} // Fixed this line
             >
                 <Menu
                     mode="vertical"

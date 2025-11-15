@@ -34,7 +34,7 @@ const SideList = ({ items, activeItem, onItemClick }) => {
                 height: 'fit-content',
                 minHeight: '500px'
             }}
-            bodyStyle={{ padding: 0 }}
+            styles={{ bodyStyle: { padding: 0 } }}
         >
             <div style={{
                 background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
