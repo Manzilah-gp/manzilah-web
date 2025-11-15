@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import MainSideBar from '../../components/MainSideBar';
+import MainSideBar from '../../components/MainSideBar/MainSideBar';
 import StatisticsView from '../../components/Dashboard/Ministry/Statistics';
 import IncludeMosqueView from '../../components/Dashboard/Ministry/IncludeMosque';
 import ApproveEventsView from '../../components/Dashboard/Ministry/ApproveEvents';
@@ -34,6 +34,7 @@ const MinistryDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(false);
     const [mobileView, setMobileView] = useState(false);
+    const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
     /**
      * Fetch dashboard data on component mount
@@ -137,24 +138,14 @@ const MinistryDashboard = () => {
             />
 
             <Layout className="site-layout">
-                {/* Sidebar - Hidden in mobile view when collapsed */}
-                <Sider
-                    width={280}
-                    breakpoint="lg"
-                    collapsedWidth={0}
-                    collapsible
-                    collapsed={collapsed}
-                    onCollapse={setCollapsed}
-                    className="dashboard-sidebar"
-                    trigger={null} // We'll handle trigger in header
-                >
-                    <div className="sidebar-wrapper">
-                        <MainSideBar
-                            activeItem={activeItem}
-                            onItemClick={setActiveItem}
-                        />
-                    </div>
-                </Sider>
+
+                <MainSideBar
+                    activeItem={activeItem}
+                    onItemClick={setActiveItem}
+                    collapsed={sidebarCollapsed}
+                    onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+                />
+
 
                 {/* Main Content Area */}
                 <Layout className="main-content-wrapper">

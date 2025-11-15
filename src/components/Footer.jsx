@@ -20,6 +20,7 @@ const Footer = () => {
             color: 'white',
             padding: '48px 24px 24px',
             width: '100%',
+            padding: '48px 80px',
         }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <Row gutter={[32, 32]}>

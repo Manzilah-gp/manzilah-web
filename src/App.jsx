@@ -10,6 +10,7 @@ import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Unauthorized from "./pages/Auth/Unauthorized"
 //import TeacherRegistrationPage from './pages/Auth/TeacherRegistrationPage';
+import MainSideBar from './components/MainSideBar/MainSideBar';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="/dashboard/ministry" element={<MinistryDashboard />} />
               {/* <Route path="/register/teacher" element={<TeacherRegistrationPage />} /> */}
+              <Route path="/sidebar" element={<MainSideBar />} />
 
 
               {/* Protected Dashboard */}
