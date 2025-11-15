@@ -10,9 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^6.1.0",
+    "antd": "^5.27.6",
     "axios": "^1.12.2",
+    "i18next": "^25.6.0",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "i18next-http-backend": "^3.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-i18next": "^16.2.3",
     "react-router-dom": "^7.9.4"
   },
   "devDependencies": {
@@ -26,5 +32,18 @@
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
     "vite": "^7.1.7"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manzilah-gp/manzilah-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Manzilah-gp/manzilah-web/issues"
+  },
+  "homepage": "https://github.com/Manzilah-gp/manzilah-web#readme"
 }
