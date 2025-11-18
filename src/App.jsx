@@ -9,7 +9,7 @@ import UserDashboard from "./pages/UserDashboard";
 import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Unauthorized from "./pages/Auth/Unauthorized"
-//import TeacherRegistrationPage from './pages/Auth/TeacherRegistrationPage';
+import TeacherRegistrationPage from './pages/TeacherRegister/TeacherRegistrationPage';
 import MainSideBar from './components/MainSideBar/MainSideBar';
 import './App.css';
 
@@ -27,7 +27,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="/dashboard/ministry" element={<MinistryDashboard />} />
-              {/* <Route path="/register/teacher" element={<TeacherRegistrationPage />} /> */}
+              <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
               <Route path="/sidebar" element={<MainSideBar />} />
 
 

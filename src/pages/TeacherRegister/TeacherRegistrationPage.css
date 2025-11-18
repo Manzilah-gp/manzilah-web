@@ -1,0 +1,180 @@
+/* src/pages/TeacherRegistrationPage.css */
+.teacher-registration-layout {
+    min-height: 100vh;
+    background: #f0f2f5;
+}
+
+.registration-content {
+    margin-top: 64px;
+    min-height: calc(100vh - 64px - 69px);
+    padding: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.registration-container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.registration-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+    margin-bottom: 24px;
+}
+
+.registration-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.registration-header h1 {
+    color: #2c3e50;
+    margin: 0 0 0.5rem 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.registration-header p {
+    color: #7f8c8d;
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.registration-steps {
+    margin: 2rem 0 3rem 0;
+    padding: 0 1rem;
+}
+
+.registration-steps .ant-steps-item-title {
+    font-weight: 500;
+}
+
+.form-container-tr {
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    border-top: 1px solid #f0f0f0;
+    margin-top: 2rem;
+}
+
+.error-message {
+    background: #fff2f0;
+    border: 1px solid #ffccc7;
+    color: #a8071a;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin: 1rem;
+    text-align: center;
+}
+
+/* Form styling */
+.ant-form-item-label>label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.ant-input,
+.ant-input-password,
+.ant-picker,
+.ant-select-selector {
+    border-radius: 6px;
+}
+
+.ant-btn {
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.ant-card {
+    border-radius: 12px;
+}
+
+/* File upload styling */
+.file-upload-container {
+    border: 2px dashed #d9d9d9;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.3s;
+    background: #fafafa;
+}
+
+.file-upload-container:hover {
+    border-color: #1890ff;
+}
+
+.file-upload-icon {
+    font-size: 48px;
+    color: #1890ff;
+    margin-bottom: 16px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .registration-content {
+        padding: 16px;
+        margin-top: 64px;
+    }
+
+    .registration-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .registration-header p {
+        font-size: 1rem;
+    }
+
+    .registration-steps {
+        margin: 1rem 0 2rem 0;
+    }
+
+    .form-container {
+        padding: 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .form-actions .ant-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-content {
+        padding: 12px;
+    }
+
+    .registration-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .registration-card {
+        margin-bottom: 16px;
+    }
+}
