@@ -25,6 +25,9 @@ const resources = {
             'sidebar.userManagement': 'User Management',
             'sidebar.systemSettings': 'System Settings',
             'sidebar.dashboard': 'Dashboard',
+            'sidebar.chat': 'Chat',
+            'sidebar.signout': 'Sign Out',
+            'sidebar.profile': 'Profile',
 
             // Dashboard
             'dashboard.title': 'Dashboard Overview',
@@ -158,6 +161,10 @@ const resources = {
             'sidebar.userManagement': 'إدارة المستخدمين',
             'sidebar.systemSettings': 'إعدادات النظام',
             'sidebar.dashboard': ' لوحة التحكم',
+            'sidebar.chat': 'الدردشة',
+            'sidebar.signout': 'تسجيل الخروج',
+            'sidebar.profile': 'الملف الشخصي',
+
 
             // Dashboard
             'dashboard.title': 'نظرة عامة على لوحة التحكم',
@@ -266,11 +273,6 @@ const resources = {
             'juz.juz4': 'الجزء 16-20',
             'juz.juz5': 'الجزء 21-25',
             'juz.juz6': 'الجزء 26-30',
-
-            //buttons
-            'button.submit': 'إرسال',
-            'button.next': 'التالي',
-            'button.previous': 'السابق',
 
 
 

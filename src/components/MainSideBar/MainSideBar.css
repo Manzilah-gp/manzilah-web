@@ -20,7 +20,7 @@
 
 .sidebar.collapsed {
     width: 85px;
-    left: -10px;
+    left: 0;
 }
 
 .sidebar .sidebar-header {
@@ -159,6 +159,16 @@
 
 .sidebar.collapsed .sidebar-nav .primary-nav {
     overflow: unset;
+}
+
+.sidebar {
+    overflow: visible !important;
+}
+
+
+.dropdown-container {
+    position: relative;
+    z-index: 3000;
 }
 
 .sidebar-nav .nav-item .nav-link {

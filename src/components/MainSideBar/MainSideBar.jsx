@@ -10,7 +10,9 @@ import {
     LeftOutlined,
     LogoutOutlined,
     SearchOutlined,
-    DownOutlined
+    DownOutlined,
+    WechatOutlined,
+    ProfileOutlined
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
@@ -30,7 +32,16 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                 key: 'statistics',
                 icon: <BarChartOutlined />,
                 label: t('sidebar.statistics'),
-                roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher']
+                roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
+                link: '/dashboard/ministry/statistics'
+            }
+            , {
+                key: 'profile',
+                icon: <ProfileOutlined />,
+                label: t('sidebar.profile'),
+                roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
+                link: '/profile'
+
             }
         ];
 
@@ -41,9 +52,8 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                 label: t('sidebar.includeMosque'),
                 roles: ['admin'],
                 children: [
-                    { key: 'add-mosque', label: 'Add Mosque' },
-                    { key: 'manage-mosques', label: 'Manage Mosques' },
-                    { key: 'mosque-approvals', label: 'Approvals' }
+                    { key: 'add-mosque', label: 'Add Mosque', link: '/dashboard/ministry/add-mosque' },
+                    { key: 'manage-mosques', label: 'Manage Mosques', link: '/dashboard/ministry/manage-mosques' },
                 ]
             },
             {
@@ -52,31 +62,30 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                 label: t('sidebar.approveEvents'),
                 roles: ['admin'],
                 children: [
-                    { key: 'pending-events', label: 'Pending Events' },
-                    { key: 'approved-events', label: 'Approved Events' },
+                    { key: 'pending-events', label: 'Pending Events', link: '/dashboard/ministry/pending-events' },
+                    { key: 'approved-events', label: 'Approved Events', link: '/dashboard/ministry/approved-events' },
                     { key: 'rejected-events', label: 'Rejected Events' }
                 ]
             },
-            {
-                key: 'user-management',
-                icon: <UserOutlined />,
-                label: t('sidebar.userManagement'),
-                roles: ['admin'],
-                children: [
-                    { key: 'add-user', label: 'Add User' },
-                    { key: 'user-list', label: 'User List' },
-                    { key: 'role-management', label: 'Role Management' }
-                ]
-            },
+            // {
+            //     key: 'user-management',
+            //     icon: <UserOutlined />,
+            //     label: t('sidebar.userManagement'),
+            //     roles: ['admin'],
+            //     children: [
+            //         { key: 'add-user', label: 'Add Mosque Admin' },
+            //         { key: 'user-list', label: 'Admin List' },
+            //         { key: 'role-management', label: 'Role Management' }
+            //     ]
+            // },
             {
                 key: 'system-settings',
                 icon: <SettingOutlined />,
                 label: t('sidebar.systemSettings'),
                 roles: ['admin'],
                 children: [
-                    { key: 'general-settings', label: 'General Settings' },
-                    { key: 'notification-settings', label: 'Notifications' },
-                    { key: 'backup-settings', label: 'Backup & Restore' }
+                    { key: 'general-settings', label: 'General Settings', link: '/general-settings' },
+                    { key: 'notification-settings', label: 'Notifications', link: '/notification-settings' },
                 ]
             }
         ];
@@ -84,6 +93,7 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
         // Combine and filter items based on user role
         const allItems = [...baseItems, ...adminItems];
         // For now, return all items - implement role filtering later
+        // return allItems.filter(item => item.roles.includes(user.role));
         return allItems;
     };
 
@@ -189,7 +199,7 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                                             {item.children.map(child => (
                                                 <li key={child.key} className="nav-item">
                                                     <a
-                                                        href="#"
+                                                        href={child.link || '#'}
                                                         className="nav-link dropdown-link"
                                                         onClick={(e) => {
                                                             e.preventDefault();
@@ -204,7 +214,7 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                                     </>
                                 ) : (
                                     <a
-                                        href="#"
+                                        href={item.link || '#'}
                                         className={`nav-link ${activeItem === item.key ? 'active' : ''}`}
                                         onClick={(e) => {
                                             e.preventDefault();
@@ -222,15 +232,15 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                     {/* Secondary Navigation */}
                     <ul className="nav-list secondary-nav">
                         <li className="nav-item">
-                            <a href="#" className="nav-link">
-                                <span className="nav-icon"><SearchOutlined /></span>
-                                <span className="nav-label">{t('sidebar.support')}</span>
+                            <a href="/chat" className="nav-link">
+                                <span className="nav-icon"><WechatOutlined /></span>
+                                <span className="nav-label">{t('sidebar.chat')}</span>
                             </a>
                         </li>
                         <li className="nav-item">
                             <a href="/login" className="nav-link">
                                 <span className="nav-icon"><LogoutOutlined /></span>
-                                <span className="nav-label">{t('sidebar.signOut')}</span>
+                                <span className="nav-label">{t('sidebar.signout')}</span>
                             </a>
                         </li>
                     </ul>
