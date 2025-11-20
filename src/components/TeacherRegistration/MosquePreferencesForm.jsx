@@ -93,7 +93,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                         <div>
                                             <strong>{course.label}</strong>
                                             <div style={{ fontSize: '12px', color: '#666' }}>
-                                                حتى المستوى {course.levels}
+                                                {/* حتى المستوى {course.levels} */}
                                             </div>
                                         </div>
                                     </Option>
@@ -102,18 +102,34 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                         </Form.Item>
 
                         <Form.Item
-                            name="max_level_qualified"
-                            label={t('teacher.maxLevel')}
-                            rules={[{ required: true, message: t('teacher.selectMaxLevel') }]}
+                            shouldUpdate
                         >
-                            <Select placeholder={t('teacher.maxLevel')}>
-                                {memorizationLevels.map(level => (
-                                    <Option key={level.level} value={level.level}>
-                                        المستوى {level.level} - {level.juz}
-                                    </Option>
-                                ))}
-                            </Select>
+                            {({ getFieldValue }) => {
+                                const selectedCourses = getFieldValue('course_expertise') || [];
+                                const memorizationSelected = selectedCourses.includes(1);
+                                if (!memorizationSelected) return null;
+
+                                return (
+                                    <Form.Item
+                                        name="max_level_qualified"
+                                        label={t('teacher.maxLevel')}
+                                        rules={[{
+                                            required: true, message: t('teacher.selectMaxLevel')
+                                        }]
+                                        }
+                                    >
+                                        <Select placeholder={t('teacher.maxLevel')} >
+                                            {memorizationLevels.map(level => (
+                                                <Option key={level.level} value={level.level}>
+                                                    {level.description} – {level.juz}
+                                                </Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                );
+                            }}
                         </Form.Item>
+
 
                         <Row gutter={16}>
 
