@@ -4,12 +4,12 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Layout, Steps, Button, Space, Card, Form, Input, Select, AutoComplete } from 'antd';
+import { Layout, Steps, Button, Space, Card } from 'antd';
 import { ArrowLeftOutlined, ArrowRightOutlined, EnvironmentOutlined, UserOutlined } from '@ant-design/icons';
+import LocationStep from '../../components/Auth/LocationStep';
 import './Auth.css';
 
 const { Step } = Steps;
-const { Option } = Select;
 
 // Memoized PersonalInfoStep component
 const PersonalInfoStep = React.memo(({ form, handleChange }) => {
@@ -44,6 +44,24 @@ const PersonalInfoStep = React.memo(({ form, handleChange }) => {
                 onChange={handleChange}
             />
             <input
+                required
+                className="auth-input"
+                type="password"
+                name="confirmPassword"
+                placeholder={t('auth.confirmPassword')}
+                value={form.confirmPassword}
+                onChange={handleChange}
+            />
+
+            {form.password && form.confirmPassword && (form.password !== form.confirmPassword) && (
+                <div style={{ color: 'red', fontSize: '12px', marginTop: '20px', marginBottom: '-10px' }}>
+
+                    {t('auth.passwordsDoNotMatch') || "Passwords do not match"}
+
+                </div>
+            )}
+
+            <input
                 className="auth-input"
                 type="tel"
                 name="phone"
@@ -76,107 +94,30 @@ const PersonalInfoStep = React.memo(({ form, handleChange }) => {
     );
 });
 
-// Memoized LocationStep component
-const LocationStep = React.memo(({
-    form,
-    handleChange,
-    locationSuggestions,
-    searchLocation,
-    handleLocationSelect
-}) => {
-    const { t } = useTranslation();
-
-    return (
-        <div className="auth-form">
-            <div style={{ marginBottom: '1rem' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                    {t('auth.searchLocation', 'Search Location')}
-                </label>
-                <AutoComplete
-                    options={locationSuggestions}
-                    onSearch={searchLocation}
-                    onSelect={handleLocationSelect}
-                    placeholder={t('auth.enterLocation', 'Enter your location')}
-                    style={{ width: '100%' }}
-                    size="large"
-                />
-                <p style={{ fontSize: '12px', color: '#666', marginTop: '0.5rem' }}>
-                    {t('auth.locationHelp', 'Start typing to see location suggestions')}
-                </p>
-            </div>
-
-            <input
-                className="auth-input"
-                name="address.address_line1"
-                placeholder={t('auth.addressLine1', 'Address Line 1')}
-                value={form.address.address_line1}
-                onChange={handleChange}
-            />
-            <input
-                className="auth-input"
-                name="address.address_line2"
-                placeholder={t('auth.addressLine2', 'Address Line 2')}
-                value={form.address.address_line2}
-                onChange={handleChange}
-            />
-
-            <div style={{ display: 'flex', gap: '1rem' }}>
-                <input
-                    className="auth-input"
-                    style={{ flex: 1 }}
-                    name="address.city"
-                    placeholder={t('auth.city', 'City')}
-                    value={form.address.city}
-                    onChange={handleChange}
-                />
-                <input
-                    className="auth-input"
-                    style={{ flex: 1 }}
-                    name="address.region"
-                    placeholder={t('auth.region', 'Region')}
-                    value={form.address.region}
-                    onChange={handleChange}
-                />
-            </div>
-
-            <input
-                className="auth-input"
-                name="address.postal_code"
-                placeholder={t('auth.postalCode', 'Postal Code')}
-                value={form.address.postal_code}
-                onChange={handleChange}
-            />
-
-            <div style={{ background: '#f0f8ff', padding: '1rem', borderRadius: '6px', marginTop: '1rem' }}>
-                <p style={{ fontSize: '14px', color: '#1890ff', margin: 0 }}>
-                    💡 {t('auth.locationSuggestion', 'Location helps us suggest nearby mosques and courses')}
-                </p>
-            </div>
-        </div>
-    );
-});
-
 const Register = () => {
     const [currentStep, setCurrentStep] = useState(0);
     const [form, setForm] = useState({
         name: "",
         email: "",
         password: "",
+        confirmPassword: "",
         phone: "",
         gender: "",
         date_of_birth: "",
         address: {
             address_line1: "",
             address_line2: "",
-            city: "",
+            //city: "",
             region: "",
+            governorate: "",
             postal_code: "",
+            latitude: "",
+            longitude: "",
             is_primary: true
         }
     });
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
-    const [locationSuggestions, setLocationSuggestions] = useState([]);
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -198,34 +139,20 @@ const Register = () => {
         }
     }, []);
 
-    // Memoize the location search function
-    const searchLocation = useCallback(async (query) => {
-        if (query.length < 3) {
-            setLocationSuggestions([]);
-            return;
-        }
+    // Add this function inside the Register component, after handleChange
 
-        const mockSuggestions = [
-            { value: 'غزة - تل الهوا', coords: { lat: 31.5, lng: 34.466 } },
-            { value: 'غزة - الرمال', coords: { lat: 31.52, lng: 34.45 } },
-            { value: 'غزة - الشجاعية', coords: { lat: 31.51, lng: 34.47 } },
-            { value: 'رفح - حي تل السلطان', coords: { lat: 31.29, lng: 34.25 } },
-            { value: 'خان يونس - وسط المدينة', coords: { lat: 31.34, lng: 34.30 } },
-        ].filter(item =>
-            item.value.toLowerCase().includes(query.toLowerCase())
-        );
-
-        setLocationSuggestions(mockSuggestions);
-    }, []);
-
-    // Memoize the location select function
-    const handleLocationSelect = useCallback((value, option) => {
+    const onMapSelect = useCallback((locationData) => {
         setForm(prev => ({
             ...prev,
             address: {
                 ...prev.address,
-                address_line1: value,
-                city: 'غزة'
+                address_line1: locationData.address_line1 || '',
+                //city: locationData.city || '',
+                region: locationData.region || locationData.city || '',
+                governorate: locationData.governorate || '',
+                postal_code: locationData.postal_code || '',
+                latitude: locationData.latitude || '',
+                longitude: locationData.longitude || ''
             }
         }));
     }, []);
@@ -240,6 +167,12 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (form.password !== form.confirmPassword) {
+            setMessage(t('auth.passwordsDoNotMatch') || "Passwords do not match");
+            return;
+        }
+
         setLoading(true);
         setMessage("");
 
@@ -251,15 +184,19 @@ const Register = () => {
                 name: "",
                 email: "",
                 password: "",
+                confirmPassword: "",
                 phone: "",
                 gender: "",
                 date_of_birth: "",
                 address: {
                     address_line1: "",
                     address_line2: "",
-                    city: "",
+                    // city: "",
                     region: "",
+                    governorate: "",
                     postal_code: "",
+                    latitude: "",
+                    longitude: "",
                     is_primary: true
                 }
             });
@@ -305,11 +242,9 @@ const Register = () => {
                     )}
                     {currentStep === 1 && (
                         <LocationStep
-                            form={form}
+                            form={form.address}
                             handleChange={handleChange}
-                            locationSuggestions={locationSuggestions}
-                            searchLocation={searchLocation}
-                            handleLocationSelect={handleLocationSelect}
+                            onMapSelect={onMapSelect}
                         />
                     )}
 

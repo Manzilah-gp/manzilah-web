@@ -18,7 +18,6 @@ const Footer = () => {
         <AntFooter style={{
             background: '#2c3e50',
             color: 'white',
-            padding: '48px 24px 24px',
             width: '100%',
             padding: '48px 80px',
         }}>

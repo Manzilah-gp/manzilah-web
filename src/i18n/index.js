@@ -59,6 +59,8 @@ const resources = {
             'auth.fullName': 'Full Name ',
             'auth.email': 'E-mail',
             'auth.password': 'Password ',
+            'auth.confirmPassword': 'Confirm Password',
+            'auth.passwordsDoNotMatch': 'Passwords do not match',
             'auth.phone': 'Phone Number',
             'auth.selectGender': ' Select Gender',
             'auth.female': 'female',
@@ -77,6 +79,8 @@ const resources = {
             'auth.enterLocation': 'Enter your location',
             'auth.locationHelp': 'Start typing to see location suggestions',
             'auth.locationSuggestion': 'Location helps us suggest nearby mosques and courses',
+            'auth.selectFromMap': 'Select Location from Map',
+
             // Teacher Registration
             'teacher.registration': 'Teacher Registration',
             'teacher.newRegistration': 'New Teacher Registration',
@@ -122,12 +126,12 @@ const resources = {
             'time.end': 'End Time',
 
             // memorization levels
-            'level.level1': 'First 5 Juz',
-            'level.level2': 'Second 5 Juz',
-            'level.level3': 'Third 5 Juz',
-            'level.level4': 'Fourth 5 Juz',
-            'level.level5': 'Fifth 5 Juz',
-            'level.level6': 'Sixth 5 Juz',
+            'level.level1': 'Level 1',
+            'level.level2': 'Level 2',
+            'level.level3': 'Level 3',
+            'level.level4': 'level 4',
+            'level.level5': 'level 5',
+            'level.level6': 'level 6',
             'juz.juz1': 'Juz 1-5',
             'juz.juz2': 'Juz 6-10',
             'juz.juz3': 'Juz 11-15',
@@ -188,6 +192,7 @@ const resources = {
             'common.submit': 'إرسال',
             'common.next': 'التالي',
             'common.previous': 'السابق',
+            'level': 'المستوى',
             // login | register 
             'auth.createAccount': 'إنشاء حساب',
             'auth.signIn': 'تسجيل الدخول',
@@ -195,6 +200,8 @@ const resources = {
             'auth.fullName': 'الاسم الكامل',
             'auth.email': 'البريد الإلكتروني',
             'auth.password': 'كلمة المرور',
+            'auth.confirmPassword': 'تأكيد كلمة المرور',
+            'auth.passwordsDoNotMatch': 'كلمتا المرور غير متطابقتين',
             'auth.phone': 'رقم الهاتف',
             'auth.selectGender': 'اختر الجنس',
             'auth.female': 'أنثى',
@@ -202,6 +209,8 @@ const resources = {
             'auth.dateOfBirth': 'تاريخ الميلاد',
             'auth.forgotPassword': 'هل نسيت كلمة المرور؟',
             'auth.teacherRegister': 'أو سجل كمعلم؟',
+            'auth.selectFromMap': 'اختر الموقع من الخريطة',
+
 
             //location info
             'auth.city': 'المدينة',
@@ -261,12 +270,12 @@ const resources = {
             'time.start': 'وقت البدء',
             'time.end': 'وقت الانتهاء',
             // memorization levels
-            'level.level1': 'الخمس أجزاء الأوىى',
-            'level.level2': 'الخمس أجزاء الثانية',
-            'level.level3': 'الخمس أجزاء الثالثة',
-            'level.level4': 'الخمس أجزاء الرابعة',
-            'level.level5': 'الخمس أجزاء الخامسة',
-            'level.level6': 'الخمس أجزاء السادسة',
+            'level.level1': 'المستوى الأول',
+            'level.level2': 'المستوى الثاني',
+            'level.level3': 'المستوى الثالث',
+            'level.level4': 'المستوى الرابع',
+            'level.level5': 'المستوى الخامس',
+            'level.level6': 'المستوى السادس',
             'juz.juz1': 'الجزء 1-5',
             'juz.juz2': 'الجزء 6-10',
             'juz.juz3': 'الجزء 11-15',

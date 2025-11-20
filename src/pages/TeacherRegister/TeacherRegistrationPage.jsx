@@ -37,9 +37,12 @@ const TeacherRegistrationPage = () => {
         address: {
             address_line1: '',
             address_line2: '',
-            city: '',
+            // city: '',
             region: '',
+            governorate: '',
             postal_code: '',
+            latitude: "",
+            longitude: "",
             is_primary: true
         },
 
