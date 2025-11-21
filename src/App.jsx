@@ -40,6 +40,7 @@ import UserDashboard from "./pages/Dashboard/UserDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Unauthorized from "./pages/Auth/Unauthorized";
 import Home from "./pages/Home"; 
+import Profile from "./pages/ProfilePage"
 
 function App() {
   return (
@@ -47,7 +48,7 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* Default Route → redirect to Home */}
-           <Route path="/" element={<Home />} />
+           <Route path="/" element={<Profile />} />
 
           {/* Auth Pages */}
           <Route path="/login" element={<Login />} />
