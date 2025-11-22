@@ -4,6 +4,7 @@ import "../Styles/Profile.css";
 import Sidebar from "../components/Side";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import UserCalendar from "../components/Calender";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -130,17 +131,8 @@ function ProfilePage() {
           </div>
 
           {/* Calendar */}
-          <div className="calendar-section">
-            <h3 className="calendar-title">📅 جدولك الشخصي</h3>
+          <UserCalendar />
 
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin]}
-              initialView="dayGridMonth"
-              events={events}
-              dateClick={handleDateClick}
-              height="auto"
-            />
-          </div>
 
           {/* Buttons */}
           <div className="profile-actions">
