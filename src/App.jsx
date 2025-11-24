@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import Unauthorized from "./pages/Auth/Unauthorized"
 import TeacherRegistrationPage from './pages/TeacherRegister/TeacherRegistrationPage';
 import MainSideBar from './components/MainSideBar/MainSideBar';
+import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
 import './App.css';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
               <Route path="/dashboard/ministry" element={<MinistryDashboard />} />
               <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
               <Route path="/sidebar" element={<MainSideBar />} />
+              <Route path="/edit-mosque/:id" element={<EditMosqueForm />} />
 
 
               {/* Protected Dashboard */}
@@ -40,6 +42,15 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+              {/* <Route path="/edit-mosque/:id" element={
+                <ProtectedRoute>
+                  <RoleProtectedRoute allowedRoles={['ministry_admin']}>
+                    <EditMosqueForm />
+                  </RoleProtectedRoute>
+                </ProtectedRoute>
+              } /> */}
+
             </Routes>
           </div>
         </Router>

@@ -28,6 +28,7 @@ const resources = {
             'sidebar.chat': 'Chat',
             'sidebar.signout': 'Sign Out',
             'sidebar.profile': 'Profile',
+            'sidebar.Donationds': 'Donationds',
 
             // Dashboard
             'dashboard.title': 'Dashboard Overview',
@@ -80,6 +81,7 @@ const resources = {
             'auth.locationHelp': 'Start typing to see location suggestions',
             'auth.locationSuggestion': 'Location helps us suggest nearby mosques and courses',
             'auth.selectFromMap': 'Select Location from Map',
+            'auth.governorate': 'Governorate',
 
             // Teacher Registration
             'teacher.registration': 'Teacher Registration',
@@ -168,6 +170,7 @@ const resources = {
             'sidebar.chat': 'الدردشة',
             'sidebar.signout': 'تسجيل الخروج',
             'sidebar.profile': 'الملف الشخصي',
+            'sidebar.Donationds': 'التبرعات',
 
 
             // Dashboard
@@ -210,7 +213,7 @@ const resources = {
             'auth.forgotPassword': 'هل نسيت كلمة المرور؟',
             'auth.teacherRegister': 'أو سجل كمعلم؟',
             'auth.selectFromMap': 'اختر الموقع من الخريطة',
-
+            'auth.governorate': 'المحافظة',
 
             //location info
             'auth.city': 'المدينة',

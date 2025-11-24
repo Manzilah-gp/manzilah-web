@@ -105,7 +105,13 @@
     justify-content: center;
     color: #EEF2FF;
     font-size: 20px;
+    visibility: visible;
 }
+
+.user-avatar.collapsed {
+    visibility: hidden;
+}
+
 
 .user-details {
     flex: 1;

@@ -10,6 +10,8 @@ import IncludeMosqueView from '../../components/Dashboard/Ministry/IncludeMosque
 import ApproveEventsView from '../../components/Dashboard/Ministry/ApproveEvents';
 import UserManagementView from '../../components/View/UserManagementView';
 import SystemSettingsView from '../../components/View/SystemSettingsView';
+import AddMosqueView from './AddMosque/AddMosqueView';
+import MosqueListView from './MosqueList/MosqueListView';
 import './MinistryDashboard.css';
 
 const { Content, Sider } = Layout;
@@ -113,17 +115,13 @@ const MinistryDashboard = () => {
             case 'statistics':
                 return <StatisticsView chartData={chartData} statistics={statistics} />;
 
-            case 'include-mosque':
-                return <IncludeMosqueView />;
+            case 'add-mosque':
+                return <AddMosqueView />;
 
-            case 'approve-events':
-                return <ApproveEventsView />;
+            case 'mosque-list':
+                return <MosqueListView />;
 
-            case 'user-management':
-                return <UserManagementView />;
 
-            case 'system-settings':
-                return <SystemSettingsView />;
 
             default:
                 return <StatisticsView chartData={chartData} statistics={statistics} />;

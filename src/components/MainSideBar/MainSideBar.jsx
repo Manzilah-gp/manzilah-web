@@ -12,7 +12,9 @@ import {
     SearchOutlined,
     DownOutlined,
     WechatOutlined,
-    ProfileOutlined
+    ProfileOutlined,
+    UnorderedListOutlined,
+    PlusOutlined
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
@@ -47,24 +49,26 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
 
         const adminItems = [
             {
-                key: 'include-mosque',
+                key: 'add-mosque',
                 icon: <BankOutlined />,
                 label: t('sidebar.includeMosque'),
                 roles: ['admin'],
                 children: [
-                    { key: 'add-mosque', label: 'Add Mosque', link: '/dashboard/ministry/add-mosque' },
-                    { key: 'manage-mosques', label: 'Manage Mosques', link: '/dashboard/ministry/manage-mosques' },
+                    { key: 'add-mosque', label: 'Add Mosque', link: '/dashboard/ministry/add-mosque', icon: <PlusOutlined /> },
+                    {
+                        key: 'mosque-list', label: 'Mosque List', link: '/dashboard/ministry/mosque-list', icon: <UnorderedListOutlined />,
+                    }
                 ]
             },
             {
-                key: 'approve-events',
+                key: 'approve-donationds',
                 icon: <CheckCircleOutlined />,
-                label: t('sidebar.approveEvents'),
+                label: t('sidebar.Donationds'),
                 roles: ['admin'],
                 children: [
-                    { key: 'pending-events', label: 'Pending Events', link: '/dashboard/ministry/pending-events' },
-                    { key: 'approved-events', label: 'Approved Events', link: '/dashboard/ministry/approved-events' },
-                    { key: 'rejected-events', label: 'Rejected Events' }
+                    { key: 'pending-donationds', label: 'Pending Donationds', link: '/dashboard/ministry/pending-events' },
+                    { key: 'approved-donationds', label: 'Approved Donationds', link: '/dashboard/ministry/approved-events' },
+                    { key: 'rejected-donationds', label: 'Rejected Donationds', link: '/dashboard/ministry/rejected-events' }
                 ]
             },
             // {
@@ -156,7 +160,7 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
 
                 {/* User Info Section */}
                 <div className="user-info-section">
-                    <div className="user-avatar">
+                    <div className={`user-avatar${collapsed ? 'collapsed' : ''}`}>
                         <UserOutlined />
                     </div>
                     <div className="user-details">
@@ -206,6 +210,7 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                                                             handleItemClick(child.key);
                                                         }}
                                                     >
+                                                        {child.icon && <span className="nav-icon">{child.icon} </span>}
                                                         {child.label}
                                                     </a>
                                                 </li>

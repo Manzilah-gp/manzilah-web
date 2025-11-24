@@ -150,8 +150,8 @@
     margin: 2rem 0;
 }
 
-.stat-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+/* .stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #c9ecf5 100%);
     color: white;
     border-radius: 12px;
     padding: 1.5rem;
@@ -176,7 +176,7 @@
     margin: 0;
     font-size: 1rem;
     opacity: 0.9;
-}
+} */
 
 /* Sidebar List */
 .side-list {

@@ -328,6 +328,7 @@
 import React, { useState } from 'react';
 import { Form, Input, DatePicker, Select, Row, Col, Card, Button } from 'antd';
 import { EnvironmentOutlined, UserOutlined, MailOutlined, PhoneOutlined, LockOutlined } from '@ant-design/icons';
+import { getGovernorates } from '../../util/getGovernates';
 import MapComponent from '../Map/MapComponent';
 
 const { Option } = Select;
@@ -336,7 +337,7 @@ const PersonalInfoForm = ({ formData, updateFormData }) => {
     const [form] = Form.useForm();
     const [mapVisible, setMapVisible] = useState(false);
     const [mapLoading, setMapLoading] = useState(false);
-
+    const governorateOptions = getGovernorates();
     const onValuesChange = (changedValues, allValues) => {
         updateFormData(allValues);
     };
@@ -612,20 +613,9 @@ const PersonalInfoForm = ({ formData, updateFormData }) => {
                                     label="Governorate"
                                     rules={[{ required: true, message: 'Please select your governorate' }]}
                                 >
-                                    <Select placeholder="Select your governorate">
-                                        <Option value="gaza">Gaza</Option>
-                                        <Option value="ramallah">Ramallah</Option>
-                                        <Option value="hebron">Hebron</Option>
-                                        <Option value="nabulus">Nablus</Option>
-                                        <Option value="jerusalem">Jerusalem</Option>
-                                        <Option value="bethlehem">Bethlehem</Option>
-                                        <Option value="jenin">Jenin</Option>
-                                        <Option value="tulkarm">Tulkarm</Option>
-                                        <Option value="qalqilya">Qalqilya</Option>
-                                        <Option value="salfit">Salfit</Option>
-                                        <Option value="jericho">Jericho</Option>
-                                        <Option value="tubas">Tubas</Option>
-                                    </Select>
+                                    <Select placeholder="Select your governorate"
+                                        options={governorateOptions}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
