@@ -67,7 +67,7 @@ export const generateDummyMosques = () => {
             longitude: 35.254385,
             address: "Nablus City Center, near the Old Market",
             region: "Nablus City",
-            governorate: "nabulus",
+            governorate: "nablus",
             postal_code: "00970",
             admin_name: "Omar Al-Nabulsi"
         },
@@ -207,7 +207,7 @@ export const generateDummyMosques = () => {
             longitude: 35.267834,
             address: "Nablus, Eastern District",
             region: "Nablus City",
-            governorate: "nabulus",
+            governorate: "nablus",
             postal_code: "00970",
             admin_name: null
         }

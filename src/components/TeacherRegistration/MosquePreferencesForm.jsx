@@ -1,7 +1,9 @@
-import React from 'react';
-import { Form, Select, Checkbox, InputNumber, TimePicker, Row, Col, Card, Tag, Divider } from 'antd';
+// src/components/TeacherRegistration/MosquePreferencesForm.jsx
+import React, { useEffect, useState } from 'react';
+import { Form, Select, Checkbox, InputNumber, TimePicker, Row, Col, Card, Tag, Divider, Spin } from 'antd';
 import { EnvironmentOutlined, ClockCircleOutlined, ReadOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { getAllMosques } from '../../api/mosque';
 
 const { Option } = Select;
 const { RangePicker } = TimePicker;
@@ -9,15 +11,50 @@ const { RangePicker } = TimePicker;
 const MosquePreferencesForm = ({ formData, updateFormData }) => {
     const [form] = Form.useForm();
     const { t } = useTranslation();
+    const [mosques, setMosques] = useState([]);
+    const [loadingMosques, setLoadingMosques] = useState(false);
+
+    // Fetch mosques on component mount
+    useEffect(() => {
+        const fetchMosques = async () => {
+            setLoadingMosques(true);
+            try {
+                const response = await getAllMosques();
+                console.log('📍 Mosques API Response:', response);
+
+                // ✅ Handle different response structures
+                const mosquesData = response.data?.data || response.data || [];
+
+                // ✅ Ensure it's an array
+                if (Array.isArray(mosquesData)) {
+                    setMosques(mosquesData);
+                    console.log('✅ Mosques loaded:', mosquesData.length);
+                } else {
+                    console.error('❌ Mosques data is not an array:', mosquesData);
+                    setMosques([]);
+                    message.error('Failed to load mosques. Invalid data format.');
+                }
+            } catch (error) {
+                console.error('❌ Error fetching mosques:', error);
+                message.error('Failed to load mosques. Please try again.');
+                setMosques([]);
+            } finally {
+                setLoadingMosques(false);
+            }
+        };
+
+        fetchMosques();
+    }, []);
 
     const onValuesChange = (changedValues, allValues) => {
+        console.log('Form values changed:', allValues);
         updateFormData(allValues);
     };
 
     const courseTypes = [
-        { value: 1, label: t('course.memorization'), levels: 6 },
-        { value: 2, label: t('course.tajweed'), levels: 4 },
-        { value: 3, label: t('course.feqh'), levels: 3 }
+        { value: 1, label: t('course.memorization') || 'حفظ القرآن', levels: 6 },
+        { value: 2, label: t('course.tajweed') || 'التجويد', levels: 4 },
+        { value: 3, label: t('course.feqh') || 'الفقه', levels: 3 }
     ];
 
     const memorizationLevels = [
@@ -29,36 +66,27 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
         { level: 6, juz: t('juz.juz6'), description: t('level.level6') }
     ];
 
-
     const agePreferences = [
-        { value: 'children', label: t('age.children') },
-        { value: 'teens', label: t('age.teens') },
-        { value: 'adults', label: t('age.adults') },
-        { value: 'all', label: t('age.all') }
-    ];
-
-    const mockMosques = [
-        { id: 1, name: 'مسجد الأقصى - غزة', city: 'غزة' },
-        { id: 2, name: 'المسجد الكبير - نابلس', city: 'نابلس' },
-        { id: 3, name: 'الحرم الإبراهيمي - الخليل', city: 'الخليل' },
-        { id: 4, name: 'الجامع الكبير - رام الله', city: 'رام الله' },
-        { id: 5, name: 'مسجد القدس - القدس', city: 'القدس' },
+        { value: 'children', label: t('age.children') || 'أطفال (5-12)' },
+        { value: 'teens', label: t('age.teens') || 'مراهقين (13-17)' },
+        { value: 'adults', label: t('age.adults') || 'بالغين (18+)' },
+        { value: 'all', label: t('age.all') || 'جميع الأعمار' }
     ];
 
     const daysOfWeek = [
-        { value: 'sunday', label: t('day.sunday') },
-        { value: 'monday', label: t('day.monday') },
-        { value: 'tuesday', label: t('day.tuesday') },
-        { value: 'wednesday', label: t('day.wednesday') },
-        { value: 'thursday', label: t('day.thursday') },
-        { value: 'friday', label: t('day.friday') },
-        { value: 'saturday', label: t('day.saturday') }
+        { value: 'sunday', label: t('day.sunday') || 'الأحد' },
+        { value: 'monday', label: t('day.monday') || 'الإثنين' },
+        { value: 'tuesday', label: t('day.tuesday') || 'الثلاثاء' },
+        { value: 'wednesday', label: t('day.wednesday') || 'الأربعاء' },
+        { value: 'thursday', label: t('day.thursday') || 'الخميس' },
+        { value: 'friday', label: t('day.friday') || 'الجمعة' },
+        { value: 'saturday', label: t('day.saturday') || 'السبت' }
     ];
 
     const teachingFormats = [
-        { value: 'online', label: t('format.online') },
-        { value: 'onsite', label: t('format.onsite') },
-        { value: 'hybrid', label: t('format.hybrid') }
+        { value: 'online', label: t('format.online') || 'أونلاين' },
+        { value: 'onsite', label: t('format.onsite') || 'حضوري' },
+        { value: 'hybrid', label: t('format.hybrid') || 'مختلط' }
     ];
 
     return (
@@ -75,7 +103,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                     <div className="form-section">
                         <h3>
                             <ReadOutlined style={{ marginLeft: 8 }} />
-                            {t('teacher.preferences')}
+                            {t('teacher.preferences') || 'التخصصات والتفضيلات'}
                         </h3>
 
                         <Form.Item
@@ -92,36 +120,29 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                     <Option key={course.value} value={course.value} label={course.label}>
                                         <div>
                                             <strong>{course.label}</strong>
-                                            <div style={{ fontSize: '12px', color: '#666' }}>
-                                                {/* حتى المستوى {course.levels} */}
-                                            </div>
                                         </div>
                                     </Option>
                                 ))}
                             </Select>
                         </Form.Item>
 
-                        <Form.Item
-                            shouldUpdate
-                        >
+                        <Form.Item shouldUpdate>
                             {({ getFieldValue }) => {
                                 const selectedCourses = getFieldValue('course_expertise') || [];
                                 const memorizationSelected = selectedCourses.includes(1);
+
                                 if (!memorizationSelected) return null;
 
                                 return (
                                     <Form.Item
                                         name="max_level_qualified"
-                                        label={t('teacher.maxLevel')}
-                                        rules={[{
-                                            required: true, message: t('teacher.selectMaxLevel')
-                                        }]
-                                        }
+                                        label={t('teacher.selectMaxLevel')}
+                                        rules={[{ required: true, message: t('teacher.selectMaxLevel') }]}
                                     >
-                                        <Select placeholder={t('teacher.maxLevel')} >
+                                        <Select placeholder={t('teacher.maxLevel')}>
                                             {memorizationLevels.map(level => (
                                                 <Option key={level.level} value={level.level}>
-                                                    {level.description} – {level.juz}
+                                                    {level.description} — {level.juz}
                                                 </Option>
                                             ))}
                                         </Select>
@@ -129,7 +150,6 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                 );
                             }}
                         </Form.Item>
-
 
                         <Row gutter={16}>
 
@@ -150,9 +170,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                     </Select>
                                 </Form.Item>
                             </Col>
-                        </Row>
 
-                        <Row gutter={16}>
                             <Col xs={24} md={12}>
                                 <Form.Item
                                     name="hourly_rate_cents"
@@ -161,7 +179,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                     <InputNumber
                                         min={0}
                                         formatter={value => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                        parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                        parser={value => value.replace(/₪\s?|(,*)/g, '')}
                                         style={{ width: '100%' }}
                                         placeholder="0.00"
                                     />
@@ -178,7 +196,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                     <div className="form-section">
                         <h3>
                             <EnvironmentOutlined style={{ marginLeft: 8 }} />
-                            {t('teacher.preferredMosques')}
+                            {t('teacher.preferredMosques') || 'المساجد المفضلة'}
                         </h3>
 
                         <Form.Item
@@ -190,19 +208,23 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                 mode="multiple"
                                 placeholder={t('teacher.preferredMosques')}
                                 optionLabelProp="label"
+                                loading={loadingMosques}
+                                notFoundContent={loadingMosques ? <Spin size="small" /> : 'لا توجد مساجد'}
                                 tagRender={({ label, onClose }) => (
                                     <Tag closable onClose={onClose} style={{ margin: 2 }}>
                                         {label}
                                     </Tag>
                                 )}
                             >
-                                {mockMosques.map(mosque => (
+                                {mosques.map(mosque => (
                                     <Option key={mosque.id} value={mosque.id} label={mosque.name}>
                                         <div>
                                             <strong>{mosque.name}</strong>
-                                            <div style={{ fontSize: '12px', color: '#666' }}>
-                                                {mosque.city}
-                                            </div>
+                                            {mosque.governorate && (
+                                                <div style={{ fontSize: '12px', color: '#666' }}>
+                                                    {mosque.governorate}
+                                                </div>
+                                            )}
                                         </div>
                                     </Option>
                                 ))}
@@ -214,7 +236,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                             label={t('teacher.teachingFormat')}
                             rules={[{ required: true, message: t('teacher.selectFormat') }]}
                         >
-                            <Select placeholder={t('teacher.teachingFormat')}>
+                            <Select placeholder="اختر نمط التدريس">
                                 {teachingFormats.map(format => (
                                     <Option key={format.value} value={format.value}>
                                         {format.label}
@@ -232,7 +254,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                     <div className="form-section">
                         <h3>
                             <ClockCircleOutlined style={{ marginLeft: 8 }} />
-                            {t('teacher.availability')}
+                            {t('teacher.availability') || 'أوقات التفرغ'}
                         </h3>
                         <p style={{ color: '#666', marginBottom: '1.5rem' }}>
                             {t('teacher.selectDaysandTimes')}
@@ -246,9 +268,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                         valuePropName="checked"
                                         style={{ marginBottom: 0 }}
                                     >
-                                        <Checkbox>
-                                            {day.label}
-                                        </Checkbox>
+                                        <Checkbox>{day.label}</Checkbox>
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} md={20}>
@@ -265,12 +285,12 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                                 <Form.Item
                                                     name={['availability', day.value, 'timeSlots']}
                                                     style={{ marginBottom: 0 }}
+                                                    rules={[{ required: true, message: 'الرجاء تحديد الوقت' }]}
                                                 >
-                                                    <RangePicker
+                                                    <TimePicker.RangePicker
                                                         style={{ width: '100%' }}
                                                         placeholder={[t('time.start'), t('time.end')]}
                                                         format="HH:mm"
-                                                        picker="time"
                                                     />
                                                 </Form.Item>
                                             ) : null;
@@ -287,5 +307,3 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
 };
 
 export default MosquePreferencesForm;
-
-// Notes: new file created for MosquePreferencesForm component 11/11/2025=> 4:50 PM

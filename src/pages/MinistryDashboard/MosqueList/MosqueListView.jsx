@@ -27,7 +27,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 // import 'ag-grid-community/styles/ag-grid.css';
 // import 'ag-grid-community/styles/ag-theme-alpine.css';
 import {
-    getMosques,
+    getAllMosques,
     deleteMosque,
     searchMosquesByName,
     getMosquesByGovernorate,
@@ -101,7 +101,7 @@ const MosqueListView = () => {
                     gaza: 'red',
                     ramallah: 'blue',
                     hebron: 'green',
-                    nabulus: 'orange',
+                    nablus: 'orange',
                     jerusalem: 'purple',
                     bethlehem: 'cyan',
                     jenin: 'geekblue',
@@ -209,7 +209,7 @@ const MosqueListView = () => {
         setLoading(true);
         try {
 
-            const useDummyData = true; // Set to false when backend is ready
+            const useDummyData = false; // Set to false when backend is ready
 
             if (useDummyData) {
                 const dummyMosques = generateDummyMosques();
@@ -217,9 +217,9 @@ const MosqueListView = () => {
                 message.success(`Loaded ${dummyMosques.length} mosques (Dummy Data)`);
             } else {
                 // Real backend call
-                const response = await getMosques();
-                setMosques(response.data || []);
-                message.success(`Loaded ${response.data?.length || 0} mosques`);
+                const response = await getAllMosques();
+                setMosques(response.data?.data || response.data || []);
+                message.success(`Loaded ${response.data.data?.length || 0} mosques`);
             }
 
 
@@ -242,7 +242,7 @@ const MosqueListView = () => {
         setLoading(true);
         try {
             const response = await searchMosquesByName(value);
-            setMosques(response.data || []);
+            setMosques(response.data.data || []);
         } catch (error) {
             console.error('Error searching mosques:', error);
             message.error('Search failed');
@@ -262,7 +262,7 @@ const MosqueListView = () => {
         setLoading(true);
         try {
             const response = await getMosquesByGovernorate(value);
-            setMosques(response.data || []);
+            setMosques(response.data.data || []);
         } catch (error) {
             console.error('Error filtering mosques:', error);
             message.error('Filter failed');
@@ -368,7 +368,7 @@ const MosqueListView = () => {
             gaza: 'red',
             ramallah: 'blue',
             hebron: 'green',
-            nabulus: 'orange',
+            nablus: 'orange',
             jerusalem: 'purple',
             bethlehem: 'cyan',
             jenin: 'geekblue',

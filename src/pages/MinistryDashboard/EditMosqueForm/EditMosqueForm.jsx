@@ -54,54 +54,16 @@ const EditMosqueForm = () => {
         setFetching(true);
         try {
             // REAL BACKEND IMPLEMENTATION:
-            /*
+
             const response = await getMosqueById(id);
             if (response.success && response.data) {
-                setMosque(response.data);
-                form.setFieldsValue(response.data);
+                setMosque(response.data.data);
+                form.setFieldsValue(response.data.data);
             } else {
                 message.error('Mosque not found');
-                navigate('/mosque-list');
-            }
-            */
-
-            // DEMO: Using dummy data for now
-            const dummyMosques = [
-                {
-                    id: 1,
-                    name: "Al-Aqsa Mosque",
-                    contact_number: "+970 8 282 1234",
-                    governorate: "jerusalem",
-                    region: "Old City",
-                    address: "Al-Aqsa Mosque Compound, Old City",
-                    latitude: 31.776389,
-                    longitude: 35.234722,
-                    postal_code: "00972",
-                    admin_name: "Ahmed Al-Masri"
-                },
-                {
-                    id: 2,
-                    name: "Great Mosque of Gaza",
-                    contact_number: "+970 8 283 4567",
-                    governorate: "gaza",
-                    region: "Gaza City",
-                    address: "Omar Al-Mukhtar Street, Gaza City",
-                    latitude: 31.506111,
-                    longitude: 34.456111,
-                    postal_code: "00970",
-                    admin_name: "Mohammed Al-Ghazali"
-                }
-            ];
-
-            const foundMosque = dummyMosques.find(m => m.id === parseInt(id));
-            if (foundMosque) {
-                setMosque(foundMosque);
-                form.setFieldsValue(foundMosque);
-                console.log('Loaded mosque data:', foundMosque);
-            } else {
-                message.error(`Mosque with ID ${id} not found`);
                 navigate(-1);
             }
+
 
         } catch (error) {
             console.error('Error fetching mosque:', error);

@@ -3,7 +3,7 @@ export const getGovernorates = () => {
         { value: 'gaza', label: 'Gaza' },
         { value: 'ramallah', label: 'Ramallah' },
         { value: 'hebron', label: 'Hebron' },
-        { value: 'nabulus', label: 'Nablus' },
+        { value: 'nablus', label: 'Nablus' },
         { value: 'jerusalem', label: 'Jerusalem' },
         { value: 'bethlehem', label: 'Bethlehem' },
         { value: 'jenin', label: 'Jenin' },
