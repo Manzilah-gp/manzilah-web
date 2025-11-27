@@ -395,3 +395,89 @@
 .main-content-wrapper::-webkit-scrollbar-thumb:hover {
     background: #a8a8a8;
 }
+
+/* Enhanced loading state */
+.dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+/* Stats section spacing */
+.stats-section {
+    margin: 2rem 0;
+}
+
+/* Insights section */
+.insights-section {
+    margin-top: 2rem;
+}
+
+.insight-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.insight-item:last-child {
+    border-bottom: none;
+}
+
+/* Enhanced card styles */
+.ant-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+}
+
+.ant-card .ant-card-head-title {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .content-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .content-header p {
+        font-size: 1rem;
+    }
+
+    .bar-chart-container {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+
+    .insights-section .ant-col {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Error state styles */
+.ant-alert-error {
+    margin: 2rem 0;
+    border-radius: 8px;
+}
+
+/* Animation for smooth transitions */
+.dashboard-content {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

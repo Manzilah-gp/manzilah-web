@@ -29,6 +29,7 @@ const resources = {
             'sidebar.signout': 'Sign Out',
             'sidebar.profile': 'Profile',
             'sidebar.Donationds': 'Donationds',
+            'sidebar.calendar': 'Calendar',
 
             // Dashboard
             'dashboard.title': 'Dashboard Overview',
@@ -52,6 +53,7 @@ const resources = {
             'common.submit': 'Submit',
             'common.next': 'Next',
             'common.previous': 'Previous',
+            'common.retry': 'Retry',
 
             // login | register 
             'auth.createAccount': 'Create Account',
@@ -171,6 +173,7 @@ const resources = {
             'sidebar.signout': 'تسجيل الخروج',
             'sidebar.profile': 'الملف الشخصي',
             'sidebar.Donationds': 'التبرعات',
+            'sidebar.calendar': 'التقويم',
 
 
             // Dashboard
@@ -196,6 +199,7 @@ const resources = {
             'common.next': 'التالي',
             'common.previous': 'السابق',
             'level': 'المستوى',
+            'common.retry': 'أعد المحاولة',
             // login | register 
             'auth.createAccount': 'إنشاء حساب',
             'auth.signIn': 'تسجيل الدخول',

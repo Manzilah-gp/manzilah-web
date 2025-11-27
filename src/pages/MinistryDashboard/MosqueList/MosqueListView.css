@@ -187,3 +187,24 @@
     background: #73d13d;
     border-color: #73d13d;
 }
+
+/* Fix AG Grid cell overflow */
+.ag-theme-alpine .ag-cell {
+    overflow: hidden;
+}
+
+.address-cell {
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
+}
+
+/* Ensure the grid container handles height properly */
+.ag-theme-alpine .ag-root-wrapper {
+    min-height: 600px;
+}
+
+.ag-theme-alpine .ag-body-viewport {
+    overflow-x: hidden;
+}

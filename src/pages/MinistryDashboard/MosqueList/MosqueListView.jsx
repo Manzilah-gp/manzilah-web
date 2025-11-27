@@ -1,4 +1,6 @@
+// pages/MinistryDashboard/MosqueList/MosqueListView.jsx
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Card,
     Button,
@@ -13,7 +15,6 @@ import {
     Modal
 } from 'antd';
 import {
-    PlusOutlined,
     EditOutlined,
     DeleteOutlined,
     EyeOutlined,
@@ -21,30 +22,32 @@ import {
     ReloadOutlined
 } from '@ant-design/icons';
 import { AgGridReact } from 'ag-grid-react';
-
 import { AllCommunityModule, ModuleRegistry } from 'ag-grid-community';
-ModuleRegistry.registerModules([AllCommunityModule]);
-// import 'ag-grid-community/styles/ag-grid.css';
-// import 'ag-grid-community/styles/ag-theme-alpine.css';
+
 import {
     getAllMosques,
     deleteMosque,
     searchMosquesByName,
-    getMosquesByGovernorate,
-    updateMosque
+    getMosquesByGovernorate
 } from '../../../api/mosque';
 import useAuth from '../../../hooks/useAuth';
-import './MosqueListView.css';
-import { generateDummyMosques } from '../../../util/dummyData';
 import { getGovernorates } from '../../../util/getGovernates';
-import { useNavigate } from 'react-router-dom';
+import './MosqueListView.css';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 const { Title, Text } = Typography;
 const { Search } = Input;
-const { Option } = Select;
 
+/**
+ * MosqueListView - Display and manage list of mosques
+ * Features: Search, Filter, View, Edit, Delete
+ */
 const MosqueListView = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
+
+    // State management
     const [mosques, setMosques] = useState([]);
     const [loading, setLoading] = useState(false);
     const [gridApi, setGridApi] = useState(null);
@@ -52,11 +55,10 @@ const MosqueListView = () => {
     const [deleteModalVisible, setDeleteModalVisible] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [governorateFilter, setGovernorateFilter] = useState('');
+
     const governorateOptions = getGovernorates();
-    const navigate = useNavigate();
 
     // Column definitions for AG Grid
-
     const [columnDefs] = useState([
         {
             field: 'id',
@@ -163,14 +165,6 @@ const MosqueListView = () => {
                 <Space size="small">
                     <Button
                         type="link"
-                        icon={<EyeOutlined />}
-                        onClick={() => handleViewMosque(params.data)}
-                        size="small"
-                    >
-                        View
-                    </Button>
-                    <Button
-                        type="link"
                         icon={<EditOutlined />}
                         onClick={() => handleEditMosque(params.data)}
                         size="small"
@@ -194,42 +188,32 @@ const MosqueListView = () => {
     ]);
 
     // Default column definitions
-
     const defaultColDef = {
         sortable: true,
         filter: true,
         resizable: true,
         floatingFilter: true,
+        sortable: true,
+        wrapText: true,
+        autoHeight: true,
     };
 
     // Fetch mosques from backend
     const fetchMosques = useCallback(async () => {
-        //if (!user) return;
-
         setLoading(true);
         try {
 
-            const useDummyData = false; // Set to false when backend is ready
-
-            if (useDummyData) {
-                const dummyMosques = generateDummyMosques();
-                setMosques(dummyMosques);
-                message.success(`Loaded ${dummyMosques.length} mosques (Dummy Data)`);
-            } else {
-                // Real backend call
-                const response = await getAllMosques();
-                setMosques(response.data?.data || response.data || []);
-                message.success(`Loaded ${response.data.data?.length || 0} mosques`);
-            }
-
-
+            const response = await getAllMosques();
+            setMosques(response.data?.data || response.data || []);
+            message.success(`Loaded ${response.data.data?.length || 0} mosques`);
+            console.log('data', response.data.data);
         } catch (error) {
             console.error('Error fetching mosques:', error);
             message.error('Failed to load mosques');
         } finally {
             setLoading(false);
         }
-    }, [user]);
+    }, []);
 
     // Search mosques by name
     const handleSearch = async (value) => {
@@ -276,95 +260,21 @@ const MosqueListView = () => {
         setGridApi(params.api);
     };
 
-    // Handle view mosque details
-    const handleViewMosque = (mosque) => {
-        Modal.info({
-            title: `Mosque Details - ${mosque.name}`,
-            width: 700,
-            okText: 'Close',
-            className: 'mosque-details-modal',
-            content: (
-                <div className="mosque-details">
-                    <Row gutter={[16, 16]}>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Name:</strong>
-                                <div className="detail-value">{mosque.name}</div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Contact:</strong>
-                                <div className="detail-value">{mosque.contact_number || 'N/A'}</div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Governorate:</strong>
-                                <div className="detail-value">
-                                    <Tag color={getGovernorateColor(mosque.governorate)}>
-                                        {mosque.governorate?.toUpperCase()}
-                                    </Tag>
-                                </div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Region:</strong>
-                                <div className="detail-value">{mosque.region || 'N/A'}</div>
-                            </div>
-                        </Col>
-                        <Col span={24}>
-                            <div className="detail-item">
-                                <strong>Address:</strong>
-                                <div className="detail-value address-full">{mosque.address || 'N/A'}</div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Latitude:</strong>
-                                <div className="detail-value coordinate">{mosque.latitude?.toFixed(6)}</div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Longitude:</strong>
-                                <div className="detail-value coordinate">{mosque.longitude?.toFixed(6)}</div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Admin:</strong>
-                                <div className="detail-value">
-                                    {mosque.admin_name ? (
-                                        <Tag color="green">{mosque.admin_name}</Tag>
-                                    ) : (
-                                        <Tag color="default">Not Assigned</Tag>
-                                    )}
-                                </div>
-                            </div>
-                        </Col>
-                        <Col span={12}>
-                            <div className="detail-item">
-                                <strong>Created:</strong>
-                                <div className="detail-value">
-                                    {new Date(mosque.created_at).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric'
-                                    })}
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                </div>
-            ),
-        });
+    // Handle edit mosque - FIXED NAVIGATION
+    const handleEditMosque = (mosque) => {
+        console.log('Editing mosque:', mosque);
+
+        // FIXED: Use the correct navigation path
+        navigate(`/dashboard/edit-mosque/${mosque.id}`);
+
+        message.info(`Opening edit form for: ${mosque.name}`);
     };
 
-    // Add this helper function for governorate colors
+
+
+    // Helper function for governorate colors
     const getGovernorateColor = (governorate) => {
-        const governorateColors = {
+        const colors = {
             gaza: 'red',
             ramallah: 'blue',
             hebron: 'green',
@@ -378,25 +288,7 @@ const MosqueListView = () => {
             jericho: 'lime',
             tubas: 'processing'
         };
-        return governorateColors[governorate] || 'default';
-    };
-
-    //handler functions
-
-
-    // Handle edit mosque (placeholder for now)
-
-    const handleEditMosque = (mosque) => {
-        // Navigate to edit form page with mosque ID
-        // In React Router v6:
-
-        // For now, show a message
-        message.info(`Redirecting to edit form for: ${mosque.name}`);
-        console.log('Would navigate to edit form for mosque:', mosque);
-
-        // In your app, you would use:
-        // or with React Router:
-        navigate(`/edit-mosque/${mosque.id}`);
+        return colors[governorate] || 'default';
     };
 
     // Handle delete confirmation
@@ -421,12 +313,11 @@ const MosqueListView = () => {
         }
     };
 
-    // Quick stats
+    // Calculate statistics
     const getStats = () => {
         const total = mosques.length;
         const withAdmin = mosques.filter(m => m.admin_name).length;
         const withoutAdmin = total - withAdmin;
-
         return { total, withAdmin, withoutAdmin };
     };
 
@@ -450,7 +341,6 @@ const MosqueListView = () => {
                             Manage all registered mosques in the system
                         </Text>
                     </Col>
-
                 </Row>
             </Card>
 
@@ -506,7 +396,6 @@ const MosqueListView = () => {
                             value={governorateFilter}
                             options={governorateOptions}
                         />
-
                     </Col>
                     <Col xs={24} sm={8}>
                         <Space>
@@ -517,7 +406,6 @@ const MosqueListView = () => {
                             >
                                 Refresh
                             </Button>
-
                         </Space>
                     </Col>
                 </Row>
@@ -535,7 +423,7 @@ const MosqueListView = () => {
                         defaultColDef={defaultColDef}
                         onGridReady={onGridReady}
                         pagination={true}
-                        paginationPageSize={20}
+                        paginationPageSize={10}
                         enableClickSelection={true}
                         animateRows={true}
                         loading={loading}

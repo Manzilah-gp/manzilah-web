@@ -28,3 +28,7 @@ export const updateMosque = (mosqueId, updateData) =>
 // ✅ DELETE
 export const deleteMosque = (mosqueId) =>
     api.delete(`/mosques/${mosqueId}`);
+
+// ✅ STATISTICS
+export const getMosqueCountByGovernorate = () =>
+    api.get("/mosques/stats/governorate-count");
