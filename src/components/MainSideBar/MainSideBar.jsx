@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Menu } from 'antd';
+import React, { useState, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Layout } from 'antd';
 import {
     BarChartOutlined,
     BankOutlined,
@@ -9,143 +10,348 @@ import {
     MenuOutlined,
     LeftOutlined,
     LogoutOutlined,
-    SearchOutlined,
-    DownOutlined,
     WechatOutlined,
-    ProfileOutlined
+    ProfileOutlined,
+    UnorderedListOutlined,
+    PlusOutlined,
+    DownOutlined,
+    TeamOutlined,
+    BookOutlined,
+    DollarOutlined,
+    CalendarOutlined
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
 import './MainSideBar.css';
-import Sider from 'antd/es/layout/Sider';
 
-const MainSideBar = ({ activeItem, onItemClick }) => {
+const { Sider } = Layout;
+
+/**
+ * MainSideBar - Navigation sidebar with role-based filtering
+ * Only shows menu items that the current user has access to
+ */
+const MainSideBar = ({ collapsed, onToggleCollapse }) => {
     const { t } = useTranslation();
-    const { user } = useAuth();
-    const [collapsed, setCollapsed] = useState(false);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
     const [openDropdown, setOpenDropdown] = useState(null);
 
-    // Define menu items with role permissions
-    const getMenuItems = () => {
-        const baseItems = [
-            {
-                key: 'statistics',
-                icon: <BarChartOutlined />,
-                label: t('sidebar.statistics'),
-                roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
-                link: '/dashboard/ministry/statistics'
+    /**
+     * Define ALL menu items with their role requirements
+     * Each item specifies which roles can see it
+     */
+    const ALL_MENU_ITEMS = [
+        // ==================== COMMON ITEMS (All Users) ====================
+
+        {
+            key: 'profile',
+            icon: <ProfileOutlined />,
+            label: t('sidebar.profile') || 'Profile',
+            roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
+            link: '/profile'
+        },
+        {
+            key: 'calendar',
+            icon: <CalendarOutlined />,
+            label: t('sidebar.calendar') || 'Calendar',
+            roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent', 'donor'],
+            link: '/calendar'
+        },
+
+
+        // ==================== MINISTRY ADMIN ONLY ====================
+
+        {
+            key: 'statistics',
+            icon: <BarChartOutlined />,
+            label: t('sidebar.statistics') || 'Statistics',
+            roles: ['mosque_admin', 'ministry_admin'],
+            link: '/dashboard/statistics'
+        },
+        {
+            key: 'mosques',
+            icon: <BankOutlined />,
+            label: 'Mosque Management',
+            roles: ['ministry_admin'],
+            children: [
+                {
+                    key: 'add-mosque',
+                    label: 'Add Mosque',
+                    link: '/dashboard/add-mosque',
+                    icon: <PlusOutlined />,
+                    roles: ['ministry_admin']
+                },
+                {
+                    key: 'mosque-list',
+                    label: 'Mosque List',
+                    link: '/dashboard/mosque-list',
+                    icon: <UnorderedListOutlined />,
+                    roles: ['ministry_admin']
+                }
+            ]
+        },
+        {
+            key: 'donations',
+            icon: <DollarOutlined />,
+            label: t('sidebar.Donationds') || 'Donations',
+            roles: ['ministry_admin'],
+            children: [
+                {
+                    key: 'pending-donations',
+                    label: 'Pending',
+                    link: '/dashboard/donations/pending',
+                    roles: ['ministry_admin']
+                },
+                {
+                    key: 'approved-donations',
+                    label: 'Approved',
+                    link: '/dashboard/donations/approved',
+                    roles: ['ministry_admin']
+                },
+                {
+                    key: 'rejected-donations',
+                    label: 'Rejected',
+                    link: '/dashboard/donations/rejected',
+                    roles: ['ministry_admin']
+                }
+            ]
+        },
+        {
+            key: 'user-management',
+            icon: <TeamOutlined />,
+            label: t('sidebar.userManagement') || 'User Management',
+            roles: ['ministry_admin'],
+            children: [
+                {
+                    key: 'add-user',
+                    label: 'Add User',
+                    link: '/dashboard/users/add',
+                    roles: ['ministry_admin']
+                },
+                {
+                    key: 'user-list',
+                    label: 'User List',
+                    link: '/dashboard/users/list',
+                    roles: ['ministry_admin']
+                }
+            ]
+        },
+        {
+            key: 'settings',
+            icon: <SettingOutlined />,
+            label: t('sidebar.systemSettings') || 'Settings',
+            roles: ['ministry_admin'],
+            children: [
+                {
+                    key: 'general-settings',
+                    label: 'General',
+                    link: '/settings/general',
+                    roles: ['ministry_admin']
+                },
+                {
+                    key: 'notifications',
+                    label: 'Notifications',
+                    link: '/settings/notifications',
+                    roles: ['ministry_admin']
+                }
+            ]
+        },
+
+        // ==================== MOSQUE ADMIN ONLY ====================
+        {
+            key: 'my-mosque',
+            icon: <BankOutlined />,
+            label: 'My Mosque',
+            roles: ['mosque_admin'],
+            link: '/dashboard/my-mosque'
+        },
+        {
+            key: 'courses',
+            icon: <BookOutlined />,
+            label: 'Courses',
+            roles: ['mosque_admin', 'teacher'],
+            children: [
+                {
+                    key: 'course-list',
+                    label: 'All Courses',
+                    link: '/dashboard/courses',
+                    roles: ['mosque_admin', 'teacher']
+                },
+                {
+                    key: 'add-course',
+                    label: 'Add Course',
+                    link: '/dashboard/courses/add',
+                    roles: ['mosque_admin']
+                }
+            ]
+        },
+
+        // ==================== TEACHER ONLY ====================
+        {
+            key: 'my-courses',
+            icon: <BookOutlined />,
+            label: 'My Courses',
+            roles: ['teacher'],
+            link: '/dashboard/my-courses'
+        },
+        {
+            key: 'students',
+            icon: <TeamOutlined />,
+            label: 'My Students',
+            roles: ['teacher'],
+            link: '/dashboard/students'
+        },
+
+        // ==================== STUDENT ONLY ====================
+        {
+            key: 'enrolled-courses',
+            icon: <BookOutlined />,
+            label: 'My Courses',
+            roles: ['student'],
+            link: '/enrolled-courses'
+        },
+        {
+            key: 'attendance',
+            icon: <CheckCircleOutlined />,
+            label: 'Attendance',
+            roles: ['student'],
+            link: '/attendance'
+        },
+
+        // ==================== PARENT ONLY ====================
+        {
+            key: 'children',
+            icon: <TeamOutlined />,
+            label: 'My Children',
+            roles: ['parent'],
+            link: '/dashboard/children'
+        },
+        {
+            key: 'progress',
+            icon: <BarChartOutlined />,
+            label: 'Progress Reports',
+            roles: ['parent'],
+            link: '/progress'
+        }
+    ];
+
+    /**
+     * Filter menu items based on user role
+     * Returns only items that the current user has access to
+     */
+
+    const getFilteredMenuItems = useMemo(() => {
+        if (!user || !user.roles || user.roles.length === 0) return [];
+
+        const userRoles = user.roles; // This is an ARRAY of roles
+
+        // Helper function to check if user has access to an item
+        const hasAccess = (item) => {
+            // If item has no role restrictions, allow access
+            if (!item.roles || item.roles.length === 0) return true;
+
+            // Check if user has ANY of the required roles for this item
+            return item.roles.some(requiredRole => userRoles.includes(requiredRole));
+        };
+
+        // Filter top-level items
+        const filteredItems = ALL_MENU_ITEMS.filter(item => hasAccess(item));
+
+        // Filter children for items that have them
+        return filteredItems.map(item => {
+            if (item.children) {
+                return {
+                    ...item,
+                    children: item.children.filter(child => hasAccess(child))
+                };
             }
-            , {
-                key: 'profile',
-                icon: <ProfileOutlined />,
-                label: t('sidebar.profile'),
-                roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
-                link: '/profile'
-
+            return item;
+        }).filter(item => {
+            // Remove parent items that have no accessible children
+            if (item.children) {
+                return item.children.length > 0;
             }
-        ];
+            return true;
+        });
+    }, [user]);
 
-        const adminItems = [
-            {
-                key: 'include-mosque',
-                icon: <BankOutlined />,
-                label: t('sidebar.includeMosque'),
-                roles: ['admin'],
-                children: [
-                    { key: 'add-mosque', label: 'Add Mosque', link: '/dashboard/ministry/add-mosque' },
-                    { key: 'manage-mosques', label: 'Manage Mosques', link: '/dashboard/ministry/manage-mosques' },
-                ]
-            },
-            {
-                key: 'approve-events',
-                icon: <CheckCircleOutlined />,
-                label: t('sidebar.approveEvents'),
-                roles: ['admin'],
-                children: [
-                    { key: 'pending-events', label: 'Pending Events', link: '/dashboard/ministry/pending-events' },
-                    { key: 'approved-events', label: 'Approved Events', link: '/dashboard/ministry/approved-events' },
-                    { key: 'rejected-events', label: 'Rejected Events' }
-                ]
-            },
-            // {
-            //     key: 'user-management',
-            //     icon: <UserOutlined />,
-            //     label: t('sidebar.userManagement'),
-            //     roles: ['admin'],
-            //     children: [
-            //         { key: 'add-user', label: 'Add Mosque Admin' },
-            //         { key: 'user-list', label: 'Admin List' },
-            //         { key: 'role-management', label: 'Role Management' }
-            //     ]
-            // },
-            {
-                key: 'system-settings',
-                icon: <SettingOutlined />,
-                label: t('sidebar.systemSettings'),
-                roles: ['admin'],
-                children: [
-                    { key: 'general-settings', label: 'General Settings', link: '/general-settings' },
-                    { key: 'notification-settings', label: 'Notifications', link: '/notification-settings' },
-                ]
-            }
-        ];
-
-        // Combine and filter items based on user role
-        const allItems = [...baseItems, ...adminItems];
-        // For now, return all items - implement role filtering later
-        // return allItems.filter(item => item.roles.includes(user.role));
-        return allItems;
-    };
-
+    /**
+     * Toggle dropdown menu
+     */
     const toggleDropdown = (key) => {
         setOpenDropdown(openDropdown === key ? null : key);
     };
 
-    const handleItemClick = (key) => {
-        onItemClick(key);
-        // Close dropdown when item is selected (for mobile)
-        if (window.innerWidth <= 768) {
-            setCollapsed(true);
+    /**
+     * Handle navigation when menu item is clicked
+     */
+    const handleItemClick = (link) => {
+        if (link) {
+            navigate(link);
+        }
+        // Close mobile menu after navigation
+        if (window.innerWidth <= 768 && onToggleCollapse) {
+            onToggleCollapse();
         }
     };
 
-    const menuItems = getMenuItems();
+    /**
+     * Check if current route matches menu item
+     */
+    const isActive = (link) => {
+        return location.pathname === link;
+    };
+
+    /**
+     * Check if any child is active (for dropdown highlighting)
+     */
+    const hasActiveChild = (children) => {
+        return children?.some(child => location.pathname === child.link);
+    };
+
+    /**
+     * Handle logout
+     */
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
         <Sider
-            width={280}
+            width={270}
             breakpoint="lg"
-            collapsedWidth={80}
+            collapsedWidth={85}
             collapsible
             collapsed={collapsed}
-            onCollapse={() => setCollapsed(!collapsed)}
+            onCollapse={onToggleCollapse}
             trigger={null}
-            style={{ background: '#151A2D' }}
-
+            style={{
+                background: '#151A2D',
+                position: 'fixed',
+                left: 0,
+                top: 64,
+                height: 'calc(100vh - 64px)',
+                zIndex: 100,
+                overflow: 'auto'
+            }}
         >
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Toggle */}
             <button
                 className="sidebar-menu-button"
-                onClick={() => setCollapsed(!collapsed)}
+                onClick={onToggleCollapse}
+                style={{ display: window.innerWidth <= 768 ? 'flex' : 'none' }}
             >
                 <MenuOutlined />
             </button>
 
             <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
-                {/* className={`sidebar ${collapsed ? 'collapsed' : ''}`} */}
-
-                {/* Sidebar Header */}
+                {/* Sidebar Header with Toggle */}
                 <header className="sidebar-header">
-                    {/* <div className="header-logo">
-                        <div className="logo-placeholder">
-                            <BankOutlined style={{ fontSize: '24px', color: '#EEF2FF' }} />
-                        </div>
-                        <span className="app-name">Main Bar</span>
-                    </div> */}
-
                     <button
                         className="sidebar-toggler"
-                        onClick={() => setCollapsed(!collapsed)}
+                        onClick={onToggleCollapse}
                     >
                         <LeftOutlined style={{
                             transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
@@ -156,56 +362,69 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
 
                 {/* User Info Section */}
                 <div className="user-info-section">
-                    <div className="user-avatar">
+                    <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
                         <UserOutlined />
                     </div>
-                    <div className="user-details">
-                        <h4 className="user-name">{user?.name || 'User'}</h4>
-                        <p className="user-role">{user?.role || 'N/A'}</p>
-                    </div>
+                    {!collapsed && (
+                        <div className="user-details">
+                            <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
+                            <p className="user-role">{user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}</p>
+                        </div>
+                    )}
                 </div>
 
-                {/* Navigation Menu */}
+                {/* Navigation Menu - FILTERED BY ROLE */}
                 <nav className="sidebar-nav">
                     <ul className="nav-list primary-nav">
-                        {menuItems.map(item => (
+                        {getFilteredMenuItems.map(item => (
                             <li
                                 key={item.key}
-                                className={`nav-item ${item.children ? 'dropdown-container' : ''} ${openDropdown === item.key ? 'open' : ''}`}
+                                className={`nav-item ${item.children ? 'dropdown-container' : ''} ${openDropdown === item.key || hasActiveChild(item.children) ? 'open' : ''
+                                    }`}
                             >
                                 {item.children ? (
                                     <>
+                                        {/* Dropdown Toggle */}
                                         <a
                                             href="#"
-                                            className="nav-link dropdown-toggle"
+                                            className={`nav-link dropdown-toggle ${hasActiveChild(item.children) ? 'active' : ''
+                                                }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 toggleDropdown(item.key);
                                             }}
                                         >
                                             <span className="nav-icon">{item.icon}</span>
-                                            <span className="nav-label">{item.label}</span>
-                                            <span className="dropdown-icon">
-                                                <DownOutlined style={{
-                                                    transform: openDropdown === item.key ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                    transition: 'transform 0.3s ease'
-                                                }} />
-                                            </span>
+                                            {!collapsed && <span className="nav-label">{item.label}</span>}
+                                            {!collapsed && (
+                                                <span className="dropdown-icon">
+                                                    <DownOutlined style={{
+                                                        transform: openDropdown === item.key ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                        transition: 'transform 0.3s ease'
+                                                    }} />
+                                                </span>
+                                            )}
                                         </a>
+
+                                        {/* Dropdown Menu */}
                                         <ul className="dropdown-menu">
-                                            <li className="nav-item">
-                                                <a className="nav-link dropdown-title">{item.label}</a>
-                                            </li>
+                                            {!collapsed && (
+                                                <li className="nav-item">
+                                                    <a className="nav-link dropdown-title">{item.label}</a>
+                                                </li>
+                                            )}
                                             {item.children.map(child => (
                                                 <li key={child.key} className="nav-item">
                                                     <a
                                                         href={child.link || '#'}
-                                                        className="nav-link dropdown-link"
+                                                        className={`nav-link dropdown-link ${isActive(child.link) ? 'active' : ''
+                                                            }`}
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleItemClick(child.key);
+                                                            handleItemClick(child.link);
                                                         }}
                                                     >
+                                                        {child.icon && <span className="nav-icon">{child.icon}</span>}
                                                         {child.label}
                                                     </a>
                                                 </li>
@@ -213,34 +432,49 @@ const MainSideBar = ({ activeItem, onItemClick }) => {
                                         </ul>
                                     </>
                                 ) : (
+                                    // Regular Menu Item
                                     <a
                                         href={item.link || '#'}
-                                        className={`nav-link ${activeItem === item.key ? 'active' : ''}`}
+                                        className={`nav-link ${isActive(item.link) ? 'active' : ''}`}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            handleItemClick(item.key);
+                                            handleItemClick(item.link);
                                         }}
                                     >
                                         <span className="nav-icon">{item.icon}</span>
-                                        <span className="nav-label">{item.label}</span>
+                                        {!collapsed && <span className="nav-label">{item.label}</span>}
                                     </a>
                                 )}
                             </li>
                         ))}
                     </ul>
 
-                    {/* Secondary Navigation */}
+                    {/* Secondary Navigation - Always visible */}
                     <ul className="nav-list secondary-nav">
                         <li className="nav-item">
-                            <a href="/chat" className="nav-link">
+                            <a
+                                href="/chat"
+                                className="nav-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleItemClick('/chat');
+                                }}
+                            >
                                 <span className="nav-icon"><WechatOutlined /></span>
-                                <span className="nav-label">{t('sidebar.chat')}</span>
+                                {!collapsed && <span className="nav-label">{t('sidebar.chat') || 'Chat'}</span>}
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a href="/login" className="nav-link">
+                            <a
+                                href="/login"
+                                className="nav-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleLogout();
+                                }}
+                            >
                                 <span className="nav-icon"><LogoutOutlined /></span>
-                                <span className="nav-label">{t('sidebar.signout')}</span>
+                                {!collapsed && <span className="nav-label">{t('sidebar.signout') || 'Sign Out'}</span>}
                             </a>
                         </li>
                     </ul>

@@ -149,7 +149,7 @@ const Register = () => {
                 address_line1: locationData.address_line1 || '',
                 //city: locationData.city || '',
                 region: locationData.region || locationData.city || '',
-                governorate: locationData.governorate || '',
+                // governorate: locationData.governorate || '',
                 postal_code: locationData.postal_code || '',
                 latitude: locationData.latitude || '',
                 longitude: locationData.longitude || ''

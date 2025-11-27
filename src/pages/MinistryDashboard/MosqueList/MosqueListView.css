@@ -1,0 +1,210 @@
+.mosque-list-view {
+    padding: 0;
+}
+
+.mosque-list-header {
+    margin-bottom: 16px;
+    border-radius: 8px;
+}
+
+.page-title {
+    margin-bottom: 8px !important;
+    color: #2c3e50;
+}
+
+/* Statistics Cards */
+.stats-row {
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #667eea 0%, #c9ecf5 100%);
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card.total {
+    border-left: 4px solid #1890ff;
+}
+
+.stat-card.with-admin {
+    border-left: 4px solid #52c41a;
+}
+
+.stat-card.without-admin {
+    border-left: 4px solid #faad14;
+}
+
+.stat-content {
+    padding: 8px 0;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Filters Card */
+.filters-card {
+    margin-bottom: 24px;
+    border-radius: 8px;
+}
+
+/* Grid Card */
+.grid-card {
+    border-radius: 8px;
+}
+
+/* AG Grid Customization */
+.ag-theme-alpine {
+    --ag-header-height: 50px;
+    --ag-header-foreground-color: #2c3e50;
+    --ag-header-background-color: #f8f9fa;
+    --ag-header-cell-hover-background-color: #e9ecef;
+    --ag-header-cell-moving-background-color: #e9ecef;
+    border-radius: 8px;
+}
+
+.ag-theme-alpine .ag-header {
+    border-bottom: 2px solid #e9ecef;
+    font-weight: 600;
+}
+
+.ag-theme-alpine .ag-row {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.ag-theme-alpine .ag-row:hover {
+    background-color: #f8f9fa;
+}
+
+.ag-theme-alpine .ag-cell {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+.mosque-name-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+.mosque-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* .contact-info {
+    font-size: 0.8rem;
+} */
+
+.address-cell {
+    max-width: 100%;
+}
+
+/* Action Buttons */
+.ant-btn-link {
+    padding: 0 4px;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .mosque-list-header .ant-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .mosque-list-header .ant-col {
+        text-align: center;
+    }
+
+    .stats-row {
+        margin-bottom: 16px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .filters-card .ant-row {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .ag-theme-alpine {
+        font-size: 0.8rem;
+    }
+}
+
+/* Loading State */
+.grid-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #7f8c8d;
+}
+
+/* Mosque Details Modal */
+.mosque-details {
+    padding: 16px 0;
+}
+
+.mosque-details .ant-row {
+    margin-bottom: 12px;
+}
+
+.mosque-details strong {
+    color: #2c3e50;
+    display: inline-block;
+    min-width: 80px;
+}
+
+/* Export Button */
+.export-btn {
+    background: #52c41a;
+    border-color: #52c41a;
+}
+
+.export-btn:hover {
+    background: #73d13d;
+    border-color: #73d13d;
+}
+
+/* Fix AG Grid cell overflow */
+.ag-theme-alpine .ag-cell {
+    overflow: hidden;
+}
+
+.address-cell {
+    max-width: 100%;
+    word-wrap: break-word;
+    white-space: normal;
+    line-height: 1.4;
+}
+
+/* Ensure the grid container handles height properly */
+.ag-theme-alpine .ag-root-wrapper {
+    min-height: 600px;
+}
+
+.ag-theme-alpine .ag-body-viewport {
+    overflow-x: hidden;
+}

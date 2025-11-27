@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Select, Input } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import MapComponent from '../Map/MapComponent';
+import { getGovernorates } from '../../util/getGovernates';
 
 const { Option } = Select;
 
@@ -13,6 +14,7 @@ const LocationStep = React.memo(({
 }) => {
     const { t } = useTranslation();
     const [mapVisible, setMapVisible] = useState(false);
+    const governorateOptions = getGovernorates();
 
     const handleMapSelect = (locationData) => {
         if (onMapSelect) {
@@ -97,7 +99,8 @@ const LocationStep = React.memo(({
 
             {/* Governorate Select */}
             <Select
-                placeholder={t('auth.governorate') || "Select Governorate"}
+                placeholder={t('auth.0') || "Select Governorate"}
+                name="address.governorate"
                 value={form.governorate || undefined}
                 onChange={(value) => {
                     const syntheticEvent = {
@@ -109,20 +112,9 @@ const LocationStep = React.memo(({
                     handleChange(syntheticEvent);
                 }}
                 style={{ width: '100%', marginBottom: 12 }}
-            >
-                <Option value="gaza">Gaza</Option>
-                <Option value="ramallah">Ramallah</Option>
-                <Option value="hebron">Hebron</Option>
-                <Option value="nabulus">Nablus</Option>
-                <Option value="jerusalem">Jerusalem</Option>
-                <Option value="bethlehem">Bethlehem</Option>
-                <Option value="jenin">Jenin</Option>
-                <Option value="tulkarm">Tulkarm</Option>
-                <Option value="qalqilya">Qalqilya</Option>
-                <Option value="salfit">Salfit</Option>
-                <Option value="jericho">Jericho</Option>
-                <Option value="tubas">Tubas</Option>
-            </Select>
+                options={governorateOptions}
+            />
+
 
             <Input
                 className="auth-input"

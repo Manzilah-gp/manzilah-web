@@ -1,0 +1,86 @@
+/* components/Layout/DashboardLayout.css */
+
+.dashboard-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-layout {
+    flex: 1;
+    display: flex;
+    margin-top: 64px; /* Height of fixed header */
+}
+
+/* Main content wrapper - adjusts for sidebar */
+.main-content-wrapper {
+    flex: 1;
+    margin-left: 270px; /* Sidebar width when expanded */
+    transition: margin-left 0.3s ease;
+    background: #f0f2f5;
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+}
+
+/* When sidebar is collapsed */
+.ant-layout-sider-collapsed + .main-content-wrapper {
+    margin-left: 85px !important;
+}
+
+/* Main content */
+.dashboard-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 24px;
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Content scroll wrapper */
+.content-scroll-wrapper {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Custom scrollbar */
+.content-scroll-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.content-scroll-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.content-scroll-wrapper::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.content-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .dashboard-main-content {
+        margin: 16px;
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-main-content {
+        margin: 12px;
+        padding: 12px;
+    }
+}

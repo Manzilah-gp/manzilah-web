@@ -1,0 +1,109 @@
+/* components/Dashboard/Ministry/AddMosqueView.css */
+.add-mosque-container {
+    padding: 0;
+    background: transparent;
+}
+
+.add-mosque-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f0f0f0;
+}
+
+.mosque-form-header {
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.form-title {
+    color: #2c3e50;
+    margin-bottom: 8px !important;
+    font-weight: 700;
+}
+
+.mosque-form {
+    max-width: 100%;
+}
+
+.map-section {
+    margin: 24px 0;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 8px;
+    border: 1px solid #e8e8e8;
+}
+
+.map-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.map-button {
+    height: 48px;
+    font-size: 16px;
+    border: 2px dashed #1890ff;
+    color: #1890ff;
+    background: #f0f8ff;
+}
+
+.map-button:hover {
+    border-color: #40a9ff;
+    color: #40a9ff;
+    background: #e6f7ff;
+}
+
+.selected-location-info {
+    padding: 12px 16px;
+    background: #f6ffed;
+    border: 1px solid #b7eb8f;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 16px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .add-mosque-container {
+        padding: 8px;
+    }
+
+    .map-button-container {
+        align-items: stretch;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .form-actions .ant-space {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Form item styling */
+.ant-form-item-label>label {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.ant-input,
+.ant-select-selector {
+    border-radius: 6px;
+}
+
+/* Card header divider */
+.ant-divider {
+    border-color: #f0f0f0;
+}

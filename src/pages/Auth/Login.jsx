@@ -35,7 +35,7 @@ const Login = () => {
                 children: user.children || [],
             });
 
-            navigate("/home");
+            navigate("/dashboard/statistics");
         } catch (err) {
             console.error("Login error:", err.response?.data || err.message);
             setError(err.response?.data?.message || "Login failed");
