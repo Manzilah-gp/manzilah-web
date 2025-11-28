@@ -1,7 +1,7 @@
 // src/pages/ProfilePage.jsx
 import React, { useEffect, useState } from "react";
 import "../Styles/Profile.css";
-import Sidebar from "../components/Side";
+import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserCalendar from "../components/Calender";
@@ -95,7 +95,7 @@ function ProfilePage() {
       <Header />
 
       <div className="profile-layout">
-        <Sidebar />
+        <MainSideBar />
 
         <div className="profile-main">
           {/* Header */}

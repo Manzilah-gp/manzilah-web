@@ -1,4 +1,3 @@
-// src/components/Sidebar.jsx
 import React from "react";
 import "../Styles/Profile.css";
 import {
@@ -8,7 +7,11 @@ import {
   DashboardOutlined,
 } from "@ant-design/icons";
 
+import { useNavigate } from "react-router-dom"; // <-- مهم جدا
+
 function Sidebar() {
+  const navigate = useNavigate(); // <-- تعريفه
+
   return (
     <div className="profile-sidebar">
 
@@ -16,10 +19,21 @@ function Sidebar() {
         <h3 className="sidebar-title">القائمة</h3>
 
         <ul>
-          <li><UserOutlined /> الملف الشخصي</li>
-          <li><DashboardOutlined /> لوحة التحكم</li>
-          <li><BookOutlined /> الحفظ والدروس</li>
-          <li><CalendarOutlined /> التقويم</li>
+          <li onClick={() => navigate("/profile-details")}>
+            <UserOutlined /> الملف الشخصي
+          </li>
+
+          <li onClick={() => navigate("/profile")}>
+            <DashboardOutlined /> لوحة التحكم
+          </li>
+
+          <li>
+            <BookOutlined /> الحفظ والدروس
+          </li>
+
+          <li>
+            <CalendarOutlined /> التقويم
+          </li>
         </ul>
       </div>
 
