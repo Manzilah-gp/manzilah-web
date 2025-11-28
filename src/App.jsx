@@ -1,6 +1,6 @@
 // App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import AntdConfigProvider from './context/AntdConfigProvider';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
@@ -26,6 +26,10 @@ import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
 
 import './App.css';
 
+import Home from "./pages/Home"; 
+import Profile from "./pages/ProfilePage";
+import ProfileDetails from "./pages/ProfileDetails"; // <-- تمت الإضافة هنا
+
 function App() {
   return (
 
@@ -35,7 +39,14 @@ function App() {
           <div className="App" style={{ height: '100vh', width: '100vw' }}>
 
             <Routes>
-              {/* Default Route → show Login */}
+              {/* Default Route → Home */} 
+          <Route path="/" element={<Profile />} />
+
+          {/* Profile Details Page */} 
+          <Route path="/profile-details" element={<ProfileDetails />} /> 
+          {/* <-- الإضافة المهمة */}
+
+          {/* Auth Pages */}
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
