@@ -1,0 +1,147 @@
+.statistics-view {
+    padding: 0;
+}
+
+/* Header Section */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dashboard-header h2 {
+    margin-bottom: 8px;
+}
+
+/* Statistics Cards Section */
+.stats-section {
+    margin-bottom: 32px;
+}
+
+.stat-card {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card .ant-statistic-title {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+    margin-bottom: 8px;
+}
+
+.stat-card .ant-statistic-content {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Chart Section */
+.chart-section {
+    margin-bottom: 32px;
+}
+
+.chart-section .ant-card {
+    border-radius: 8px;
+}
+
+/* Additional Section */
+.additional-section {
+    margin-bottom: 32px;
+}
+
+.additional-section .ant-card {
+    border-radius: 8px;
+}
+
+.additional-section .ant-list-item {
+    padding: 16px 0;
+}
+
+/* Loading State */
+.dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+/* Insights Section (for ministry admin) */
+.insights-section {
+    margin-top: 32px;
+}
+
+.insight-item {
+    padding: 12px;
+    background: #fafafa;
+    border-radius: 4px;
+}
+
+.insight-item strong {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(0, 0, 0, 0.85);
+}
+
+.insight-item .ant-typography {
+    font-size: 16px;
+    color: #1890ff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .dashboard-header button {
+        width: 100%;
+    }
+
+    .stat-card .ant-statistic-content {
+        font-size: 24px;
+    }
+
+    .additional-section .ant-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .statistics-view {
+        padding: 0;
+    }
+
+    .dashboard-header h2 {
+        font-size: 20px;
+    }
+
+    .stat-card .ant-statistic-content {
+        font-size: 20px;
+    }
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    color: #d9d9d9;
+    margin-bottom: 16px;
+}
+
+.empty-state-text {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.45);
+}

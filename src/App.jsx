@@ -18,6 +18,7 @@ import Unauthorized from './pages/Auth/Unauthorized';
 import TeacherRegistrationPage from './pages/TeacherRegister/TeacherRegistrationPage';
 
 // Dashboard Pages
+import StatisticsView from './components/Dashboard/Ministry/Statistics';
 import AddMosqueView from './pages/MinistryDashboard/AddMosque/AddMosqueView';
 import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView';
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
@@ -56,13 +57,10 @@ function App() {
                 {/* Default redirect */}
                 <Route index element={<Navigate to="/dashboard/statistics" replace />} />
 
-
-
-
                 {/* Ministry Admin Routes */}
                 <Route path="statistics" element={
                   <RoleProtectedRoute allowedRoles={['ministry_admin', 'mosque_admin']}>
-                    < MinistryDashboard />
+                    < StatisticsView />
                   </RoleProtectedRoute>
                 } />
 
@@ -89,6 +87,123 @@ function App() {
                 <Route path="profile" element={<div>Profile Page</div>} />
                 <Route path="settings/*" element={<div>Settings</div>} />
                 <Route path="donations/*" element={<div>Donations</div>} />
+
+                {/* Settings Routes - Ministry Admin only */}
+                <Route
+                  path="settings/general"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
+                      <div>General Settings - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="settings/notifications"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
+                      <div>Notification Settings - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                {/* Donation Routes - Ministry Admin only */}
+                <Route
+                  path="donations/pending"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
+                      <div>Pending Donations - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="donations/approved"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
+                      <div>Approved Donations - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="donations/rejected"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
+                      <div>Rejected Donations - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                {/* Mosque Admin Routes */}
+                <Route
+                  path="my-mosque"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <div>My Mosque - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="courses"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin', 'teacher']}>
+                      <div>Courses - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                {/* Teacher Routes */}
+                <Route
+                  path="my-courses"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher']}>
+                      <div>My Courses - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="students"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher']}>
+                      <div>My Students - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                {/* Student Routes */}
+                <Route
+                  path="enrolled-courses"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['student']}>
+                      <div>Enrolled Courses - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="attendance"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['student']}>
+                      <div>Attendance - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                {/* Parent Routes */}
+                <Route
+                  path="children"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['parent']}>
+                      <div>My Children - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="progress"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['parent']}>
+                      <div>Progress Reports - To be implemented</div>
+                    </RoleProtectedRoute>
+                  }
+                />
+
               </Route>
 
               {/* Edit Mosque - Separate route outside dashboard layout */}
@@ -99,6 +214,16 @@ function App() {
                     <RoleProtectedRoute allowedRoles={['ministry_admin']}>
                       <EditMosqueForm />
                     </RoleProtectedRoute>
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Chat - accessible to all authenticated users */}
+              <Route
+                path="/chat"
+                element={
+                  <ProtectedRoute>
+                    <div>Chat - To be implemented</div>
                   </ProtectedRoute>
                 }
               />

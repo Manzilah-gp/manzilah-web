@@ -30,15 +30,43 @@ const resources = {
             'sidebar.profile': 'Profile',
             'sidebar.Donationds': 'Donationds',
             'sidebar.calendar': 'Calendar',
+            "sidebar.mosqueManagement": "Mosque Management",
+            "sidebar.addMosque": "Add Mosque",
+            "sidebar.mosqueList": "Mosque List",
+            "sidebar.donations": "Donations",
+
 
             // Dashboard
-            'dashboard.title': 'Dashboard Overview',
-            'dashboard.subtitle': 'Comprehensive view of ministry statistics and activities',
-            'dashboard.mosques': 'Total Mosques',
-            'dashboard.students': 'Total Students',
-            'dashboard.supervisors': 'Supervisors',
-            'dashboard.courses': 'Active Courses',
-            'dashboard.chartTitle': 'Mosques Distribution by City in Palestine',
+
+            "dashboard.title": "Dashboard",
+            "dashboard.subtitle": "Overview of your activities",
+            "dashboard.chartTitle": "Statistics Overview",
+
+            "dashboard.ministryAdmin.title": "Ministry Dashboard",
+            "dashboard.ministryAdmin.subtitle": "System-wide overview of all mosques and activities",
+            "dashboard.ministryAdmin.chartTitle": "Mosque Distribution by Governorate",
+
+            "dashboard.mosqueAdmin.title": "Mosque Dashboard",
+            "dashboard.mosqueAdmin.subtitle": "Manage and monitor your mosque",
+            "dashboard.mosqueAdmin.chartTitle": "Course Enrollment Overview",
+
+            "dashboard.mosques": "Mosques",
+            "dashboard.students": "Students",
+            "dashboard.supervisors": "Teachers",
+            "dashboard.teachers": "Teachers",
+            "dashboard.courses": "Courses",
+            "dashboard.activeEnrollments": "Active Enrollments",
+
+            "dashboard.insights": "Insights",
+            "dashboard.topGovernorate": "Top Governorate",
+            "dashboard.totalGovernorates": "Total Governorates",
+            "dashboard.avgMosquesPerGov": "Average Mosques per Governorate",
+
+            "dashboard.fetchError": "Failed to load dashboard data",
+            "dashboard.errorTitle": "Error Loading Dashboard",
+            "dashboard.loading": "Loading dashboard...",
+            "dashboard.noData": "No data available",
+
 
             // Footer
             'footer.description': 'Building a better future through education and community development',
@@ -54,6 +82,22 @@ const resources = {
             'common.next': 'Next',
             'common.previous': 'Previous',
             'common.retry': 'Retry',
+            "common.refresh": "Refresh",
+            "common.save": "Save",
+            "common.cancel": "Cancel",
+            "common.delete": "Delete",
+            "common.edit": "Edit",
+            "common.view": "View",
+            "common.add": "Add",
+            "common.search": "Search",
+            "common.filter": "Filter",
+            "common.export": "Export",
+            "common.import": "Import",
+            "common.success": "Success",
+            "common.error": "Error",
+            "common.warning": "Warning",
+            "common.info": "Information",
+
 
             // login | register 
             'auth.createAccount': 'Create Account',
@@ -175,15 +219,42 @@ const resources = {
             'sidebar.Donationds': 'التبرعات',
             'sidebar.calendar': 'التقويم',
 
+            "sidebar.mosqueManagement": "إدارة المساجد",
+            "sidebar.addMosque": "إضافة مسجد",
+            "sidebar.mosqueList": "قائمة المساجد",
+            "sidebar.donations": "التبرعات",
+
 
             // Dashboard
-            'dashboard.title': 'نظرة عامة على لوحة التحكم',
-            'dashboard.subtitle': 'عرض شامل لإحصائيات وأنشطة الوزارة',
-            'dashboard.mosques': 'إجمالي المساجد',
-            'dashboard.students': 'إجمالي الطلاب',
-            'dashboard.supervisors': 'المشرفين',
-            'dashboard.courses': 'الدورات النشطة',
-            'dashboard.chartTitle': 'توزيع المساجد حسب المدن في فلسطين',
+
+            "dashboard.title": "لوحة التحكم",
+            "dashboard.subtitle": "نظرة عامة على نشاطاتك",
+            "dashboard.chartTitle": "نظرة عامة على الإحصائيات",
+
+            "dashboard.ministryAdmin.title": "لوحة تحكم الوزارة",
+            "dashboard.ministryAdmin.subtitle": "عرض شامل لجميع المساجد والأنشطة",
+            "dashboard.ministryAdmin.chartTitle": "توزيع المساجد حسب المحافظات",
+
+            "dashboard.mosqueAdmin.title": "لوحة تحكم المسجد",
+            "dashboard.mosqueAdmin.subtitle": "إدارة ومتابعة شؤون المسجد",
+            "dashboard.mosqueAdmin.chartTitle": "نظرة عامة على تسجيلات الدورات",
+
+            "dashboard.mosques": "المساجد",
+            "dashboard.students": "الطلاب",
+            "dashboard.supervisors": "المعلمين",
+            "dashboard.teachers": "المعلمين",
+            "dashboard.courses": "الدورات",
+            "dashboard.activeEnrollments": "التسجيلات النشطة",
+
+            "dashboard.insights": "التحليلات",
+            "dashboard.topGovernorate": "أعلى محافظة",
+            "dashboard.totalGovernorates": "إجمالي المحافظات",
+            "dashboard.avgMosquesPerGov": "متوسط عدد المساجد لكل محافظة",
+
+            "dashboard.fetchError": "فشل تحميل بيانات لوحة التحكم",
+            "dashboard.errorTitle": "خطأ في تحميل لوحة التحكم",
+            "dashboard.loading": "جاري تحميل لوحة التحكم...",
+            "dashboard.noData": "لا توجد بيانات متاحة",
 
             // Footer
             'footer.description': 'بناء مستقبل أفضل من خلال التعليم وتنمية المجتمع',
@@ -199,7 +270,24 @@ const resources = {
             'common.next': 'التالي',
             'common.previous': 'السابق',
             'level': 'المستوى',
-            'common.retry': 'أعد المحاولة',
+
+            "common.retry": "إعادة المحاولة",
+            "common.refresh": "تحديث",
+            "common.save": "حفظ",
+            "common.cancel": "إلغاء",
+            "common.delete": "حذف",
+            "common.edit": "تعديل",
+            "common.view": "عرض",
+            "common.add": "إضافة",
+            "common.search": "بحث",
+            "common.filter": "تصفية",
+            "common.export": "تصدير",
+            "common.import": "استيراد",
+            "common.success": "نجاح",
+            "common.error": "خطأ",
+            "common.warning": "تحذير",
+            "common.info": "المعلومات",
+
             // login | register 
             'auth.createAccount': 'إنشاء حساب',
             'auth.signIn': 'تسجيل الدخول',
