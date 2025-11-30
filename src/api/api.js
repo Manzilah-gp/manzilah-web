@@ -31,9 +31,15 @@ api.interceptors.response.use(
             // Token expired or invalid
             localStorage.removeItem("token");
             window.location.href = "/login";
+        } else if (error.response?.status === 403) {
+            // Permission denied - show error message
+            console.error("Access denied:", error.response?.data?.message);
+            // Optional: Show a notification to user
+            // message.error(error.response?.data?.message || "You don't have permission to access this resource");
         }
         return Promise.reject(error);
     }
 );
+
 
 export default api;

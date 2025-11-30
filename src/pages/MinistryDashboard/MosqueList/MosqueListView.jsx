@@ -193,7 +193,6 @@ const MosqueListView = () => {
         filter: true,
         resizable: true,
         floatingFilter: true,
-        sortable: true,
         wrapText: true,
         autoHeight: true,
     };

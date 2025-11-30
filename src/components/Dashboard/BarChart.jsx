@@ -1,63 +1,89 @@
+// components/Dashboard/BarChart.jsx
 import React from 'react';
-import { Card, Row, Col, Statistic } from 'antd';
-import { useTranslation } from 'react-i18next';
+import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 
-const BarChart = ({ data, title }) => {
-    const { t } = useTranslation();
-    const maxValue = Math.max(...data.map(item => item.value));
+/**
+ * BarChart - Reusable bar chart component using Recharts
+ * @param {Array} data - Chart data with label and value properties
+ * @param {string} title - Chart title
+ * @param {number} height - Chart height in pixels
+ */
+const BarChart = ({ data = [], title, height = 400 }) => {
+    // Color palette for bars
+    const COLORS = [
+        '#1890ff', '#52c41a', '#fa8c16', '#722ed1',
+        '#eb2f96', '#13c2c2', '#faad14', '#f5222d',
+        '#2f54eb', '#a0d911'
+    ];
+
+    // Custom tooltip
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div style={{
+                    backgroundColor: 'white',
+                    padding: '10px',
+                    border: '1px solid #d9d9d9',
+                    borderRadius: '4px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
+                }}>
+                    <p style={{ margin: 0, fontWeight: 'bold' }}>{label}</p>
+                    <p style={{ margin: '5px 0 0 0', color: payload[0].color }}>
+                        Count: {payload[0].value}
+                    </p>
+                    {payload[0].payload.percentage && (
+                        <p style={{ margin: '5px 0 0 0', color: '#666' }}>
+                            Percentage: {payload[0].payload.percentage}%
+                        </p>
+                    )}
+                </div>
+            );
+        }
+        return null;
+    };
+
+    if (!data || data.length === 0) {
+        return (
+            <div style={{
+                height: height,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: '#999'
+            }}>
+                No data available
+            </div>
+        );
+    }
 
     return (
-        <Card title={title}>
-            <Row gutter={[16, 16]} style={{ height: '300px', alignItems: 'flex-end' }}>
-                {data.map((item, index) => (
-                    <Col
-                        key={index}
-                        flex={1}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <div style={{
-                            textAlign: 'center',
-                            marginBottom: '8px',
-                            fontSize: '12px',
-                            fontWeight: '500'
-                        }}>
-                            {item.label}
-                        </div>
-                        <div
-                            style={{
-                                height: `${(item.value / maxValue) * 200}px`,
-                                width: '80%',
-                                background: `hsl(${index * 40}, 70%, 50%)`,
-                                borderRadius: '4px 4px 0 0',
-                                display: 'flex',
-                                alignItems: 'flex-end',
-                                justifyContent: 'center',
-                                color: 'white',
-                                fontWeight: 'bold',
-                                fontSize: '12px',
-                                padding: '4px',
-                                transition: 'all 0.3s ease',
-                                cursor: 'pointer'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'scale(1.05)';
-                                e.currentTarget.style.opacity = '0.8';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = 'scale(1)';
-                                e.currentTarget.style.opacity = '1';
-                            }}
-                        >
-                            {item.value}
-                        </div>
-                    </Col>
-                ))}
-            </Row>
-        </Card>
+        <ResponsiveContainer width="100%" height={height}>
+            <RechartsBarChart
+                data={data}
+                margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                    dataKey="label"
+                    angle={-45}
+                    textAnchor="end"
+                    height={100}
+                    tick={{ fontSize: 12 }}
+                />
+                <YAxis />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                <Bar
+                    dataKey="value"
+                    name={title || "Count"}
+                    radius={[8, 8, 0, 0]}
+                >
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                </Bar>
+            </RechartsBarChart>
+        </ResponsiveContainer>
     );
 };
 
