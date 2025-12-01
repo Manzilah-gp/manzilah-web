@@ -1,6 +1,6 @@
 // App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import AntdConfigProvider from './context/AntdConfigProvider';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
@@ -22,6 +22,7 @@ import AddMosqueView from './pages/MinistryDashboard/AddMosque/AddMosqueView';
 import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView';
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
 import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
+import MainSideBar from "./components/MainSideBar/MainSideBar";
 
 
 import './App.css';

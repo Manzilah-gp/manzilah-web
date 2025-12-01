@@ -5,17 +5,20 @@ import Footer from "../components/Footer";
 import "../Styles/ProfileDetails.css";
 
 function ProfileDetails() {
-  const [user, setUser] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    city: "",
-    age: "",
-    gender: "",
-    birthday: "",
-    bio: "",
-    username: "",
-  });
+  // Mock data based on SQL schema (USER and USER_LOCATION tables)
+  const mockUser = {
+    fullName: "خالد محمد علي",
+    email: "khalid.m.ali@example.com",
+    phone: "970599123456",
+    city: "Ramallah", 
+    age: "35",
+    gender: "male",
+    birthday: "1990-05-15", // Corresponds to USER.dob
+    bio: "معلم قرآن مجتهد ومتحمس لتعليم الأجيال القادمة. يمكن إضافة المزيد من التفاصيل هنا.",
+    username: "KhalidM",
+  };
+
+  const [user, setUser] = useState(mockUser);
 
   const palestineCities = [
     "Jerusalem",
