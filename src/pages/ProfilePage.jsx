@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/Profile.css";
-import Sidebar from "../components/Side";
+import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserCalendar from "../components/Calender";
@@ -20,16 +20,42 @@ import {
   ClockCircleOutlined,
   CheckCircleOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 function ProfilePage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user: authUser, logout } = useAuth();
+  
+  // ✅ Sidebar state management
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
+  
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [userData, setUserData] = useState(null);
   const [roleData, setRoleData] = useState({});
+
+  // ✅ Auto-collapse sidebar on mobile when route changes
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarCollapsed(true);
+    }
+  }, [location.pathname]);
+
+  // ✅ Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     fetchUserProfile();
@@ -39,10 +65,15 @@ function ProfilePage() {
     try {
       const token = localStorage.getItem('token');
       
+      console.log('🔑 Token:', token ? 'Exists' : 'Missing');
+      
       if (!token) {
+        console.error('❌ No token found');
         navigate('/login');
         return;
       }
+
+      console.log('📡 Fetching from: http://localhost:5000/api/profile');
 
       const response = await fetch('http://localhost:5000/api/profile', {
         headers: {
@@ -51,25 +82,32 @@ function ProfilePage() {
         }
       });
 
+      console.log('📊 Response status:', response.status);
+
       if (!response.ok) {
-        throw new Error('Failed to fetch profile');
+        const errorText = await response.text();
+        console.error('❌ Response error:', errorText);
+        throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log('✅ Data received:', data);
       
       if (data.success) {
         setUserData(data.user);
         setRoleData(data.roleSpecificData);
+        console.log('✅ Active Roles:', data.user.activeRoles);
       }
       
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      console.error('❌ Error fetching profile:', error);
       setLoading(false);
     }
   };
 
   const calculateAge = (dob) => {
+    if (!dob) return 0;
     const birthDate = new Date(dob);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -373,11 +411,22 @@ function ProfilePage() {
     navigate('/login');
   };
 
+  // ✅ Toggle sidebar function
+  const handleToggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
   if (loading) {
     return (
       <>
         <Header />
-        <div className="loading">جاري التحميل...</div>
+        <MainSideBar 
+          collapsed={sidebarCollapsed} 
+          onToggleCollapse={handleToggleSidebar} 
+        />
+        <div className="main-content-wrapper">
+          <div className="loading">جاري التحميل...</div>
+        </div>
         <Footer />
       </>
     );
@@ -387,7 +436,13 @@ function ProfilePage() {
     return (
       <>
         <Header />
-        <div className="loading">خطأ في تحميل البيانات</div>
+        <MainSideBar 
+          collapsed={sidebarCollapsed} 
+          onToggleCollapse={handleToggleSidebar} 
+        />
+        <div className="main-content-wrapper">
+          <div className="loading">خطأ في تحميل البيانات</div>
+        </div>
         <Footer />
       </>
     );
@@ -396,11 +451,15 @@ function ProfilePage() {
   return (
     <div className="profile-page">
       <Header />
+      
+      {/* ✅ Pass collapsed state and toggle function */}
+      <MainSideBar 
+        collapsed={sidebarCollapsed} 
+        onToggleCollapse={handleToggleSidebar} 
+      />
 
-      <div className="profile-layout">
-        <Sidebar />
-
-        <div className="profile-main">
+      <div className="main-content-wrapper">
+        <div className="profile-main" style={{ padding: '40px' }}>
           {/* Profile Header */}
           <div className="profile-header-enhanced">
             <div className="profile-avatar-large">
@@ -412,11 +471,15 @@ function ProfilePage() {
                 <MailOutlined /> {userData.email}
               </p>
               <div className="roles-badges">
-                {userData.activeRoles?.map((role, idx) => (
-                  <span key={idx} className="role-badge">
-                    {getRoleNameInArabic(role)}
-                  </span>
-                ))}
+                {userData.activeRoles && userData.activeRoles.length > 0 ? (
+                  userData.activeRoles.map((role, idx) => (
+                    <span key={idx} className="role-badge">
+                      {getRoleNameInArabic(role)}
+                    </span>
+                  ))
+                ) : (
+                  <span className="role-badge">لا توجد أدوار نشطة</span>
+                )}
               </div>
             </div>
             <button 

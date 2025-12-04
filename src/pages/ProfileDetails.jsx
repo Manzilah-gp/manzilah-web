@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Side";
+import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import "../Styles/ProfileDetails.css";
 import { message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ProfileDetails() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // ✅ Sidebar state management
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
+  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [user, setUser] = useState({
@@ -37,6 +42,27 @@ function ProfileDetails() {
     { value: "salfit", label: "سلفيت" },
     { value: "jericho", label: "أريحا" }
   ];
+
+  // ✅ Auto-collapse sidebar on mobile when route changes
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setSidebarCollapsed(true);
+    }
+  }, [location.pathname]);
+
+  // ✅ Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setSidebarCollapsed(true);
+      } else {
+        setSidebarCollapsed(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     fetchUserProfile();
@@ -146,7 +172,6 @@ function ProfileDetails() {
 
       message.success('تم حفظ التغييرات بنجاح');
       
-      // Redirect back to profile after 1 second
       setTimeout(() => {
         navigate('/profile');
       }, 1000);
@@ -171,12 +196,20 @@ function ProfileDetails() {
     return age;
   };
 
+  // ✅ Toggle sidebar function
+  const handleToggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
   if (loading) {
     return (
       <>
         <Header />
-        <div className="profile-layout">
-          <Sidebar />
+        <MainSideBar 
+          collapsed={sidebarCollapsed} 
+          onToggleCollapse={handleToggleSidebar} 
+        />
+        <div className="main-content-wrapper">
           <div className="profile-container">
             <h2 className="profile-title">جاري التحميل...</h2>
           </div>
@@ -189,10 +222,14 @@ function ProfileDetails() {
   return (
     <>
       <Header />
+      
+      {/* ✅ Pass collapsed state and toggle function */}
+      <MainSideBar 
+        collapsed={sidebarCollapsed} 
+        onToggleCollapse={handleToggleSidebar} 
+      />
 
-      <div className="profile-layout">
-        <Sidebar />
-
+      <div className="main-content-wrapper">
         <div className="profile-container">
           <h2 className="profile-title">تعديل الملف الشخصي</h2>
 
