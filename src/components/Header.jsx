@@ -40,7 +40,8 @@ const Header = () => {
             key: 'home',
             label: t('header.home'),
             icon: <HomeOutlined />,
-            onClick: () => navigate('/') // Add navigation
+            onClick: () => navigate('/') 
+            // Add navigation
         },
         {
             key: 'about',

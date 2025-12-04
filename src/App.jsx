@@ -41,7 +41,7 @@ function App() {
 
             <Routes>
               {/* Default Route → Home */} 
-          <Route path="/" element={<Profile />} />
+          <Route path="/" element={<Home />} />
 
           {/* Profile Details Page */} 
           <Route path="/profile-details" element={<ProfileDetails />} /> 
@@ -98,7 +98,7 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="profile" element={<div>Profile Page</div>} />
+                <Route path="Profile" element={<div>Profile Page</div>} />
                 <Route path="settings/*" element={<div>Settings</div>} />
                 <Route path="donations/*" element={<div>Donations</div>} />
               </Route>
@@ -117,6 +117,9 @@ function App() {
 
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
+
+{/* for the profile page */}
+<Route path="/profile" element={<Profile />} />
 
             </Routes>
           </div>
