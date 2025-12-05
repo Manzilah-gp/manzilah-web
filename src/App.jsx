@@ -24,6 +24,15 @@ import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView'
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
 import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
 
+// Course - Mosque Dashboard
+import CourseListView from './pages/MosqueAdminDashboard/CourseList/CourseListView';
+import CreateCourseView from './pages/MosqueAdminDashboard/CreateCourse/CreateCourseView';
+import EditCourseView from './pages/MosqueAdminDashboard/EditCourse/EditCourseView';
+import AssignTeacherView from './pages/MosqueAdminDashboard/AssignTeacher/AssignTeacherView';
+import ViewCourseView from './pages/MosqueAdminDashboard/ViewCourse/ViewCourseView';
+import MyMosqueView from './pages/MosqueAdminDashboard/MyMosque/MyMosqueView';
+
+
 
 import './App.css';
 
@@ -144,19 +153,55 @@ function App() {
                 />
 
                 {/* Mosque Admin Routes */}
+
+                {/* Mosque Admin Course Management Routes */}
                 <Route
-                  path="my-mosque"
+                  path="mosque-admin/courses"
                   element={
                     <RoleProtectedRoute allowedRoles={['mosque_admin']}>
-                      <div>My Mosque - To be implemented</div>
+                      <CourseListView />
                     </RoleProtectedRoute>
                   }
                 />
                 <Route
-                  path="courses"
+                  path="mosque-admin/courses/create"
                   element={
-                    <RoleProtectedRoute allowedRoles={['mosque_admin', 'teacher']}>
-                      <div>Courses - To be implemented</div>
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <CreateCourseView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="mosque-admin/courses/edit/:id"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <EditCourseView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="mosque-admin/courses/assign-teacher/:id"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <AssignTeacherView />
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="mosque-admin/courses/:id"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <ViewCourseView />
+                    </RoleProtectedRoute>
+                  }
+                />
+
+                <Route
+                  path="my-mosque"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <MyMosqueView />
                     </RoleProtectedRoute>
                   }
                 />

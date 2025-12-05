@@ -240,7 +240,7 @@ const StatisticsView = () => {
                 value: statistics.mosques,
                 icon: <BankOutlined />,
                 color: '#1890ff',
-                show: true
+                show: user?.roles?.includes('mosque_admin') ? false : true,
             },
             {
                 key: 'students',
@@ -272,7 +272,7 @@ const StatisticsView = () => {
                 value: statistics.activeEnrollments,
                 icon: <CheckCircleOutlined />,
                 color: '#13c2c2',
-                show: statistics.activeEnrollments !== undefined
+                show: statistics.activeEnrollments !== undefined && user?.roles?.includes('mosque_admin')
             }
         ];
 
