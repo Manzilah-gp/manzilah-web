@@ -1,0 +1,164 @@
+/* MyMosqueView.css */
+
+.my-mosque-container {
+    min-height: calc(100vh - 64px);
+    background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+/* Statistics Cards with Gradients */
+.stat-card {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-card-courses {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.stat-card-students {
+    background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
+    color: white;
+}
+
+.stat-card-teachers {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+}
+
+.stat-card-status {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    color: white;
+}
+
+.stat-card .chakra-stat__label,
+.stat-card .chakra-text {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.stat-card .chakra-stat__number {
+    color: white;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mosque Details Card */
+.mosque-details-card {
+    border-left: 5px solid #4299e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.mosque-details-card .chakra-card__header {
+    background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+/* Quick Actions Card */
+.quick-actions-card {
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.quick-actions-card .chakra-button {
+    background: #3a527d;
+    transition: all 0.3s ease;
+}
+
+.quick-actions-card .chakra-button:hover {
+    transform: scale(1.05);
+}
+
+/* Recent Activity Items */
+.recent-activity-item {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.recent-activity-item:hover {
+    background: #edf2f7;
+    transform: translateX(4px);
+}
+
+/* Edit Button Hover */
+.chakra-button[aria-label="Edit Mosque"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+}
+
+/* Quick Tip Box */
+.quick-tip-box {
+    border-left: 4px solid #4299e1;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Coordinate Display */
+.coordinate-display {
+    font-family: 'Courier New', monospace;
+    background: #edf2f7;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+}
+
+/* Avatar Border */
+.chakra-avatar {
+    border: 2px solid #e2e8f0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .my-mosque-container {
+        padding: 1rem;
+    }
+
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+
+    .mosque-details-card,
+    .quick-actions-card {
+        margin-bottom: 1.5rem;
+    }
+
+    .chakra-button {
+        width: 100%;
+    }
+}
+
+/* Loading Animation */
+.mosque-loading {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Tag Styling */
+.chakra-tag {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+}

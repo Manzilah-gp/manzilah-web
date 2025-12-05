@@ -1,0 +1,106 @@
+/* CreateCourseView.css - Chakra UI Compatible Styling */
+
+/* Main container - consistent with app design */
+.create-course-container {
+    min-height: calc(100vh - 64px);
+    background: #f7fafc;
+    /* Chakra gray.50 */
+}
+
+/* Back button hover effect */
+.chakra-button[aria-label="Back to Courses"]:hover {
+    background: rgba(66, 153, 225, 0.1);
+    transform: translateX(-4px);
+    transition: all 0.2s ease;
+}
+
+/* Card shadows - consistent with app */
+.chakra-card {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: box-shadow 0.2s ease;
+}
+
+.chakra-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Form section headers */
+.chakra-heading[size="md"] {
+    color: #2d3748;
+    /* Chakra gray.800 */
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Schedule entry animations */
+.schedule-entry-item {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Gender radio buttons - custom styling */
+.chakra-radio__control[data-checked] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+}
+
+/* Action buttons spacing */
+.course-actions {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .create-course-container {
+        padding: 1rem;
+    }
+
+    .chakra-stack>* {
+        width: 100%;
+    }
+
+    .course-actions {
+        flex-direction: column;
+    }
+
+    .course-actions .chakra-button {
+        width: 100%;
+    }
+}
+
+/* Form validation errors */
+.chakra-form__error-message {
+    font-size: 0.875rem;
+    color: #e53e3e;
+    margin-top: 0.5rem;
+}
+
+/* Loading state overlay */
+.create-course-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}

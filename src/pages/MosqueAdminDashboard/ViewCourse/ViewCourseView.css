@@ -1,0 +1,130 @@
+/* ViewCourseView.css */
+
+.view-course-container {
+    min-height: calc(100vh - 64px);
+    background: #f7fafc;
+}
+
+/* Course header card gradient */
+.course-header-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f7fafc 100%);
+    border-left: 5px solid #4299e1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.course-header-card:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Stats card hover effect */
+.stat-card-clickable {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.stat-card-clickable:hover {
+    border-color: #4299e1;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(66, 153, 225, 0.15);
+}
+
+/* Teacher card styling */
+.chakra-card:has(.chakra-avatar) {
+    border-left: 4px solid #48bb78;
+}
+
+/* Schedule slot animation */
+.chakra-flex[data-schedule="true"] {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Badge custom styles */
+.chakra-badge[data-colorscheme="green"] {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+}
+
+.chakra-badge[data-colorscheme="purple"] {
+    background: linear-gradient(135deg, #9f7aea 0%, #805ad5 100%);
+    color: white;
+}
+
+.chakra-badge[data-colorscheme="blue"] {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    color: white;
+}
+
+/* Action buttons */
+.chakra-button[data-action="edit"]:hover {
+    transform: scale(1.05);
+}
+
+.chakra-button[data-action="delete"]:hover {
+    background: #c53030;
+    border-color: #c53030;
+    color: white;
+}
+
+/* Loading spinner */
+.chakra-spinner {
+    --spinner-size: 3rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .view-course-container {
+        padding: 1rem;
+    }
+
+    .course-header-card .chakra-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .chakra-button[leftIcon] {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* Modal styling */
+.chakra-modal__content {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+.chakra-modal__header {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    color: white;
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.chakra-modal__close-btn {
+    color: white;
+}
+
+/* Table styling in modal */
+.chakra-table {
+    font-size: 0.875rem;
+}
+
+.chakra-table thead tr {
+    background: #f7fafc;
+}
+
+.chakra-table tbody tr:hover {
+    background: #edf2f7;
+}

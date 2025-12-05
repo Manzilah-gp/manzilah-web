@@ -1,0 +1,81 @@
+/* EditCourseView.css - Consistent with Create Course */
+
+.edit-course-container {
+    min-height: calc(100vh - 64px);
+    background: #f7fafc;
+    padding: 2rem;
+}
+
+/* Highlight edited fields */
+.chakra-input:focus,
+.chakra-select:focus,
+.chakra-textarea:focus {
+    border-color: #4299e1;
+    /* Chakra blue.500 */
+    box-shadow: 0 0 0 1px #4299e1;
+    transition: all 0.2s ease;
+}
+
+/* Modified indicator for changed fields */
+.field-modified {
+    position: relative;
+}
+
+.field-modified::after {
+    content: '•';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #48bb78;
+    /* Chakra green.500 */
+    font-size: 1.5rem;
+}
+
+/* Course info summary card */
+.course-summary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.course-summary h2 {
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+/* Delete button warning */
+.chakra-button[colorScheme="red"]:hover {
+    background: #c53030;
+    transform: scale(1.02);
+}
+
+/* Save changes animation */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.save-button-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .edit-course-container {
+        padding: 1rem;
+    }
+
+    .course-summary {
+        padding: 1rem;
+    }
+}

@@ -1,0 +1,81 @@
+/* AssignTeacherView.css */
+
+.assign-teacher-container {
+    min-height: calc(100vh - 64px);
+    background: #f7fafc;
+    padding: 2rem;
+}
+
+/* Course info card - blue gradient */
+.course-info-card {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.course-info-card .chakra-stat__label,
+.course-info-card .chakra-text {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.course-info-card .chakra-badge {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Teacher suggestions card */
+.teacher-suggestions-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.teacher-suggestions-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #48bb78 0%, #38a169 100%);
+}
+
+/* No teachers warning */
+.no-teachers-alert {
+    border-left: 4px solid #ed8936;
+    background: #fffaf0;
+}
+
+/* Alternative options card */
+.alternative-options-card {
+    background: #f7fafc;
+    border: 2px dashed #cbd5e0;
+}
+
+.alternative-options-card:hover {
+    border-color: #a0aec0;
+    background: #edf2f7;
+}
+
+/* Loading spinner overlay */
+.assign-teacher-loading {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .assign-teacher-container {
+        padding: 1rem;
+    }
+
+    .course-info-card {
+        padding: 1rem;
+    }
+}

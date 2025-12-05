@@ -23,6 +23,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
 import './MainSideBar.css';
+import { Label } from 'recharts';
 
 const { Sider } = Layout;
 
@@ -175,15 +176,16 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 {
                     key: 'course-list',
                     label: 'All Courses',
-                    link: '/dashboard/courses',
+                    link: '/dashboard/mosque-admin/courses',
                     roles: ['mosque_admin', 'teacher']
                 },
                 {
                     key: 'add-course',
                     label: 'Add Course',
-                    link: '/dashboard/courses/add',
+                    link: '/dashboard/mosque-admin/courses/create',
                     roles: ['mosque_admin']
                 }
+
             ]
         },
 
