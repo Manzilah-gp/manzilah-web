@@ -1,6 +1,6 @@
 // App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import AntdConfigProvider from './context/AntdConfigProvider';
 import ProtectedRoute from './components/Auth/ProtectedRoute';
@@ -23,6 +23,7 @@ import AddMosqueView from './pages/MinistryDashboard/AddMosque/AddMosqueView';
 import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView';
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
 import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
+import MainSideBar from "./components/MainSideBar/MainSideBar";
 
 // Course - Mosque Dashboard
 import CourseListView from './pages/MosqueAdminDashboard/CourseList/CourseListView';
@@ -50,7 +51,7 @@ function App() {
 
             <Routes>
               {/* Default Route → Home */} 
-          <Route path="/" element={<Profile />} />
+          <Route path="/" element={<Home />} />
 
           {/* Profile Details Page */} 
           <Route path="/profile-details" element={<ProfileDetails />} /> 
@@ -104,7 +105,7 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="profile" element={<div>Profile Page</div>} />
+                <Route path="Profile" element={<div>Profile Page</div>} />
                 <Route path="settings/*" element={<div>Settings</div>} />
                 <Route path="donations/*" element={<div>Donations</div>} />
 
@@ -286,6 +287,9 @@ function App() {
 
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
+
+{/* for the profile page */}
+<Route path="/profile" element={<Profile />} />
 
             </Routes>
           </div>
