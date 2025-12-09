@@ -1,38 +1,18 @@
-/* CreateCourseView.css - Chakra UI Compatible Styling */
-
-/* Main container - consistent with app design */
+/* CreateCourseView.css */
 .create-course-container {
-    min-height: calc(100vh - 64px);
-    background: #f7fafc;
-    /* Chakra gray.50 */
+    animation: fadeIn 0.5s ease-out;
 }
 
-/* Back button hover effect */
-.chakra-button[aria-label="Back to Courses"]:hover {
-    background: rgba(66, 153, 225, 0.1);
-    transform: translateX(-4px);
-    transition: all 0.2s ease;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-/* Card shadows - consistent with app */
-.chakra-card {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-    transition: box-shadow 0.2s ease;
-}
-
-.chakra-card:hover {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-/* Form section headers */
-.chakra-heading[size="md"] {
-    color: #2d3748;
-    /* Chakra gray.800 */
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-/* Schedule entry animations */
 .schedule-entry-item {
     animation: slideIn 0.3s ease-out;
 }
@@ -49,58 +29,140 @@
     }
 }
 
-/* Gender radio buttons - custom styling */
-.chakra-radio__control[data-checked] {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: #667eea;
+/* Form input focus effects */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
 }
 
-/* Action buttons spacing */
-.course-actions {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding: 1.5rem;
-    border-top: 1px solid #e2e8f0;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+/* Radio button custom styling */
+input[type="radio"] {
+    accent-color: #3b82f6;
+}
+
+/* Checkbox custom styling */
+input[type="checkbox"] {
+    accent-color: #3b82f6;
+}
+
+/* Button hover effects */
+button:not(:disabled):hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2563eb !important;
+}
+
+button[type="button"]:hover {
+    background-color: #f3f4f6 !important;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .create-course-container {
-        padding: 1rem;
+        padding: 16px;
     }
 
-    .chakra-stack>* {
-        width: 100%;
+    h1 {
+        font-size: 24px !important;
     }
 
-    .course-actions {
+    .form-grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    .form-grid-4 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    .action-buttons {
         flex-direction: column;
+        gap: 12px;
     }
 
-    .course-actions .chakra-button {
+    .action-buttons button {
         width: 100%;
     }
 }
 
-/* Form validation errors */
-.chakra-form__error-message {
-    font-size: 0.875rem;
-    color: #e53e3e;
-    margin-top: 0.5rem;
+/* Loading state */
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
-/* Loading state overlay */
-.create-course-loading {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.9);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
+/* Card hover effects */
+div[style*="background-color: white"] {
+    transition: box-shadow 0.3s ease;
+}
+
+div[style*="background-color: white"]:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Custom scrollbar for textarea */
+textarea {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+
+/* Schedule day badge colors */
+.schedule-day-badge {
+    text-transform: capitalize;
+}
+
+.schedule-day-badge.sunday {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+}
+
+.schedule-day-badge.monday {
+    background-color: #dbeafe !important;
+    color: #1e40af !important;
+}
+
+.schedule-day-badge.tuesday {
+    background-color: #f0fdf4 !important;
+    color: #166534 !important;
+}
+
+.schedule-day-badge.wednesday {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+}
+
+.schedule-day-badge.thursday {
+    background-color: #f3e8ff !important;
+    color: #7c3aed !important;
+}
+
+.schedule-day-badge.friday {
+    background-color: #ffedd5 !important;
+    color: #9a3412 !important;
+}
+
+.schedule-day-badge.saturday {
+    background-color: #e0f2fe !important;
+    color: #0c4a6e !important;
 }

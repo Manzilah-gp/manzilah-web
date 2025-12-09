@@ -1,48 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-    Box,
-    Button,
-    Heading,
-    Text,
-    VStack,
-    HStack,
-    Card,
-    CardBody,
-    CardHeader,
-    Badge,
-    Flex,
-    Icon,
-    Spinner,
-    Alert,
-    AlertIcon,
-    AlertDescription,
-    useToast,
-    Divider,
-    Avatar,
-    Tag,
-    Grid,
-    GridItem,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalBody,
-    ModalCloseButton,
-    useDisclosure,
-    Table,
-    Thead,
-    Tbody,
-    Tr,
-    Th,
-    Td,
-    SimpleGrid,
-    Stat,
-    StatLabel,
-    StatNumber,
-    StatHelpText
-} from '@chakra-ui/react';
-import {
     ArrowLeftOutlined,
     EditOutlined,
     DeleteOutlined,
@@ -61,12 +19,11 @@ import './ViewCourseView.css';
 const ViewCourseView = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const toast = useToast();
-    const { isOpen: isStudentsOpen, onOpen: onStudentsOpen, onClose: onStudentsClose } = useDisclosure();
 
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [deleting, setDeleting] = useState(false);
+    const [showStudentsModal, setShowStudentsModal] = useState(false);
 
     useEffect(() => {
         fetchCourseData();
@@ -82,12 +39,7 @@ const ViewCourseView = () => {
             }
         } catch (error) {
             console.error('Error fetching course:', error);
-            toast({
-                title: 'Error',
-                description: 'Failed to load course data',
-                status: 'error',
-                duration: 3000,
-            });
+            alert('Failed to load course data');
             navigate('/dashboard/mosque-admin/courses');
         } finally {
             setLoading(false);
@@ -107,20 +59,10 @@ const ViewCourseView = () => {
             try {
                 setDeleting(true);
                 await deleteCourse(id);
-                toast({
-                    title: 'Success',
-                    description: 'Course deleted successfully',
-                    status: 'success',
-                    duration: 3000,
-                });
+                alert('Course deleted successfully');
                 navigate('/dashboard/mosque-admin/courses');
             } catch (error) {
-                toast({
-                    title: 'Error',
-                    description: 'Failed to delete course',
-                    status: 'error',
-                    duration: 3000,
-                });
+                alert('Failed to delete course');
             } finally {
                 setDeleting(false);
             }
@@ -128,7 +70,7 @@ const ViewCourseView = () => {
     };
 
     const formatPrice = (cents) => {
-        return cents > 0 ? `$${(cents / 100).toFixed(2)}` : 'Free';
+        return cents > 0 ? `₪${(cents / 100).toFixed(2)}` : 'Free';
     };
 
     const getCourseTypeColor = (type) => {
@@ -146,352 +88,572 @@ const ViewCourseView = () => {
 
     if (loading) {
         return (
-            <Flex justify="center" align="center" h="400px">
-                <Spinner size="xl" color="blue.500" thickness="4px" />
-            </Flex>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '400px'
+            }}>
+                <div className="spinner" style={{
+                    border: '4px solid #f3f3f3',
+                    borderTop: '4px solid #3b82f6',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    animation: 'spin 1s linear infinite'
+                }}></div>
+            </div>
         );
     }
 
     if (!course) {
         return (
-            <Box p={8}>
-                <Alert status="error">
-                    <AlertIcon />
-                    <AlertDescription>Course not found</AlertDescription>
-                </Alert>
-            </Box>
+            <div style={{ padding: '32px' }}>
+                <div style={{
+                    backgroundColor: '#fed7d7',
+                    color: '#9b2c2c',
+                    padding: '16px',
+                    borderRadius: '8px'
+                }}>
+                    Course not found
+                </div>
+            </div>
         );
     }
 
     return (
-        <Box className="view-course-container" p={6} maxW="1400px" mx="auto">
-            {/* Header with Actions */}
-            <Flex justify="space-between" align="center" mb={6}>
-                <Button
-                    leftIcon={<ArrowLeftOutlined />}
-                    variant="ghost"
-                    onClick={() => navigate('/dashboard/mosque-admin/courses')}
-                    _hover={{ bg: 'gray.100', transform: 'translateX(-4px)' }}
-                    transition="all 0.2s"
-                >
-                    Back to Courses
-                </Button>
-
-                <HStack spacing={3}>
-                    <Button
-                        leftIcon={<EditOutlined />}
-                        colorScheme="blue"
-                        onClick={handleEdit}
+        <div className="view-course-container" style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+            padding: '32px 16px'
+        }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                {/* Header with Actions */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '32px'
+                }}>
+                    <button
+                        onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            color: '#3b82f6',
+                            cursor: 'pointer',
+                            padding: '8px 0',
+                            fontSize: '16px'
+                        }}
                     >
-                        Edit Course
-                    </Button>
-                    <Button
-                        leftIcon={<DeleteOutlined />}
-                        colorScheme="red"
-                        variant="outline"
-                        onClick={handleDelete}
-                        isLoading={deleting}
-                    >
-                        Delete
-                    </Button>
-                </HStack>
-            </Flex>
+                        <ArrowLeftOutlined />
+                        Back to Courses
+                    </button>
 
-            {/* Course Header Card */}
-            <Card className="course-header-card" mb={6}>
-                <CardBody>
-                    <Flex justify="space-between" align="start">
-                        <Box flex="1">
-                            <HStack spacing={3} mb={3}>
-                                <Heading size="lg">{course.name}</Heading>
-                                <Badge colorScheme={course.is_active ? 'green' : 'red'} fontSize="md" px={3} py={1}>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <button
+                            onClick={handleEdit}
+                            style={{
+                                backgroundColor: '#3b82f6',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '8px',
+                                padding: '10px 20px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}
+                        >
+                            <EditOutlined />
+                            Edit Course
+                        </button>
+                        <button
+                            onClick={handleDelete}
+                            disabled={deleting}
+                            style={{
+                                backgroundColor: 'transparent',
+                                color: '#dc2626',
+                                border: '1px solid #dc2626',
+                                borderRadius: '8px',
+                                padding: '10px 20px',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                opacity: deleting ? 0.5 : 1
+                            }}
+                        >
+                            <DeleteOutlined />
+                            Delete
+                        </button>
+                    </div>
+                </div>
+
+                {/* Course Header Card */}
+                <div style={{
+                    backgroundColor: 'white',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                    marginBottom: '24px',
+                    borderLeft: '5px solid #3b82f6'
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '16px'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                            <h1 style={{
+                                fontSize: '28px',
+                                fontWeight: '700',
+                                color: '#1f2937'
+                            }}>
+                                {course.name}
+                            </h1>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                                <span style={{
+                                    backgroundColor: course.is_active ? '#10b981' : '#ef4444',
+                                    color: 'white',
+                                    padding: '4px 12px',
+                                    borderRadius: '9999px',
+                                    fontSize: '14px',
+                                    fontWeight: '500'
+                                }}>
                                     {course.is_active ? 'Active' : 'Inactive'}
-                                </Badge>
-                                <Badge colorScheme={getCourseTypeColor(course.course_type)} fontSize="md" px={3} py={1}>
+                                </span>
+                                <span style={{
+                                    backgroundColor: getCourseTypeColor(course.course_type) === 'purple' ? '#8b5cf6' :
+                                        getCourseTypeColor(course.course_type) === 'blue' ? '#3b82f6' :
+                                            getCourseTypeColor(course.course_type) === 'green' ? '#10b981' : '#6b7280',
+                                    color: 'white',
+                                    padding: '4px 12px',
+                                    borderRadius: '9999px',
+                                    fontSize: '14px',
+                                    fontWeight: '500'
+                                }}>
                                     {course.course_type}
-                                </Badge>
+                                </span>
                                 {course.target_gender && (
-                                    <Badge
-                                        colorScheme={course.target_gender === 'male' ? 'blue' : 'pink'}
-                                        fontSize="md"
-                                        px={3}
-                                        py={1}
-                                    >
+                                    <span style={{
+                                        backgroundColor: course.target_gender === 'male' ? '#3b82f6' : '#ec4899',
+                                        color: 'white',
+                                        padding: '4px 12px',
+                                        borderRadius: '9999px',
+                                        fontSize: '14px',
+                                        fontWeight: '500'
+                                    }}>
                                         {course.target_gender === 'male' ? '♂ Male Only' : '♀ Female Only'}
-                                    </Badge>
+                                    </span>
                                 )}
-                            </HStack>
+                            </div>
+                        </div>
 
-                            {course.description && (
-                                <Text color="gray.600" fontSize="lg" mb={4}>
-                                    {course.description}
-                                </Text>
-                            )}
-
-                            <HStack spacing={6} flexWrap="wrap">
-                                <HStack>
-                                    <Icon as={CalendarOutlined} color="gray.500" />
-                                    <Text fontSize="sm" color="gray.600">
-                                        {course.course_format === 'short' ? 'Short Course' : 'Long Course'}
-                                    </Text>
-                                </HStack>
-
-                                <HStack>
-                                    <Icon as={EnvironmentOutlined} color="gray.500" />
-                                    <Text fontSize="sm" color="gray.600" textTransform="capitalize">
-                                        {course.schedule_type}
-                                    </Text>
-                                </HStack>
-
-                                <HStack>
-                                    <Icon as={DollarOutlined} color="gray.500" />
-                                    <Text fontSize="sm" color="gray.600" fontWeight="600">
-                                        {formatPrice(course.price_cents)}
-                                    </Text>
-                                </HStack>
-
-                                {course.memorization_level && (
-                                    <HStack>
-                                        <Icon as={BookOutlined} color="gray.500" />
-                                        <Text fontSize="sm" color="gray.600">
-                                            {course.memorization_level}
-                                        </Text>
-                                    </HStack>
-                                )}
-                            </HStack>
-                        </Box>
-                    </Flex>
-                </CardBody>
-            </Card>
-
-            <Grid templateColumns={{ base: '1fr', lg: 'repeat(3, 1fr)' }} gap={6} mb={6}>
-                {/* Statistics Cards */}
-                <GridItem>
-                    <Card
-                        className="stat-card-clickable"
-                        cursor="pointer"
-                        onClick={onStudentsOpen}
-                        _hover={{ transform: 'translateY(-4px)', boxShadow: 'lg' }}
-                        transition="all 0.3s"
-                    >
-                        <CardBody>
-                            <Stat>
-                                <StatLabel fontSize="sm" color="gray.600">
-                                    <HStack>
-                                        <Icon as={TeamOutlined} />
-                                        <Text>Enrolled Students</Text>
-                                    </HStack>
-                                </StatLabel>
-                                <StatNumber fontSize="3xl" color="blue.600">
-                                    {course.enrolled_students || 0}
-                                </StatNumber>
-                                <StatHelpText>
-                                    {course.max_students ? `/ ${course.max_students} max` : 'No limit'}
-                                </StatHelpText>
-                            </Stat>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-
-                <GridItem>
-                    <Card className="stat-card">
-                        <CardBody>
-                            <Stat>
-                                <StatLabel fontSize="sm" color="gray.600">
-                                    <HStack>
-                                        <Icon as={ClockCircleOutlined} />
-                                        <Text>Duration</Text>
-                                    </HStack>
-                                </StatLabel>
-                                <StatNumber fontSize="3xl" color="purple.600">
-                                    {course.duration_weeks || 'N/A'}
-                                </StatNumber>
-                                <StatHelpText>
-                                    weeks ({course.total_sessions || 'N/A'} sessions)
-                                </StatHelpText>
-                            </Stat>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-
-                <GridItem>
-                    <Card className="stat-card">
-                        <CardBody>
-                            <Stat>
-                                <StatLabel fontSize="sm" color="gray.600">
-                                    <HStack>
-                                        <Icon as={CalendarOutlined} />
-                                        <Text>Created</Text>
-                                    </HStack>
-                                </StatLabel>
-                                <StatNumber fontSize="xl" color="gray.700">
-                                    {new Date(course.created_at).toLocaleDateString()}
-                                </StatNumber>
-                                <StatHelpText>
-                                    by {course.created_by_name || 'Admin'}
-                                </StatHelpText>
-                            </Stat>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </Grid>
-
-            <Grid templateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }} gap={6}>
-                {/* Teacher Information Card */}
-                <GridItem>
-                    <Card>
-                        <CardHeader>
-                            <Heading size="md">
-                                <Icon as={UserOutlined} mr={2} />
-                                Assigned Teacher
-                            </Heading>
-                        </CardHeader>
-                        <CardBody>
-                            {course.teacher_id ? (
-                                <VStack align="start" spacing={4}>
-                                    <HStack>
-                                        <Avatar name={course.teacher_name} size="lg" />
-                                        <Box>
-                                            <Text fontWeight="600" fontSize="lg">
-                                                {course.teacher_name}
-                                            </Text>
-                                            <Text color="gray.600" fontSize="sm">
-                                                {course.teacher_email}
-                                            </Text>
-                                        </Box>
-                                    </HStack>
-
-                                    {course.teacher_phone && (
-                                        <HStack>
-                                            <Text fontWeight="600">Phone:</Text>
-                                            <Text color="gray.600">{course.teacher_phone}</Text>
-                                        </HStack>
-                                    )}
-
-                                    <Button
-                                        size="sm"
-                                        variant="outline"
-                                        colorScheme="blue"
-                                        onClick={handleAssignTeacher}
-                                    >
-                                        Change Teacher
-                                    </Button>
-                                </VStack>
-                            ) : (
-                                <VStack spacing={4} py={4}>
-                                    <Alert status="warning">
-                                        <AlertIcon />
-                                        <AlertDescription>
-                                            No teacher assigned to this course yet
-                                        </AlertDescription>
-                                    </Alert>
-                                    <Button
-                                        colorScheme="blue"
-                                        onClick={handleAssignTeacher}
-                                        leftIcon={<TeamOutlined />}
-                                    >
-                                        Assign Teacher
-                                    </Button>
-                                </VStack>
-                            )}
-                        </CardBody>
-                    </Card>
-                </GridItem>
-
-                {/* Class Schedule Card */}
-                <GridItem>
-                    <Card>
-                        <CardHeader>
-                            <Heading size="md">
-                                <Icon as={CalendarOutlined} mr={2} />
-                                Class Schedule
-                            </Heading>
-                        </CardHeader>
-                        <CardBody>
-                            {course.schedule && course.schedule.length > 0 ? (
-                                <VStack spacing={3} align="stretch">
-                                    {course.schedule.map((slot, idx) => (
-                                        <Flex
-                                            key={idx}
-                                            p={3}
-                                            bg="gray.50"
-                                            borderRadius="md"
-                                            justify="space-between"
-                                            align="center"
-                                        >
-                                            <HStack>
-                                                <Icon as={ClockCircleOutlined} color="blue.500" />
-                                                <Text fontWeight="600" textTransform="capitalize">
-                                                    {slot.day_of_week}
-                                                </Text>
-                                            </HStack>
-                                            <Text fontWeight="600" color="blue.600">
-                                                {slot.start_time} - {slot.end_time}
-                                            </Text>
-                                        </Flex>
-                                    ))}
-                                </VStack>
-                            ) : (
-                                <Alert status="info">
-                                    <AlertIcon />
-                                    <AlertDescription>
-                                        No schedule set for this course
-                                    </AlertDescription>
-                                </Alert>
-                            )}
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </Grid>
-
-            {/* Students Modal */}
-            <Modal isOpen={isStudentsOpen} onClose={onStudentsClose} size="xl">
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Enrolled Students</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody pb={6}>
-                        {course.enrolled_students > 0 ? (
-                            <Box>
-                                <Text mb={4} color="gray.600">
-                                    {course.enrolled_students} student(s) enrolled in this course
-                                </Text>
-                                <Alert status="info" mb={4}>
-                                    <AlertIcon />
-                                    <AlertDescription>
-                                        Student enrollment details will be available in the next update
-                                    </AlertDescription>
-                                </Alert>
-                                {/* Placeholder for future student list */}
-                                <Table variant="simple">
-                                    <Thead>
-                                        <Tr>
-                                            <Th>Name</Th>
-                                            <Th>Status</Th>
-                                            <Th>Progress</Th>
-                                        </Tr>
-                                    </Thead>
-                                    <Tbody>
-                                        <Tr>
-                                            <Td colSpan={3} textAlign="center" color="gray.500">
-                                                Student details coming soon...
-                                            </Td>
-                                        </Tr>
-                                    </Tbody>
-                                </Table>
-                            </Box>
-                        ) : (
-                            <Alert status="warning">
-                                <AlertIcon />
-                                <AlertDescription>
-                                    No students enrolled in this course yet
-                                </AlertDescription>
-                            </Alert>
+                        {course.description && (
+                            <p style={{
+                                color: '#6b7280',
+                                fontSize: '18px',
+                                lineHeight: '1.6'
+                            }}>
+                                {course.description}
+                            </p>
                         )}
-                    </ModalBody>
-                </ModalContent>
-            </Modal>
-        </Box>
+
+                        <div style={{
+                            display: 'flex',
+                            gap: '24px',
+                            flexWrap: 'wrap',
+                            borderTop: '1px solid #e5e7eb',
+                            paddingTop: '16px'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <CalendarOutlined style={{ color: '#6b7280' }} />
+                                <span style={{ color: '#6b7280', fontSize: '16px' }}>
+                                    {course.course_format === 'short' ? 'Short Course' : 'Long Course'}
+                                </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <EnvironmentOutlined style={{ color: '#6b7280' }} />
+                                <span style={{ color: '#6b7280', fontSize: '16px', textTransform: 'capitalize' }}>
+                                    {course.schedule_type}
+                                </span>
+                            </div>
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <DollarOutlined style={{ color: '#6b7280' }} />
+                                <span style={{ color: '#3b82f6', fontSize: '16px', fontWeight: '600' }}>
+                                    {formatPrice(course.price_cents)}
+                                </span>
+                            </div>
+
+                            {course.memorization_level && (
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <BookOutlined style={{ color: '#6b7280' }} />
+                                    <span style={{ color: '#6b7280', fontSize: '16px' }}>
+                                        {course.memorization_level}
+                                    </span>
+                                </div>
+                            )}
+
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <TeamOutlined style={{ color: '#6b7280' }} />
+                                <span style={{ color: '#6b7280', fontSize: '16px', textTransform: 'capitalize' }}>
+                                    Age: {course.target_age_group || 'All'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Stats and Details */}
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '24px',
+                    marginBottom: '24px'
+                }}>
+                    {/* Teacher Information */}
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    }}>
+                        <h2 style={{
+                            fontSize: '20px',
+                            fontWeight: '700',
+                            color: '#1f2937',
+                            marginBottom: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}>
+                            <UserOutlined />
+                            Assigned Teacher
+                        </h2>
+
+                        {course.teacher_id ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                    <div style={{
+                                        width: '48px',
+                                        height: '48px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#3b82f6',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: '600',
+                                        fontSize: '20px'
+                                    }}>
+                                        {course.teacher_name?.charAt(0) || 'T'}
+                                    </div>
+                                    <div>
+                                        <h3 style={{
+                                            fontSize: '18px',
+                                            fontWeight: '600',
+                                            color: '#1f2937'
+                                        }}>
+                                            {course.teacher_name}
+                                        </h3>
+                                        {course.teacher_email && (
+                                            <p style={{ color: '#6b7280', fontSize: '14px' }}>
+                                                {course.teacher_email}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {course.teacher_phone && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <span style={{ fontWeight: '600', color: '#374151' }}>Phone:</span>
+                                        <span style={{ color: '#6b7280' }}>{course.teacher_phone}</span>
+                                    </div>
+                                )}
+
+                                <button
+                                    onClick={handleAssignTeacher}
+                                    style={{
+                                        backgroundColor: 'transparent',
+                                        color: '#3b82f6',
+                                        border: '1px solid #3b82f6',
+                                        borderRadius: '8px',
+                                        padding: '8px 16px',
+                                        cursor: 'pointer',
+                                        fontSize: '14px',
+                                        width: 'fit-content'
+                                    }}
+                                >
+                                    Change Teacher
+                                </button>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px 0' }}>
+                                <div style={{
+                                    backgroundColor: '#fffbeb',
+                                    border: '1px solid #f59e0b',
+                                    borderRadius: '8px',
+                                    padding: '12px'
+                                }}>
+                                    <p style={{ color: '#92400e', fontSize: '14px' }}>
+                                        No teacher assigned to this course yet
+                                    </p>
+                                </div>
+                                <button
+                                    onClick={handleAssignTeacher}
+                                    style={{
+                                        backgroundColor: '#3b82f6',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        padding: '12px 24px',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        width: 'fit-content'
+                                    }}
+                                >
+                                    <TeamOutlined />
+                                    Assign Teacher
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Class Schedule */}
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    }}>
+                        <h2 style={{
+                            fontSize: '20px',
+                            fontWeight: '700',
+                            color: '#1f2937',
+                            marginBottom: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}>
+                            <CalendarOutlined />
+                            Class Schedule
+                        </h2>
+
+                        {course.schedule && course.schedule.length > 0 ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                {course.schedule.map((slot, idx) => (
+                                    <div
+                                        key={idx}
+                                        style={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            padding: '12px 16px',
+                                            backgroundColor: '#f9fafb',
+                                            borderRadius: '8px'
+                                        }}
+                                    >
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <ClockCircleOutlined style={{ color: '#3b82f6' }} />
+                                            <span style={{
+                                                fontWeight: '600',
+                                                textTransform: 'capitalize',
+                                                color: '#374151'
+                                            }}>
+                                                {slot.day_of_week}
+                                            </span>
+                                        </div>
+                                        <span style={{
+                                            fontWeight: '600',
+                                            color: '#3b82f6',
+                                            fontSize: '16px'
+                                        }}>
+                                            {slot.start_time} - {slot.end_time}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div style={{
+                                backgroundColor: '#eff6ff',
+                                border: '1px solid #3b82f6',
+                                borderRadius: '8px',
+                                padding: '16px'
+                            }}>
+                                <p style={{ color: '#1e40af', fontSize: '14px' }}>
+                                    No schedule set for this course
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Students Card */}
+                <div style={{
+                    backgroundColor: 'white',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                }}
+                    onClick={() => setShowStudentsModal(true)}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-4px)';
+                        e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.12)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                    }}
+                >
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <div>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: '#1f2937',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                marginBottom: '8px'
+                            }}>
+                                <TeamOutlined />
+                                Enrolled Students
+                            </h2>
+                            <p style={{ color: '#6b7280', fontSize: '14px' }}>
+                                Click to view student details
+                            </p>
+                        </div>
+                        <div style={{ textAlign: 'right' }}>
+                            <div style={{
+                                fontSize: '32px',
+                                fontWeight: '700',
+                                color: '#3b82f6'
+                            }}>
+                                {course.enrolled_students || 0}
+                            </div>
+                            <p style={{ color: '#6b7280', fontSize: '14px' }}>
+                                {course.max_students ? `/ ${course.max_students} max` : 'No limit'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Students Modal */}
+                {showStudentsModal && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        zIndex: 1000,
+                        padding: '16px'
+                    }}>
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            width: '100%',
+                            maxWidth: '600px',
+                            maxHeight: '80vh',
+                            overflow: 'hidden',
+                            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.2)'
+                        }}>
+                            <div style={{
+                                backgroundColor: '#3b82f6',
+                                color: 'white',
+                                padding: '20px 24px',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <h3 style={{
+                                    fontSize: '20px',
+                                    fontWeight: '700',
+                                    margin: 0
+                                }}>
+                                    Enrolled Students
+                                </h3>
+                                <button
+                                    onClick={() => setShowStudentsModal(false)}
+                                    style={{
+                                        backgroundColor: 'transparent',
+                                        border: 'none',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontSize: '20px'
+                                    }}
+                                >
+                                    ×
+                                </button>
+                            </div>
+
+                            <div style={{ padding: '24px', overflowY: 'auto', maxHeight: 'calc(80vh - 68px)' }}>
+                                {course.enrolled_students > 0 ? (
+                                    <div>
+                                        <p style={{
+                                            color: '#6b7280',
+                                            marginBottom: '16px'
+                                        }}>
+                                            {course.enrolled_students} student(s) enrolled in this course
+                                        </p>
+                                        <div style={{
+                                            backgroundColor: '#eff6ff',
+                                            border: '1px solid #3b82f6',
+                                            borderRadius: '8px',
+                                            padding: '16px',
+                                            marginBottom: '16px'
+                                        }}>
+                                            <p style={{ color: '#1e40af', fontSize: '14px' }}>
+                                                Student enrollment details will be available in the next update
+                                            </p>
+                                        </div>
+                                        <div style={{
+                                            backgroundColor: '#f9fafb',
+                                            borderRadius: '8px',
+                                            padding: '20px',
+                                            textAlign: 'center'
+                                        }}>
+                                            <p style={{ color: '#6b7280' }}>
+                                                Student details coming soon...
+                                            </p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div style={{
+                                        backgroundColor: '#fffbeb',
+                                        border: '1px solid #f59e0b',
+                                        borderRadius: '8px',
+                                        padding: '16px'
+                                    }}>
+                                        <p style={{ color: '#92400e' }}>
+                                            No students enrolled in this course yet
+                                        </p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
     );
 };
 

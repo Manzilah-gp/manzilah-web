@@ -25,15 +25,26 @@ import {
     Radio,
     RadioGroup,
     Stack,
-    Spinner
+    Spinner,
+    Badge
 } from '@chakra-ui/react';
-import { ArrowLeftOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import {
+    ArrowLeftOutlined,
+    PlusOutlined,
+    DeleteOutlined,
+    CalendarOutlined,
+    ClockCircleOutlined,
+    TeamOutlined,
+    SaveOutlined,
+    CloseOutlined
+} from '@ant-design/icons';
 import {
     getCourseTypes,
     getMemorizationLevels,
     getCourseById,
     updateCourse
 } from '../../../api/course';
+import './EditCourseView.css';
 
 const EditCourseView = () => {
     const { id } = useParams();
@@ -54,7 +65,17 @@ const EditCourseView = () => {
     });
 
     useEffect(() => {
-        fetchInitialData();
+        fetchInitialData().catch(error => {
+            console.error('Fetch error:', error);
+            toast({
+                title: 'Error',
+                description: `Failed to load: ${error.message}`,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+            });
+            setLoading(false);
+        });
     }, [id]);
 
     const fetchInitialData = async () => {
@@ -67,27 +88,30 @@ const EditCourseView = () => {
                 getMemorizationLevels()
             ]);
 
-            if (courseRes.data.success) {
-                const course = courseRes.data.data;
+            if (courseRes.data) {
+                const course = courseRes.data;
+                console.log('Course data:', course);
+
                 setFormData({
                     ...course,
                     target_gender: course.target_gender || '',
-                    target_age_group: course.target_age_group || [],
+                    target_age_group: course.target_age_group || 'all',
                     schedule: course.schedule || []
                 });
             }
 
-            if (typesRes.data.success) {
-                setCourseTypes(typesRes.data.data);
+            if (typesRes.data) {
+                setCourseTypes(typesRes.data);
             }
 
-            if (levelsRes.data.success) {
-                setMemorizationLevels(levelsRes.data.data);
+            if (levelsRes.data) {
+                setMemorizationLevels(levelsRes.data);
             }
         } catch (error) {
+            console.error('Error loading course:', error);
             toast({
                 title: 'Error',
-                description: 'Failed to load course data',
+                description: error.response?.data?.message || 'Failed to load course data',
                 status: 'error',
                 duration: 3000,
                 isClosable: true,
@@ -151,7 +175,7 @@ const EditCourseView = () => {
 
             const response = await updateCourse(id, formData);
 
-            if (response.data.success) {
+            if (response.status === 200) {
                 toast({
                     title: 'Success',
                     description: 'Course updated successfully',
@@ -177,9 +201,26 @@ const EditCourseView = () => {
 
     if (loading || !formData) {
         return (
-            <Flex justify="center" align="center" h="400px">
-                <Spinner size="xl" />
-            </Flex>
+            <div className="page-loading" style={{
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)'
+            }}>
+                <div style={{ textAlign: 'center' }}>
+                    <div className="spinner" style={{
+                        border: '4px solid #f3f3f3',
+                        borderTop: '4px solid #3498db',
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
+                        animation: 'spin 1s linear infinite',
+                        margin: '0 auto'
+                    }}></div>
+                    <p style={{ color: '#666', marginTop: '16px' }}>Loading course...</p>
+                </div>
+            </div>
         );
     }
 
@@ -187,54 +228,165 @@ const EditCourseView = () => {
     const isMemorizationType = selectedCourseType?.name === 'memorization';
 
     return (
-        <Box p={6} maxW="1200px" mx="auto">
-            <Button
-                leftIcon={<ArrowLeftOutlined />}
-                variant="ghost"
-                mb={4}
-                onClick={() => navigate('/dashboard/mosque-admin/courses')}
-            >
-                Back to Courses
-            </Button>
+        <div className="course-edit-container" style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+            padding: '32px 16px'
+        }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                {/* Header */}
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '32px'
+                }}>
+                    <div>
+                        <button
+                            onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                backgroundColor: 'transparent',
+                                border: 'none',
+                                color: '#3b82f6',
+                                cursor: 'pointer',
+                                fontSize: '16px',
+                                marginBottom: '16px'
+                            }}
+                        >
+                            <ArrowLeftOutlined />
+                            Back to Courses
+                        </button>
+                        <h1 style={{
+                            fontSize: '32px',
+                            fontWeight: 'bold',
+                            color: '#1f2937',
+                            marginBottom: '8px'
+                        }}>
+                            Edit Course: {formData.name}
+                        </h1>
+                        <p style={{ color: '#6b7280', fontSize: '18px' }}>
+                            Update course details and settings
+                        </p>
+                    </div>
 
-            <Heading size="lg" mb={6}>Edit Course: {formData.name}</Heading>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <Badge
+                            colorScheme={formData.is_active ? 'green' : 'gray'}
+                            fontSize="14px"
+                            padding="6px 12px"
+                            borderRadius="8px"
+                        >
+                            {formData.is_active ? 'Active' : 'Inactive'}
+                        </Badge>
+                    </div>
+                </div>
 
-            <form onSubmit={handleSubmit}>
-                <VStack spacing={6} align="stretch">
-                    {/* Basic Information Card */}
-                    <Card>
-                        <CardBody>
-                            <Heading size="md" mb={4}>Basic Information</Heading>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        {/* Basic Information Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            padding: '32px',
+                            borderRadius: '16px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                color: '#1f2937',
+                                marginBottom: '24px',
+                                paddingBottom: '12px',
+                                borderBottom: '2px solid #e5e7eb'
+                            }}>
+                                Basic Information
+                            </h2>
 
-                            <VStack spacing={4} align="stretch">
-                                <FormControl isRequired>
-                                    <FormLabel>Course Name</FormLabel>
-                                    <Input
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Course Name *
+                                    </label>
+                                    <input
+                                        type="text"
                                         value={formData.name}
                                         onChange={(e) => handleInputChange('name', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.2s'
+                                        }}
                                     />
-                                </FormControl>
+                                </div>
 
-                                <FormControl isRequired>
-                                    <FormLabel>Course Type</FormLabel>
-                                    <Select
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Course Type *
+                                    </label>
+                                    <select
                                         value={formData.course_type_id}
                                         onChange={(e) => handleInputChange('course_type_id', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none',
+                                            backgroundColor: 'white',
+                                            cursor: 'pointer'
+                                        }}
                                     >
                                         {courseTypes.map(type => (
                                             <option key={type.id} value={type.id}>
                                                 {type.name} - {type.description}
                                             </option>
                                         ))}
-                                    </Select>
-                                </FormControl>
+                                    </select>
+                                </div>
 
                                 {isMemorizationType && (
-                                    <FormControl>
-                                        <FormLabel>Memorization Level</FormLabel>
-                                        <Select
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            color: '#374151',
+                                            marginBottom: '8px'
+                                        }}>
+                                            Memorization Level
+                                        </label>
+                                        <select
                                             value={formData.course_level || ''}
                                             onChange={(e) => handleInputChange('course_level', e.target.value)}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '12px',
+                                                fontSize: '16px',
+                                                outline: 'none',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer'
+                                            }}
                                         >
                                             <option value="">Select level</option>
                                             {memorizationLevels.map(level => (
@@ -242,131 +394,394 @@ const EditCourseView = () => {
                                                     {level.level_name} (Juz {level.juz_range_start}-{level.juz_range_end})
                                                 </option>
                                             ))}
-                                        </Select>
-                                    </FormControl>
+                                        </select>
+                                    </div>
                                 )}
 
-                                <FormControl>
-                                    <FormLabel>Description</FormLabel>
-                                    <Textarea
+                                <div style={{ gridColumn: 'span 2' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Description
+                                    </label>
+                                    <textarea
                                         value={formData.description}
                                         onChange={(e) => handleInputChange('description', e.target.value)}
                                         rows={4}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none',
+                                            resize: 'vertical'
+                                        }}
                                     />
-                                </FormControl>
+                                </div>
+                            </div>
+                        </div>
 
-                                <HStack spacing={4}>
-                                    <FormControl>
-                                        <FormLabel>Course Format</FormLabel>
-                                        <Select
-                                            value={formData.course_format}
-                                            onChange={(e) => handleInputChange('course_format', e.target.value)}
-                                        >
-                                            <option value="short">Short Course</option>
-                                            <option value="long">Long Course</option>
-                                        </Select>
-                                    </FormControl>
+                        {/* Course Details Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            padding: '32px',
+                            borderRadius: '16px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                color: '#1f2937',
+                                marginBottom: '24px',
+                                paddingBottom: '12px',
+                                borderBottom: '2px solid #e5e7eb'
+                            }}>
+                                Course Details
+                            </h2>
 
-                                    <FormControl>
-                                        <FormLabel>Delivery Method</FormLabel>
-                                        <Select
-                                            value={formData.schedule_type}
-                                            onChange={(e) => handleInputChange('schedule_type', e.target.value)}
-                                        >
-                                            <option value="onsite">On-site</option>
-                                            <option value="online">Online</option>
-                                            <option value="hybrid">Hybrid</option>
-                                        </Select>
-                                    </FormControl>
-                                </HStack>
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Duration (weeks)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={formData.duration_weeks || ''}
+                                        onChange={(e) => handleInputChange('duration_weeks', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
 
-                    {/* Course Details Card */}
-                    <Card>
-                        <CardBody>
-                            <Heading size="md" mb={4}>Course Details</Heading>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Total Sessions
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={formData.total_sessions || ''}
+                                        onChange={(e) => handleInputChange('total_sessions', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
 
-                            <VStack spacing={4} align="stretch">
-                                <HStack spacing={4}>
-                                    <FormControl>
-                                        <FormLabel>Duration (weeks)</FormLabel>
-                                        <NumberInput
-                                            value={formData.duration_weeks || ''}
-                                            onChange={(value) => handleInputChange('duration_weeks', value)}
-                                        >
-                                            <NumberInputField />
-                                        </NumberInput>
-                                    </FormControl>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Max Students
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={formData.max_students || ''}
+                                        onChange={(e) => handleInputChange('max_students', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
 
-                                    <FormControl>
-                                        <FormLabel>Total Sessions</FormLabel>
-                                        <NumberInput
-                                            value={formData.total_sessions || ''}
-                                            onChange={(value) => handleInputChange('total_sessions', value)}
-                                        >
-                                            <NumberInputField />
-                                        </NumberInput>
-                                    </FormControl>
-                                </HStack>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '8px'
+                                    }}>
+                                        Price (Shekel)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        step="1"
+                                        value={formData.price_cents}
+                                        onChange={(e) => handleInputChange('price_cents', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
 
-                                <HStack spacing={4}>
-                                    <FormControl>
-                                        <FormLabel>Max Students</FormLabel>
-                                        <NumberInput
-                                            value={formData.max_students || ''}
-                                            onChange={(value) => handleInputChange('max_students', value)}
-                                        >
-                                            <NumberInputField />
-                                        </NumberInput>
-                                    </FormControl>
+                                <div style={{ gridColumn: 'span 2' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '12px'
+                                    }}>
+                                        Course Format
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '16px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="course_format"
+                                                value="short"
+                                                checked={formData.course_format === 'short'}
+                                                onChange={(e) => handleInputChange('course_format', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Short Course</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="course_format"
+                                                value="long"
+                                                checked={formData.course_format === 'long'}
+                                                onChange={(e) => handleInputChange('course_format', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Long Course</span>
+                                        </label>
+                                    </div>
+                                </div>
 
-                                    <FormControl>
-                                        <FormLabel>Price (USD)</FormLabel>
-                                        <NumberInput
-                                            value={formData.price_cents / 100 || ''}
-                                            onChange={(value) => handleInputChange('price_cents', value * 100)}
-                                            precision={2}
-                                            step={0.01}
-                                        >
-                                            <NumberInputField />
-                                        </NumberInput>
-                                    </FormControl>
-                                </HStack>
+                                <div style={{ gridColumn: 'span 2' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '12px'
+                                    }}>
+                                        Delivery Method
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '16px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="schedule_type"
+                                                value="onsite"
+                                                checked={formData.schedule_type === 'onsite'}
+                                                onChange={(e) => handleInputChange('schedule_type', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>On-site</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="schedule_type"
+                                                value="online"
+                                                checked={formData.schedule_type === 'online'}
+                                                onChange={(e) => handleInputChange('schedule_type', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Online</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="schedule_type"
+                                                value="hybrid"
+                                                checked={formData.schedule_type === 'hybrid'}
+                                                onChange={(e) => handleInputChange('schedule_type', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Hybrid</span>
+                                        </label>
+                                    </div>
+                                </div>
 
-                                <FormControl>
-                                    <FormLabel>Target Gender</FormLabel>
-                                    <RadioGroup
-                                        value={formData.target_gender || ''}
-                                        onChange={(value) => handleInputChange('target_gender', value)}
-                                    >
-                                        <Stack direction="row" spacing={4}>
-                                            <Radio value="">Mixed (No Restriction)</Radio>
-                                            <Radio value="male">Male Only</Radio>
-                                            <Radio value="female">Female Only</Radio>
-                                        </Stack>
-                                    </RadioGroup>
-                                </FormControl>
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                                <div style={{ gridColumn: 'span 2' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '12px'
+                                    }}>
+                                        Target Age Group
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '16px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="all"
+                                                checked={formData.target_age_group === 'all'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>All</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="children"
+                                                checked={formData.target_age_group === 'children'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Children</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="teenagers"
+                                                checked={formData.target_age_group === 'teenagers'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Teenagers</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="adults"
+                                                checked={formData.target_age_group === 'adults'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Adults</span>
+                                        </label>
+                                    </div>
+                                </div>
 
-                    {/* Schedule Card */}
-                    <Card>
-                        <CardBody>
-                            <Heading size="md" mb={4}>Class Schedule</Heading>
+                                <div style={{ gridColumn: 'span 2' }}>
+                                    <label style={{
+                                        display: 'block',
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        marginBottom: '12px'
+                                    }}>
+                                        Target Gender
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '16px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_gender"
+                                                value=""
+                                                checked={!formData.target_gender || formData.target_gender === ''}
+                                                onChange={(e) => handleInputChange('target_gender', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Mixed (No Restriction)</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_gender"
+                                                value="male"
+                                                checked={formData.target_gender === 'male'}
+                                                onChange={(e) => handleInputChange('target_gender', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Male Only</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_gender"
+                                                value="female"
+                                                checked={formData.target_gender === 'female'}
+                                                onChange={(e) => handleInputChange('target_gender', e.target.value)}
+                                                style={{ width: '16px', height: '16px' }}
+                                            />
+                                            <span>Female Only</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                            <VStack spacing={4} align="stretch">
-                                <HStack spacing={3}>
-                                    <FormControl>
-                                        <FormLabel>Day</FormLabel>
-                                        <Select
+                        {/* Schedule Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            padding: '32px',
+                            borderRadius: '16px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '600',
+                                color: '#1f2937',
+                                marginBottom: '24px',
+                                paddingBottom: '12px',
+                                borderBottom: '2px solid #e5e7eb'
+                            }}>
+                                Class Schedule
+                            </h2>
+
+                            <div style={{ marginBottom: '24px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', alignItems: 'end' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            color: '#374151',
+                                            marginBottom: '8px'
+                                        }}>
+                                            Day
+                                        </label>
+                                        <select
                                             value={scheduleEntry.day_of_week}
                                             onChange={(e) => setScheduleEntry(prev => ({
                                                 ...prev,
                                                 day_of_week: e.target.value
                                             }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '12px',
+                                                fontSize: '16px',
+                                                outline: 'none',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer'
+                                            }}
                                         >
                                             <option value="sunday">Sunday</option>
                                             <option value="monday">Monday</option>
@@ -375,107 +790,260 @@ const EditCourseView = () => {
                                             <option value="thursday">Thursday</option>
                                             <option value="friday">Friday</option>
                                             <option value="saturday">Saturday</option>
-                                        </Select>
-                                    </FormControl>
+                                        </select>
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>Start Time</FormLabel>
-                                        <Input
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            color: '#374151',
+                                            marginBottom: '8px'
+                                        }}>
+                                            Start Time
+                                        </label>
+                                        <input
                                             type="time"
                                             value={scheduleEntry.start_time}
                                             onChange={(e) => setScheduleEntry(prev => ({
                                                 ...prev,
                                                 start_time: e.target.value
                                             }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '12px',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
                                         />
-                                    </FormControl>
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>End Time</FormLabel>
-                                        <Input
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            color: '#374151',
+                                            marginBottom: '8px'
+                                        }}>
+                                            End Time
+                                        </label>
+                                        <input
                                             type="time"
                                             value={scheduleEntry.end_time}
                                             onChange={(e) => setScheduleEntry(prev => ({
                                                 ...prev,
                                                 end_time: e.target.value
                                             }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '12px',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
                                         />
-                                    </FormControl>
+                                    </div>
 
-                                    <Box pt={8}>
-                                        <IconButton
-                                            icon={<PlusOutlined />}
-                                            colorScheme="blue"
+                                    <div>
+                                        <button
+                                            type="button"
                                             onClick={addScheduleEntry}
-                                        />
-                                    </Box>
-                                </HStack>
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: '8px',
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                backgroundColor: '#3b82f6',
+                                                color: 'white',
+                                                border: 'none',
+                                                borderRadius: '12px',
+                                                fontSize: '16px',
+                                                fontWeight: '600',
+                                                cursor: 'pointer',
+                                                transition: 'background-color 0.2s'
+                                            }}
+                                        >
+                                            <PlusOutlined />
+                                            Add Schedule
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
-                                {formData.schedule.length > 0 && (
-                                    <>
-                                        <Divider />
-                                        <VStack spacing={2} align="stretch">
-                                            {formData.schedule.map((entry, index) => (
-                                                <Flex
-                                                    key={index}
-                                                    justify="space-between"
-                                                    align="center"
-                                                    p={3}
-                                                    bg="gray.50"
-                                                    borderRadius="md"
-                                                >
-                                                    <HStack spacing={4}>
-                                                        <Tag colorScheme="blue">{entry.day_of_week}</Tag>
-                                                        <Text>
+                            {formData.schedule.length > 0 && (
+                                <div>
+                                    <div style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        marginBottom: '16px'
+                                    }}>
+                                        <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#374151' }}>
+                                            Scheduled Sessions ({formData.schedule.length})
+                                        </h3>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                        {formData.schedule.map((entry, index) => (
+                                            <div
+                                                key={index}
+                                                style={{
+                                                    display: 'flex',
+                                                    justifyContent: 'space-between',
+                                                    alignItems: 'center',
+                                                    padding: '16px',
+                                                    backgroundColor: '#f9fafb',
+                                                    borderRadius: '12px',
+                                                    border: '1px solid #e5e7eb'
+                                                }}
+                                            >
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                                    <span style={{
+                                                        padding: '6px 12px',
+                                                        backgroundColor: '#dbeafe',
+                                                        color: '#1e40af',
+                                                        borderRadius: '8px',
+                                                        fontWeight: '600',
+                                                        textTransform: 'capitalize',
+                                                        fontSize: '14px'
+                                                    }}>
+                                                        {entry.day_of_week}
+                                                    </span>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                        <ClockCircleOutlined style={{ color: '#6b7280' }} />
+                                                        <span style={{ fontWeight: '600', color: '#374151' }}>
                                                             {entry.start_time} - {entry.end_time}
-                                                        </Text>
-                                                    </HStack>
-                                                    <IconButton
-                                                        icon={<DeleteOutlined />}
-                                                        size="sm"
-                                                        variant="ghost"
-                                                        colorScheme="red"
-                                                        onClick={() => removeScheduleEntry(index)}
-                                                    />
-                                                </Flex>
-                                            ))}
-                                        </VStack>
-                                    </>
-                                )}
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeScheduleEntry(index)}
+                                                    style={{
+                                                        backgroundColor: 'transparent',
+                                                        border: 'none',
+                                                        color: '#dc2626',
+                                                        cursor: 'pointer',
+                                                        padding: '8px',
+                                                        borderRadius: '6px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center'
+                                                    }}
+                                                >
+                                                    <DeleteOutlined />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
 
-                    {/* Actions */}
-                    <HStack spacing={4} justify="space-between">
-                        <FormControl display="flex" alignItems="center">
-                            <FormLabel mb="0">Active Course</FormLabel>
-                            <Switch
-                                isChecked={formData.is_active}
-                                onChange={(e) => handleInputChange('is_active', e.target.checked)}
-                            />
-                        </FormControl>
+                        {/* Actions */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            padding: '24px',
+                            borderRadius: '16px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                        }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
+                                <div style={{ position: 'relative' }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.is_active}
+                                        onChange={(e) => handleInputChange('is_active', e.target.checked)}
+                                        style={{
+                                            width: '24px',
+                                            height: '24px',
+                                            cursor: 'pointer',
+                                            accentColor: '#10b981'
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <span style={{ fontWeight: '600', color: '#374151' }}>Active Course</span>
+                                    <p style={{ fontSize: '14px', color: '#6b7280', marginTop: '4px' }}>
+                                        When active, students can enroll in this course
+                                    </p>
+                                </div>
+                            </label>
 
-                        <HStack>
-                            <Button
-                                variant="outline"
-                                onClick={() => navigate('/dashboard/mosque-admin/courses')}
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                type="submit"
-                                colorScheme="blue"
-                                isLoading={saving}
-                                loadingText="Saving..."
-                            >
-                                Save Changes
-                            </Button>
-                        </HStack>
-                    </HStack>
-                </VStack>
-            </form>
-        </Box>
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button
+                                    type="button"
+                                    onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        padding: '12px 24px',
+                                        backgroundColor: 'transparent',
+                                        border: '2px solid #d1d5db',
+                                        color: '#374151',
+                                        borderRadius: '12px',
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <CloseOutlined />
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={saving}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px',
+                                        padding: '12px 24px',
+                                        backgroundColor: '#3b82f6',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '12px',
+                                        fontSize: '16px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        transition: 'background-color 0.2s',
+                                        opacity: saving ? 0.7 : 1
+                                    }}
+                                >
+                                    {saving ? (
+                                        <>
+                                            <div className="spinner" style={{
+                                                border: '2px solid rgba(255,255,255,0.3)',
+                                                borderTop: '2px solid white',
+                                                borderRadius: '50%',
+                                                width: '16px',
+                                                height: '16px',
+                                                animation: 'spin 1s linear infinite'
+                                            }}></div>
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <SaveOutlined />
+                                            Save Changes
+                                        </>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

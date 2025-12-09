@@ -22,8 +22,6 @@ import StatisticsView from './components/Dashboard/Ministry/Statistics';
 import AddMosqueView from './pages/MinistryDashboard/AddMosque/AddMosqueView';
 import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView';
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
-import MinistryDashboard from './pages/MinistryDashboard/MinistryDashboard';
-import MainSideBar from "./components/MainSideBar/MainSideBar";
 
 // Course - Mosque Dashboard
 import CourseListView from './pages/MosqueAdminDashboard/CourseList/CourseListView';

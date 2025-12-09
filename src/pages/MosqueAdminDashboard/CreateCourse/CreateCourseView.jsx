@@ -2,32 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Box,
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Select,
-    Textarea,
-    VStack,
-    HStack,
-    Heading,
-    useToast,
-    Card,
-    CardBody,
-    NumberInput,
-    NumberInputField,
-    Switch,
-    Flex,
-    Text,
-    Tag,
-    IconButton,
-    Divider,
-    Radio,
-    RadioGroup,
-    Stack
-} from '@chakra-ui/react';
-import { ArrowLeftOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+    ArrowLeftOutlined,
+    PlusOutlined,
+    DeleteOutlined
+} from '@ant-design/icons';
 import {
     getCourseTypes,
     getMemorizationLevels,
@@ -35,10 +13,10 @@ import {
     getSuggestedTeachers
 } from '../../../api/course';
 import TeacherSelectionModal from '../../../components/Course/TeacherSelectionModal';
+import './CreateCourseView.css';
 
 const CreateCourseView = () => {
     const navigate = useNavigate();
-    const toast = useToast();
 
     const [loading, setLoading] = useState(false);
     const [courseTypes, setCourseTypes] = useState([]);
@@ -52,6 +30,7 @@ const CreateCourseView = () => {
     // Form state
     const [formData, setFormData] = useState({
         mosque_id: mosqueId,
+        teacher_id: null,
         course_type_id: '',
         name: '',
         description: '',
@@ -62,8 +41,8 @@ const CreateCourseView = () => {
         total_sessions: null,
         max_students: null,
         schedule_type: 'onsite',
-        target_age_group: [],
-        target_gender: '', // 'male', 'female', or '' for mixed
+        target_age_group: 'all',
+        target_gender: '',
         course_level: null,
         is_active: true,
         schedule: []
@@ -87,21 +66,17 @@ const CreateCourseView = () => {
                 getMemorizationLevels()
             ]);
 
-            if (typesRes.data.success) {
-                setCourseTypes(typesRes.data.data);
+            if (typesRes.data) {
+                setCourseTypes(typesRes.data);
             }
 
-            if (levelsRes.data.success) {
-                setMemorizationLevels(levelsRes.data.data);
+            if (levelsRes.data) {
+                setMemorizationLevels(levelsRes.data);
             }
+
+
         } catch (error) {
-            toast({
-                title: 'Error',
-                description: 'Failed to load initial data',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
+            alert('Failed to load initial data');
         }
     };
 
@@ -111,12 +86,7 @@ const CreateCourseView = () => {
 
     const addScheduleEntry = () => {
         if (!scheduleEntry.start_time || !scheduleEntry.end_time) {
-            toast({
-                title: 'Validation Error',
-                description: 'Please fill in start and end time',
-                status: 'warning',
-                duration: 2000,
-            });
+            alert('Please fill in start and end time');
             return;
         }
 
@@ -146,40 +116,19 @@ const CreateCourseView = () => {
 
         // Validation
         if (!formData.name || !formData.course_type_id) {
-            toast({
-                title: 'Validation Error',
-                description: 'Please fill in all required fields',
-                status: 'warning',
-                duration: 3000,
-            });
+            alert('Please fill in all required fields');
             return;
         }
 
         try {
             setLoading(true);
-
             const response = await createCourse(formData);
-
-            if (response.data.success) {
-                toast({
-                    title: 'Success',
-                    description: 'Course created successfully',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true,
-                });
-
-                // Navigate to course list or show teacher assignment
+            if (response.status === 201) {
+                alert('Course created successfully');
                 navigate('/dashboard/mosque-admin/courses');
             }
         } catch (error) {
-            toast({
-                title: 'Error',
-                description: error.response?.data?.message || 'Failed to create course',
-                status: 'error',
-                duration: 3000,
-                isClosable: true,
-            });
+            alert(error.response?.data?.message || 'Failed to create course');
         } finally {
             setLoading(false);
         }
@@ -187,18 +136,12 @@ const CreateCourseView = () => {
 
     const handleGetTeacherSuggestions = async () => {
         if (!formData.course_type_id) {
-            toast({
-                title: 'Validation Error',
-                description: 'Please select a course type first',
-                status: 'warning',
-                duration: 2000,
-            });
+            alert('Please select a course type first');
             return;
         }
 
         try {
             setLoading(true);
-
             const suggestionData = {
                 course_type_id: formData.course_type_id,
                 course_level: formData.course_level,
@@ -209,17 +152,12 @@ const CreateCourseView = () => {
 
             const response = await getSuggestedTeachers(suggestionData);
 
-            if (response.data.success) {
-                setSuggestedTeachers(response.data.data);
+            if (response.data) {
+                setSuggestedTeachers(response.data);
                 setShowTeacherModal(true);
             }
         } catch (error) {
-            toast({
-                title: 'Error',
-                description: 'Failed to get teacher suggestions',
-                status: 'error',
-                duration: 3000,
-            });
+            alert('Failed to get teacher suggestions');
         } finally {
             setLoading(false);
         }
@@ -229,194 +167,530 @@ const CreateCourseView = () => {
     const isMemorizationType = selectedCourseType?.name === 'memorization';
 
     return (
-        <Box p={6} maxW="1200px" mx="auto">
+        <div className="create-course-container" style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+            padding: '32px 16px'
+        }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                {/* Header */}
+                <div style={{ marginBottom: '32px' }}>
+                    <button
+                        onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                        style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            backgroundColor: 'transparent',
+                            border: 'none',
+                            color: '#3b82f6',
+                            cursor: 'pointer',
+                            padding: '8px 0',
+                            fontSize: '16px',
+                            marginBottom: '16px'
+                        }}
+                    >
+                        <ArrowLeftOutlined />
+                        Back to Courses
+                    </button>
+                    <h1 style={{
+                        fontSize: '32px',
+                        fontWeight: 'bold',
+                        color: '#1f2937',
+                        marginBottom: '8px'
+                    }}>
+                        Create New Course
+                    </h1>
+                    <p style={{ color: '#6b7280', fontSize: '18px' }}>
+                        Fill in the details to create a new course
+                    </p>
+                </div>
 
-            <Button
-                leftIcon={<ArrowLeftOutlined />}
-                variant="ghost"
-                mb={4}
-                onClick={() => navigate('/dashboard/mosque-admin/courses')}
-            >
-                Back to Courses
-            </Button>
+                <form onSubmit={handleSubmit}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        {/* Basic Information Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: '#1f2937',
+                                marginBottom: '20px'
+                            }}>
+                                Basic Information
+                            </h2>
 
-
-            <Heading size="lg" mb={6}>Create New Course</Heading>
-
-            <form onSubmit={handleSubmit}>
-                <VStack spacing={6} align="stretch">
-                    {/* Basic Information Card */}
-                    <Card>
-                        <CardBody>
-                            <Heading size="md" mb={4}>Basic Information</Heading>
-
-                            <VStack spacing={4} align="stretch">
-                                <FormControl isRequired>
-                                    <FormLabel>Course Name</FormLabel>
-                                    <Input
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Course Name *
+                                    </label>
+                                    <input
+                                        type="text"
                                         value={formData.name}
                                         onChange={(e) => handleInputChange('name', e.target.value)}
                                         placeholder="e.g., Tajweed for Beginners"
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            outline: 'none',
+                                            transition: 'border-color 0.2s'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                        onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                                     />
-                                </FormControl>
+                                </div>
 
-                                <FormControl isRequired>
-                                    <FormLabel>Course Type</FormLabel>
-                                    <Select
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Course Type *
+                                    </label>
+                                    <select
                                         value={formData.course_type_id}
-                                        onChange={(e) => handleInputChange('course_type_id', e.target.value)}
-                                        placeholder="Select course type"
+                                        onChange={(e) => {
+                                            const selectedId = parseInt(e.target.value);
+                                            handleInputChange('course_type_id', selectedId);
+
+                                            if (selectedId !== 1) { // If not memorization (id=1)
+                                                handleInputChange('course_level', null);
+                                            }
+                                        }}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            backgroundColor: 'white',
+                                            cursor: 'pointer',
+                                            outline: 'none',
+                                            placeholder: 'select course type'
+                                        }}
+                                        defaultValue='select course type'
                                     >
+                                        <option value="" disabled >
+                                            Select a course type
+                                        </option>
                                         {courseTypes.map(type => (
                                             <option key={type.id} value={type.id}>
-                                                {type.name} - {type.description}
+                                                {type.name.charAt(0).toUpperCase() + type.name.slice(1)} - {type.description}
                                             </option>
                                         ))}
-                                    </Select>
-                                </FormControl>
-
+                                    </select>
+                                </div>
                                 {isMemorizationType && (
-                                    <FormControl>
-                                        <FormLabel>Memorization Level</FormLabel>
-                                        <Select
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Memorization Level
+                                        </label>
+                                        <select
                                             value={formData.course_level || ''}
                                             onChange={(e) => handleInputChange('course_level', e.target.value)}
-                                            placeholder="Select level"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer',
+                                                outline: 'none',
+                                                placeholder: 'memorization level'
+                                            }}
+                                            defaultValue='memorization level'
                                         >
+                                            <option value="" disabled >
+                                                memorization level
+                                            </option>
                                             {memorizationLevels.map(level => (
                                                 <option key={level.id} value={level.id}>
                                                     {level.level_name} (Juz {level.juz_range_start}-{level.juz_range_end})
                                                 </option>
                                             ))}
-                                        </Select>
-                                    </FormControl>
+                                        </select>
+                                    </div>
                                 )}
 
-                                <FormControl>
-                                    <FormLabel>Description</FormLabel>
-                                    <Textarea
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Description
+                                    </label>
+                                    <textarea
                                         value={formData.description}
                                         onChange={(e) => handleInputChange('description', e.target.value)}
                                         placeholder="Course description..."
                                         rows={4}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            resize: 'vertical',
+                                            outline: 'none',
+                                            transition: 'border-color 0.2s'
+                                        }}
+                                        onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
+                                        onBlur={(e) => e.target.style.borderColor = '#d1d5db'}
                                     />
-                                </FormControl>
+                                </div>
 
-                                <HStack spacing={4}>
-                                    <FormControl>
-                                        <FormLabel>Course Format</FormLabel>
-                                        <Select
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Course Format
+                                        </label>
+                                        <select
                                             value={formData.course_format}
                                             onChange={(e) => handleInputChange('course_format', e.target.value)}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer'
+                                            }}
                                         >
                                             <option value="short">Short Course</option>
                                             <option value="long">Long Course</option>
-                                        </Select>
-                                    </FormControl>
+                                        </select>
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>Delivery Method</FormLabel>
-                                        <Select
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Delivery Method
+                                        </label>
+                                        <select
                                             value={formData.schedule_type}
                                             onChange={(e) => handleInputChange('schedule_type', e.target.value)}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer'
+                                            }}
                                         >
                                             <option value="onsite">On-site</option>
                                             <option value="online">Online</option>
                                             <option value="hybrid">Hybrid</option>
-                                        </Select>
-                                    </FormControl>
-                                </HStack>
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                    {/* Course Details Card */}
-                    <Card>
-                        <CardBody>
-                            <Heading size="md" mb={4}>Course Details</Heading>
+                        {/* Course Details Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: '#1f2937',
+                                marginBottom: '20px'
+                            }}>
+                                Course Details
+                            </h2>
 
-                            <VStack spacing={4} align="stretch">
-                                <HStack spacing={4}>
-                                    <FormControl>
-                                        <FormLabel>Duration (weeks)</FormLabel>
-                                        <NumberInput
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Duration (weeks)
+                                        </label>
+                                        <input
+                                            type="number"
                                             value={formData.duration_weeks || ''}
-                                            onChange={(value) => handleInputChange('duration_weeks', value)}
-                                        >
-                                            <NumberInputField placeholder="e.g., 12" />
-                                        </NumberInput>
-                                    </FormControl>
+                                            onChange={(e) => handleInputChange('duration_weeks', e.target.value)}
+                                            placeholder="e.g., 12"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>Total Sessions</FormLabel>
-                                        <NumberInput
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Total Sessions
+                                        </label>
+                                        <input
+                                            type="number"
                                             value={formData.total_sessions || ''}
-                                            onChange={(value) => handleInputChange('total_sessions', value)}
-                                        >
-                                            <NumberInputField placeholder="e.g., 24" />
-                                        </NumberInput>
-                                    </FormControl>
-                                </HStack>
+                                            onChange={(e) => handleInputChange('total_sessions', e.target.value)}
+                                            placeholder="e.g., 24"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
 
-                                <HStack spacing={4}>
-                                    <FormControl>
-                                        <FormLabel>Max Students</FormLabel>
-                                        <NumberInput
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Max Students
+                                        </label>
+                                        <input
+                                            type="number"
                                             value={formData.max_students || ''}
-                                            onChange={(value) => handleInputChange('max_students', value)}
-                                        >
-                                            <NumberInputField placeholder="e.g., 20" />
-                                        </NumberInput>
-                                    </FormControl>
+                                            onChange={(e) => handleInputChange('max_students', e.target.value)}
+                                            placeholder="e.g., 20"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>Price (USD)</FormLabel>
-                                        <NumberInput
-                                            value={formData.price_cents / 100 || ''}
-                                            onChange={(value) => handleInputChange('price_cents', value * 100)}
-                                            precision={2}
-                                            step={0.01}
-                                        >
-                                            <NumberInputField placeholder="0.00" />
-                                        </NumberInput>
-                                    </FormControl>
-                                </HStack>
-
-                                <FormControl>
-                                    <FormLabel>Target Gender (Important for teacher matching)</FormLabel>
-                                    <RadioGroup
-                                        value={formData.target_gender}
-                                        onChange={(value) => handleInputChange('target_gender', value)}
-                                    >
-                                        <Stack direction="row" spacing={4}>
-                                            <Radio value="">Mixed (No Restriction)</Radio>
-                                            <Radio value="male">Male Only</Radio>
-                                            <Radio value="female">Female Only</Radio>
-                                        </Stack>
-                                    </RadioGroup>
-                                    <Text fontSize="sm" color="gray.600" mt={1}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Price (Shekel)
+                                        </label>
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            value={formData.price_cents}
+                                            onChange={(e) => handleInputChange('price_cents', e.target.value)}
+                                            placeholder="0.00"
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                outline: 'none'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '12px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Target Age Group
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '24px', marginBottom: '8px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="all"
+                                                checked={formData.target_age_group === 'all'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>All</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="children"
+                                                checked={formData.target_age_group === 'children'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>Children</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="teenagers"
+                                                checked={formData.target_age_group === 'teenagers'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>Teenagers</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_age_group"
+                                                value="adults"
+                                                checked={formData.target_age_group === 'adults'}
+                                                onChange={(e) => handleInputChange('target_age_group', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>Adults</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '12px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Target Gender (Important for teacher matching)
+                                    </label>
+                                    <div style={{ display: 'flex', gap: '24px', marginBottom: '8px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_gender"
+                                                value=""
+                                                checked={formData.target_gender === ''}
+                                                onChange={(e) => handleInputChange('target_gender', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>Mixed (No Restriction)</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_gender"
+                                                value="male"
+                                                checked={formData.target_gender === 'male'}
+                                                onChange={(e) => handleInputChange('target_gender', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>Male Only</span>
+                                        </label>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                                            <input
+                                                type="radio"
+                                                name="target_gender"
+                                                value="female"
+                                                checked={formData.target_gender === 'female'}
+                                                onChange={(e) => handleInputChange('target_gender', e.target.value)}
+                                                style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                            />
+                                            <span>Female Only</span>
+                                        </label>
+                                    </div>
+                                    <p style={{ fontSize: '14px', color: '#6b7280' }}>
                                         This affects teacher suggestions based on gender matching
-                                    </Text>
-                                </FormControl>
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
-                    {/* Schedule Card */}
-                    <Card>
-                        <CardBody>
-                            <Heading size="md" mb={4}>Class Schedule</Heading>
+                        {/* Schedule Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: '#1f2937',
+                                marginBottom: '20px'
+                            }}>
+                                Class Schedule
+                            </h2>
 
-                            <VStack spacing={4} align="stretch">
-                                <HStack spacing={3}>
-                                    <FormControl>
-                                        <FormLabel>Day</FormLabel>
-                                        <Select
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '16px', alignItems: 'end' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Day
+                                        </label>
+                                        <select
                                             value={scheduleEntry.day_of_week}
                                             onChange={(e) => setScheduleEntry(prev => ({
                                                 ...prev,
                                                 day_of_week: e.target.value
                                             }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer'
+                                            }}
                                         >
                                             <option value="sunday">Sunday</option>
                                             <option value="monday">Monday</option>
@@ -425,120 +699,218 @@ const CreateCourseView = () => {
                                             <option value="thursday">Thursday</option>
                                             <option value="friday">Friday</option>
                                             <option value="saturday">Saturday</option>
-                                        </Select>
-                                    </FormControl>
+                                        </select>
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>Start Time</FormLabel>
-                                        <Input
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Start Time
+                                        </label>
+                                        <input
                                             type="time"
                                             value={scheduleEntry.start_time}
                                             onChange={(e) => setScheduleEntry(prev => ({
                                                 ...prev,
                                                 start_time: e.target.value
                                             }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                backgroundColor: 'white'
+                                            }}
                                         />
-                                    </FormControl>
+                                    </div>
 
-                                    <FormControl>
-                                        <FormLabel>End Time</FormLabel>
-                                        <Input
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            End Time
+                                        </label>
+                                        <input
                                             type="time"
                                             value={scheduleEntry.end_time}
                                             onChange={(e) => setScheduleEntry(prev => ({
                                                 ...prev,
                                                 end_time: e.target.value
                                             }))}
+                                            style={{
+                                                width: '100%',
+                                                padding: '12px 16px',
+                                                border: '1px solid #d1d5db',
+                                                borderRadius: '8px',
+                                                fontSize: '16px',
+                                                backgroundColor: 'white'
+                                            }}
                                         />
-                                    </FormControl>
+                                    </div>
 
-                                    <Box pt={8}>
-                                        <IconButton
-                                            icon={<PlusOutlined />}
-                                            colorScheme="blue"
-                                            onClick={addScheduleEntry}
-                                        />
-                                    </Box>
-                                </HStack>
+                                    <button
+                                        type="button"
+                                        onClick={addScheduleEntry}
+                                        style={{
+                                            backgroundColor: '#3b82f6',
+                                            color: 'white',
+                                            border: 'none',
+                                            borderRadius: '8px',
+                                            padding: '12px 16px',
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            height: '44px'
+                                        }}
+                                    >
+                                        <PlusOutlined />
+                                    </button>
+                                </div>
 
                                 {formData.schedule.length > 0 && (
                                     <>
-                                        <Divider />
-                                        <VStack spacing={2} align="stretch">
+                                        <div style={{ borderTop: '1px solid #e5e7eb', margin: '16px 0' }}></div>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                             {formData.schedule.map((entry, index) => (
-                                                <Flex
+                                                <div
                                                     key={index}
-                                                    justify="space-between"
-                                                    align="center"
-                                                    p={3}
-                                                    bg="gray.50"
-                                                    borderRadius="md"
+                                                    className="schedule-entry-item"
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'space-between',
+                                                        alignItems: 'center',
+                                                        padding: '12px 16px',
+                                                        backgroundColor: '#f9fafb',
+                                                        borderRadius: '8px'
+                                                    }}
                                                 >
-                                                    <HStack spacing={4}>
-                                                        <Tag colorScheme="blue">{entry.day_of_week}</Tag>
-                                                        <Text>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                                        <span style={{
+                                                            backgroundColor: '#dbeafe',
+                                                            color: '#1e40af',
+                                                            padding: '4px 12px',
+                                                            borderRadius: '9999px',
+                                                            fontSize: '14px',
+                                                            fontWeight: '500'
+                                                        }}>
+                                                            {entry.day_of_week.charAt(0).toUpperCase() + entry.day_of_week.slice(1)}
+                                                        </span>
+                                                        <span style={{ color: '#374151' }}>
                                                             {entry.start_time} - {entry.end_time}
-                                                        </Text>
-                                                    </HStack>
-                                                    <IconButton
-                                                        icon={<DeleteOutlined />}
-                                                        size="sm"
-                                                        variant="ghost"
-                                                        colorScheme="red"
+                                                        </span>
+                                                    </div>
+                                                    <button
+                                                        type="button"
                                                         onClick={() => removeScheduleEntry(index)}
-                                                    />
-                                                </Flex>
+                                                        style={{
+                                                            backgroundColor: 'transparent',
+                                                            border: 'none',
+                                                            color: '#dc2626',
+                                                            cursor: 'pointer',
+                                                            padding: '4px'
+                                                        }}
+                                                    >
+                                                        <DeleteOutlined />
+                                                    </button>
+                                                </div>
                                             ))}
-                                        </VStack>
+                                        </div>
                                     </>
                                 )}
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                            </div>
+                        </div>
 
-                    {/* Actions */}
-                    <HStack spacing={4} justify="space-between">
-                        <FormControl display="flex" alignItems="center">
-                            <FormLabel mb="0">Active Course</FormLabel>
-                            <Switch
-                                isChecked={formData.is_active}
-                                onChange={(e) => handleInputChange('is_active', e.target.checked)}
-                            />
-                        </FormControl>
+                        {/* Actions */}
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            padding: '24px',
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <label style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    cursor: 'pointer'
+                                }}>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.is_active}
+                                        onChange={(e) => handleInputChange('is_active', e.target.checked)}
+                                        style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                                    />
+                                    <span style={{ fontWeight: '600' }}>Active Course</span>
+                                </label>
+                            </div>
 
-                        <HStack>
-                            <Button
-                                variant="outline"
-                                onClick={handleGetTeacherSuggestions}
-                                isLoading={loading}
-                            >
-                                Preview Teacher Suggestions
-                            </Button>
-                            <Button
-                                type="submit"
-                                colorScheme="blue"
-                                isLoading={loading}
-                                loadingText="Creating..."
-                            >
-                                Create Course
-                            </Button>
-                        </HStack>
-                    </HStack>
-                </VStack>
-            </form>
+                            <div style={{ display: 'flex', gap: '16px' }}>
+                                <button
+                                    type="button"
+                                    onClick={handleGetTeacherSuggestions}
+                                    disabled={loading}
+                                    style={{
+                                        backgroundColor: 'transparent',
+                                        color: '#3b82f6',
+                                        border: '1px solid #3b82f6',
+                                        borderRadius: '8px',
+                                        padding: '12px 24px',
+                                        cursor: 'pointer',
+                                        fontWeight: '600',
+                                        opacity: loading ? 0.5 : 1
+                                    }}
+                                >
+                                    Preview Teacher Suggestions
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    style={{
+                                        backgroundColor: '#3b82f6',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        padding: '12px 24px',
+                                        cursor: 'pointer',
+                                        fontWeight: '600',
+                                        opacity: loading ? 0.5 : 1
+                                    }}
+                                >
+                                    {loading ? 'Creating...' : 'Create Course'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
 
-            {/* Teacher Selection Modal */}
-            <TeacherSelectionModal
-                isOpen={showTeacherModal}
-                onClose={() => setShowTeacherModal(false)}
-                teachers={suggestedTeachers}
-                onSelect={(teacher) => {
-                    console.log('Selected teacher:', teacher);
-                    setShowTeacherModal(false);
-                }}
-                courseData={formData}
-            />
-        </Box>
+                {/* Teacher Selection Modal */}
+                {showTeacherModal && (
+                    <TeacherSelectionModal
+                        isOpen={showTeacherModal}
+                        onClose={() => setShowTeacherModal(false)}
+                        teachers={suggestedTeachers}
+                        onSelect={(teacher) => {
+                            console.log('Selected teacher:', teacher);
+                            formData.teacher_id = teacher.id;
+                            setShowTeacherModal(false);
+                        }}
+                        courseData={formData}
+                    />
+                )}
+            </div>
+        </div>
     );
 };
 
