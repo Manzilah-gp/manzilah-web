@@ -1,147 +1,87 @@
 /* CourseListView.css */
-
 .course-list-container {
-    min-height: calc(100vh - 64px);
-    background: #f7fafc;
-    padding: 2rem;
+    animation: fadeIn 0.5s ease-out;
 }
 
-/* Header section */
-.course-list-header {
-    margin-bottom: 2rem;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-.course-list-header h1 {
-    color: #2d3748;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-/* Stats cards - gradient backgrounds */
-.stat-card-total {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-}
-
-.stat-card-active {
-    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-    color: white;
-}
-
-.stat-card-students {
-    background: linear-gradient(135deg, #f6ad55 0%, #ed8936 100%);
-    color: white;
-}
-
-.stat-card-total .chakra-stat__label,
-.stat-card-active .chakra-stat__label,
-.stat-card-students .chakra-stat__label {
-    color: rgba(255, 255, 255, 0.9);
-}
-
-.stat-card-total .chakra-stat__number,
-.stat-card-active .chakra-stat__number,
-.stat-card-students .chakra-stat__number {
-    color: white;
-    font-weight: 800;
-}
-
-/* Course card hover effect */
 .course-card {
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .course-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: #3b82f6;
 }
 
-/* Course type border colors */
-.course-card[data-type="memorization"] {
-    border-left-color: #9f7aea;
-    /* purple */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-.course-card[data-type="tajweed"] {
-    border-left-color: #4299e1;
-    /* blue */
+.spinner {
+    animation: spin 1s linear infinite;
 }
 
-.course-card[data-type="feqh"] {
-    border-left-color: #48bb78;
-    /* green */
+.page-loading {
+    animation: pulse 1.5s infinite;
 }
 
-/* Gender badge custom styles */
-.gender-badge-male {
-    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
-    color: white;
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
-.gender-badge-female {
-    background: linear-gradient(135deg, #ed64a6 0%, #d53f8c 100%);
-    color: white;
-}
-
-/* Empty state */
-.course-list-empty {
-    text-align: center;
-    padding: 4rem 2rem;
-}
-
-.course-list-empty svg {
-    width: 120px;
-    height: 120px;
-    color: #cbd5e0;
-    margin-bottom: 1.5rem;
-}
-
-/* Menu dropdown */
-.chakra-menu__menu-list {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e2e8f0;
-}
-
-.chakra-menu__menuitem:hover {
-    background: #f7fafc;
-}
-
-.chakra-menu__menuitem[data-danger="true"] {
-    color: #e53e3e;
-}
-
-.chakra-menu__menuitem[data-danger="true"]:hover {
-    background: #fff5f5;
-}
-
-/* Loading state */
-.course-list-loading {
-    min-height: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Responsive */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .course-list-container {
-        padding: 1rem;
+        padding: 16px;
     }
 
-    .course-list-header {
-        flex-direction: column;
-        align-items: flex-start;
+    h1 {
+        font-size: 24px !important;
     }
 
-    .course-list-header button {
-        width: 100%;
-        margin-top: 1rem;
+    .course-grid {
+        grid-template-columns: 1fr !important;
     }
+}
 
-    .stat-card-total,
-    .stat-card-active,
-    .stat-card-students {
-        margin-bottom: 1rem;
-    }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

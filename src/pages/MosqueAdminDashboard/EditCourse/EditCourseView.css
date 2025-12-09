@@ -1,58 +1,97 @@
-/* EditCourseView.css - Consistent with Create Course */
-
-.edit-course-container {
-    min-height: calc(100vh - 64px);
-    background: #f7fafc;
-    padding: 2rem;
+/* EditCourseView.css */
+.course-edit-container {
+    animation: fadeIn 0.5s ease-out;
 }
 
-/* Highlight edited fields */
-.chakra-input:focus,
-.chakra-select:focus,
-.chakra-textarea:focus {
-    border-color: #4299e1;
-    /* Chakra blue.500 */
-    box-shadow: 0 0 0 1px #4299e1;
-    transition: all 0.2s ease;
+.assign-teacher-container {
+    animation: fadeIn 0.5s ease-out;
 }
 
-/* Modified indicator for changed fields */
-.field-modified {
-    position: relative;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
-.field-modified::after {
-    content: '•';
-    position: absolute;
-    right: -10px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #48bb78;
-    /* Chakra green.500 */
-    font-size: 1.5rem;
+/* Form input focus states */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
-/* Course info summary card */
-.course-summary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    margin-bottom: 1.5rem;
+/* Button hover effects */
+button:not(:disabled):hover {
+    transform: translateY(-1px);
+    transition: transform 0.2s ease;
 }
 
-.course-summary h2 {
-    color: white;
-    margin-bottom: 0.5rem;
+/* Card hover effects */
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease;
 }
 
-/* Delete button warning */
-.chakra-button[colorScheme="red"]:hover {
-    background: #c53030;
-    transform: scale(1.02);
+/* Custom scrollbar for the page */
+::-webkit-scrollbar {
+    width: 8px;
 }
 
-/* Save changes animation */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+    .course-edit-container,
+    .assign-teacher-container {
+        padding: 16px !important;
+    }
+
+    h1 {
+        font-size: 24px !important;
+    }
+
+    .grid-2-col {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+.page-loading {
+    animation: pulse 1.5s infinite;
+}
+
 @keyframes pulse {
 
     0%,
@@ -65,17 +104,11 @@
     }
 }
 
-.save-button-pulse {
-    animation: pulse 2s infinite;
+/* Tag styling */
+.tag {
+    transition: all 0.2s ease;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .edit-course-container {
-        padding: 1rem;
-    }
-
-    .course-summary {
-        padding: 1rem;
-    }
+.tag:hover {
+    transform: scale(1.05);
 }

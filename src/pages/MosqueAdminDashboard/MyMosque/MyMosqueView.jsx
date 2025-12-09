@@ -1,35 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-    Box,
-    Button,
-    Heading,
-    Text,
-    VStack,
-    HStack,
-    Card,
-    CardBody,
-    CardHeader,
-    Badge,
-    Flex,
-    Icon,
-    Spinner,
-    Alert,
-    AlertIcon,
-    AlertDescription,
-    useToast,
-    Divider,
-    Avatar,
-    SimpleGrid,
-    Stat,
-    StatLabel,
-    StatNumber,
-    StatHelpText,
-    Grid,
-    GridItem,
-    Tag
-} from '@chakra-ui/react';
-import {
     EditOutlined,
     TeamOutlined,
     BookOutlined,
@@ -47,18 +18,11 @@ import './MyMosqueView.css';
 
 const MyMosqueView = () => {
     const navigate = useNavigate();
-    const toast = useToast();
     const { user } = useAuth();
 
     const [mosque, setMosque] = useState(null);
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState({
-        totalCourses: 0,
-        activeCourses: 0,
-        totalStudents: 0,
-        totalTeachers: 0
-    });
 
     useEffect(() => {
         fetchMosqueData();
@@ -67,68 +31,35 @@ const MyMosqueView = () => {
     const fetchMosqueData = async () => {
         try {
             setLoading(true);
-
-            // Get mosque ID from user context
-            // In a real implementation, you'd get this from your API
             const mosqueId = user.mosque_id || await getMosqueIdForAdmin();
 
             if (!mosqueId) {
-                toast({
-                    title: 'Error',
-                    description: 'Mosque not found for this admin',
-                    status: 'error',
-                    duration: 3000,
-                });
+                alert('Mosque not found for this admin');
                 return;
             }
 
-            // Fetch mosque details
             const mosqueResponse = await getMosqueById(mosqueId);
-            if (mosqueResponse.data) {
-                setMosque(mosqueResponse.data);
-            }
 
-            // Fetch courses for statistics
+
+
+            if (mosqueResponse.data) {
+                setMosque(mosqueResponse.data.data);
+            }
+            console.log('mosque data ', mosqueResponse);
+
             const coursesResponse = await getCoursesByMosque(mosqueId);
             if (coursesResponse.data) {
-                const coursesData = coursesResponse.data;
-                setCourses(coursesData);
-
-                // Calculate statistics
-                const totalStudents = coursesData.reduce(
-                    (sum, course) => sum + (course.enrolled_students || 0),
-                    0
-                );
-                const activeCourses = coursesData.filter(c => c.is_active).length;
-                const teachersSet = new Set(
-                    coursesData
-                        .filter(c => c.teacher_id)
-                        .map(c => c.teacher_id)
-                );
-
-                setStats({
-                    totalCourses: coursesData.length,
-                    activeCourses,
-                    totalStudents,
-                    totalTeachers: teachersSet.size
-                });
+                setCourses(coursesResponse.data);
             }
         } catch (error) {
             console.error('Error fetching mosque data:', error);
-            toast({
-                title: 'Error',
-                description: 'Failed to load mosque data',
-                status: 'error',
-                duration: 3000,
-            });
+            alert('Failed to load mosque data');
         } finally {
             setLoading(false);
         }
     };
 
-    // Placeholder - implement proper API call
     const getMosqueIdForAdmin = async () => {
-        // This should call your backend API
         return 1; // Placeholder
     };
 
@@ -148,290 +79,436 @@ const MyMosqueView = () => {
 
     if (loading) {
         return (
-            <Flex justify="center" align="center" h="400px">
-                <Spinner size="xl" color="blue.500" thickness="4px" />
-            </Flex>
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '400px'
+            }}>
+                <div className="spinner" style={{
+                    border: '4px solid #f3f3f3',
+                    borderTop: '4px solid #3b82f6',
+                    borderRadius: '50%',
+                    width: '40px',
+                    height: '40px',
+                    animation: 'spin 1s linear infinite'
+                }}></div>
+            </div>
         );
     }
 
     if (!mosque) {
         return (
-            <Box p={8}>
-                <Alert status="error">
-                    <AlertIcon />
-                    <AlertDescription>
-                        Mosque not found. Please contact system administrator.
-                    </AlertDescription>
-                </Alert>
-            </Box>
+            <div style={{ padding: '32px' }}>
+                <div style={{
+                    backgroundColor: '#fed7d7',
+                    color: '#9b2c2c',
+                    padding: '16px',
+                    borderRadius: '8px'
+                }}>
+                    Mosque not found. Please contact system administrator.
+                </div>
+            </div>
         );
     }
 
     return (
-        <Box className="my-mosque-container" p={6} maxW="1400px" mx="auto">
-            {/* Header Section */}
-            <Flex justify="space-between" align="center" mb={6}>
-                <Box>
-                    <Heading size="lg" mb={2}>
-                        {mosque.name}
-                    </Heading>
-                    <Text color="gray.600">
-                        Manage your mosque details, courses, and activities
-                    </Text>
-                </Box>
-                <Button
-                    leftIcon={<EditOutlined />}
-                    colorScheme="blue"
-                    onClick={handleEditMosque}
-                >
-                    Edit Mosque
-                </Button>
-            </Flex>
+        <div className="my-mosque-container" style={{
+            minHeight: '100vh',
+            background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
+            padding: '32px 16px'
+        }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+                {/* Header Section */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '32px'
+                }}>
+                    <div>
+                        <h1 style={{
+                            fontSize: '32px',
+                            fontWeight: 'bold',
+                            color: '#1f2937',
+                            marginBottom: '8px'
+                        }}>
+                            {mosque.name}
+                        </h1>
+                        <p style={{ color: '#6b7280', fontSize: '18px' }}>
+                            Manage your mosque details, courses, and activities
+                        </p>
+                    </div>
+                </div>
 
-            {/* Statistics Cards */}
-            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={6} mb={6}>
-                <Card className="stat-card stat-card-courses">
-                    <CardBody>
-                        <Stat>
-                            <StatLabel>
-                                <HStack spacing={2}>
-                                    <Icon as={BookOutlined} />
-                                    <Text>Total Courses</Text>
-                                </HStack>
-                            </StatLabel>
-                            <StatNumber fontSize="3xl" color="white">
-                                {stats.totalCourses}
-                            </StatNumber>
-                            <StatHelpText color="whiteAlpha.900">
-                                {stats.activeCourses} active
-                            </StatHelpText>
-                        </Stat>
-                    </CardBody>
-                </Card>
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 400px',
+                    gap: '24px'
+                }}>
+                    {/* Mosque Details Card */}
+                    <div style={{
+                        backgroundColor: 'white',
+                        borderRadius: '16px',
+                        padding: '24px',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                    }}>
+                        <h2 style={{
+                            fontSize: '20px',
+                            fontWeight: '700',
+                            color: '#1f2937',
+                            marginBottom: '20px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}>
+                            <EnvironmentOutlined />
+                            Mosque Details
+                        </h2>
 
-                <Card className="stat-card stat-card-students">
-                    <CardBody>
-                        <Stat>
-                            <StatLabel>
-                                <HStack spacing={2}>
-                                    <Icon as={TeamOutlined} />
-                                    <Text>Total Students</Text>
-                                </HStack>
-                            </StatLabel>
-                            <StatNumber fontSize="3xl" color="white">
-                                {stats.totalStudents}
-                            </StatNumber>
-                            <StatHelpText color="whiteAlpha.900">
-                                Enrolled across all courses
-                            </StatHelpText>
-                        </Stat>
-                    </CardBody>
-                </Card>
-
-                <Card className="stat-card stat-card-teachers">
-                    <CardBody>
-                        <Stat>
-                            <StatLabel>
-                                <HStack spacing={2}>
-                                    <Icon as={UserOutlined} />
-                                    <Text>Active Teachers</Text>
-                                </HStack>
-                            </StatLabel>
-                            <StatNumber fontSize="3xl" color="white">
-                                {stats.totalTeachers}
-                            </StatNumber>
-                            <StatHelpText color="whiteAlpha.900">
-                                Teaching staff
-                            </StatHelpText>
-                        </Stat>
-                    </CardBody>
-                </Card>
-
-                <Card className="stat-card stat-card-status">
-                    <CardBody>
-                        <Stat>
-                            <StatLabel>
-                                <HStack spacing={2}>
-                                    <Icon as={BarChartOutlined} />
-                                    <Text>Mosque Status</Text>
-                                </HStack>
-                            </StatLabel>
-                            <Badge colorScheme="green" fontSize="lg" mt={2}>
-                                Active
-                            </Badge>
-                            <StatHelpText color="gray.600" mt={2}>
-                                All systems operational
-                            </StatHelpText>
-                        </Stat>
-                    </CardBody>
-                </Card>
-            </SimpleGrid>
-
-            <Grid templateColumns={{ base: '1fr', lg: '2fr 1fr' }} gap={6}>
-                {/* Mosque Details Card */}
-                <GridItem>
-                    <Card className="mosque-details-card">
-                        <CardHeader>
-                            <Heading size="md">
-                                <Icon as={EnvironmentOutlined} mr={2} />
-                                Mosque Details
-                            </Heading>
-                        </CardHeader>
-                        <CardBody>
-                            <VStack spacing={4} align="stretch">
-                                <Box>
-                                    <Text fontWeight="600" fontSize="sm" color="gray.600" mb={1}>
-                                        Location
-                                    </Text>
-                                    <HStack>
-                                        <Icon as={EnvironmentOutlined} color="blue.500" />
-                                        <Text>
-                                            {mosque.address || 'No address provided'}
-                                        </Text>
-                                    </HStack>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div>
+                                <h3 style={{
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: '#6b7280',
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase'
+                                }}>
+                                    Location
+                                </h3>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                                    <EnvironmentOutlined style={{ color: '#3b82f6' }} />
+                                    <p style={{
+                                        color: '#374151',
+                                        fontSize: '16px',
+                                        margin: 0
+                                    }}>
+                                        {mosque.address || 'No address provided'}
+                                    </p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
                                     {mosque.governorate && (
-                                        <HStack mt={2}>
-                                            <Tag colorScheme="blue">{mosque.governorate}</Tag>
-                                            {mosque.region && <Tag>{mosque.region}</Tag>}
-                                        </HStack>
+                                        <span style={{
+                                            backgroundColor: '#dbeafe',
+                                            color: '#1e40af',
+                                            padding: '6px 12px',
+                                            borderRadius: '9999px',
+                                            fontSize: '14px',
+                                            fontWeight: '500'
+                                        }}>
+                                            {mosque.governorate}
+                                        </span>
                                     )}
-                                </Box>
+                                    {mosque.region && (
+                                        <span style={{
+                                            backgroundColor: '#f3f4f6',
+                                            color: '#374151',
+                                            padding: '6px 12px',
+                                            borderRadius: '9999px',
+                                            fontSize: '14px',
+                                            fontWeight: '500'
+                                        }}>
+                                            {mosque.region}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
 
-                                <Divider />
+                            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '20px' }}></div>
 
-                                <Box>
-                                    <Text fontWeight="600" fontSize="sm" color="gray.600" mb={1}>
-                                        Contact Information
-                                    </Text>
-                                    {mosque.contact_number ? (
-                                        <HStack>
-                                            <Icon as={PhoneOutlined} color="green.500" />
-                                            <Text>{mosque.contact_number}</Text>
-                                        </HStack>
-                                    ) : (
-                                        <Text color="gray.500" fontSize="sm">
-                                            No contact number provided
-                                        </Text>)}
-                                </Box>
-
-                                <Divider />
-
-                                <Box>
-                                    <Text fontWeight="600" fontSize="sm" color="gray.600" mb={1}>
-                                        Administrator
-                                    </Text>
-                                    <HStack>
-                                        <Avatar name={user.full_name} size="sm" />
-                                        <Box>
-                                            <Text fontWeight="500">{user.full_name}</Text>
-                                            <Text fontSize="sm" color="gray.600">
-                                                {user.email}
-                                            </Text>
-                                        </Box>
-                                    </HStack>
-                                </Box>
-
-                                {mosque.latitude && mosque.longitude && (
-                                    <>
-                                        <Divider />
-                                        <Box>
-                                            <Text fontWeight="600" fontSize="sm" color="gray.600" mb={2}>
-                                                Coordinates
-                                            </Text>
-                                            <HStack spacing={4} fontSize="sm">
-                                                <Text>
-                                                    <strong>Lat:</strong> {parseFloat(mosque.latitude).toFixed(6)}
-                                                </Text>
-                                                <Text>
-                                                    <strong>Lng:</strong> {parseFloat(mosque.longitude).toFixed(6)}
-                                                </Text>
-                                            </HStack>
-                                        </Box>
-                                    </>
+                            <div>
+                                <h3 style={{
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: '#6b7280',
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase'
+                                }}>
+                                    Contact Information
+                                </h3>
+                                {mosque.contact_number ? (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <PhoneOutlined style={{ color: '#10b981' }} />
+                                        <p style={{
+                                            color: '#374151',
+                                            fontSize: '16px',
+                                            margin: 0
+                                        }}>
+                                            {mosque.contact_number}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <p style={{
+                                        color: '#9ca3af',
+                                        fontSize: '14px',
+                                        fontStyle: 'italic',
+                                        margin: 0
+                                    }}>
+                                        No contact number provided
+                                    </p>
                                 )}
-                            </VStack>
-                        </CardBody>
-                    </Card>
-                </GridItem>
+                            </div>
 
-                {/* Quick Actions Card */}
-                <GridItem>
-                    <Card className="quick-actions-card">
-                        <CardHeader>
-                            <Heading size="md">Quick Actions</Heading>
-                        </CardHeader>
-                        <CardBody>
-                            <VStack spacing={3} align="stretch">
-                                <Button
-                                    leftIcon={<PlusOutlined />}
-                                    colorScheme="blue"
-                                    size="lg"
+                            <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '20px' }}></div>
+
+                            <div>
+                                <h3 style={{
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: '#6b7280',
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase'
+                                }}>
+                                    Administrator
+                                </h3>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{
+                                        width: '40px',
+                                        height: '40px',
+                                        borderRadius: '50%',
+                                        backgroundColor: '#3b82f6',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        color: 'white',
+                                        fontWeight: '600',
+                                        fontSize: '16px'
+                                    }}>
+                                        {user.full_name?.charAt(0) || 'A'}
+                                    </div>
+                                    <div>
+                                        <p style={{
+                                            fontWeight: '600',
+                                            color: '#1f2937',
+                                            margin: '0 0 4px 0'
+                                        }}>
+                                            {user.full_name}
+                                        </p>
+                                        <p style={{
+                                            fontSize: '14px',
+                                            color: '#6b7280',
+                                            margin: 0
+                                        }}>
+                                            {user.email}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {mosque.latitude && mosque.longitude && (
+                                <>
+                                    <div style={{ borderTop: '1px solid #e5e7eb', paddingTop: '20px' }}></div>
+                                    <div>
+                                        <h3 style={{
+                                            fontSize: '14px',
+                                            fontWeight: '600',
+                                            color: '#6b7280',
+                                            marginBottom: '8px',
+                                            textTransform: 'uppercase'
+                                        }}>
+                                            Coordinates
+                                        </h3>
+                                        <div style={{
+                                            display: 'flex',
+                                            gap: '24px',
+                                            fontSize: '14px',
+                                            fontFamily: 'monospace'
+                                        }}>
+                                            <div>
+                                                <span style={{
+                                                    fontWeight: '600',
+                                                    color: '#374151'
+                                                }}>
+                                                    Lat:
+                                                </span>{' '}
+                                                {parseFloat(mosque.latitude).toFixed(6)}
+                                            </div>
+                                            <div>
+                                                <span style={{
+                                                    fontWeight: '600',
+                                                    color: '#374151'
+                                                }}>
+                                                    Lng:
+                                                </span>{' '}
+                                                {parseFloat(mosque.longitude).toFixed(6)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Sidebar with Quick Actions and Recent Activity */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        {/* Quick Actions Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: '#1f2937',
+                                marginBottom: '20px'
+                            }}>
+                                Quick Actions
+                            </h2>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                <button
                                     onClick={handleAddCourse}
-                                    w="100%"
+                                    style={{
+                                        backgroundColor: '#3b82f6',
+                                        color: 'white',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        padding: '16px',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        justifyContent: 'center',
+                                        fontSize: '16px',
+                                        fontWeight: '600'
+                                    }}
                                 >
+                                    <PlusOutlined />
                                     Add New Course
-                                </Button>
+                                </button>
 
-                                <Button
-                                    leftIcon={<EyeOutlined />}
-                                    variant="outline"
-                                    colorScheme="blue"
-                                    size="lg"
+                                <button
                                     onClick={handleViewCourses}
-                                    w="100%"
+                                    style={{
+                                        backgroundColor: 'transparent',
+                                        color: '#3b82f6',
+                                        border: '2px solid #3b82f6',
+                                        borderRadius: '8px',
+                                        padding: '16px',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        justifyContent: 'center',
+                                        fontSize: '16px',
+                                        fontWeight: '600'
+                                    }}
                                 >
+                                    <EyeOutlined />
                                     View All Courses
-                                </Button>
+                                </button>
 
-                                <Divider />
+                                <div style={{
+                                    borderTop: '1px solid #e5e7eb',
+                                    margin: '16px 0',
+                                    paddingTop: '16px'
+                                }}></div>
 
-                                <Box p={4} bg="blue.50" borderRadius="md">
-                                    <Text fontSize="sm" fontWeight="600" color="blue.800" mb={2}>
+                                <div style={{
+                                    padding: '16px',
+                                    backgroundColor: '#eff6ff',
+                                    borderRadius: '8px',
+                                    borderLeft: '4px solid #3b82f6'
+                                }}>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        fontWeight: '600',
+                                        color: '#1e40af',
+                                        marginBottom: '8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
                                         💡 Quick Tip
-                                    </Text>
-                                    <Text fontSize="sm" color="blue.700">
+                                    </p>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        color: '#3b82f6',
+                                        margin: 0,
+                                        lineHeight: '1.5'
+                                    }}>
                                         Keep your mosque information up to date to help students and parents find your courses easily.
-                                    </Text>
-                                </Box>
-                            </VStack>
-                        </CardBody>
-                    </Card>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
 
-                    {/* Recent Activity Card */}
-                    <Card mt={6}>
-                        <CardHeader>
-                            <Heading size="md">Recent Activity</Heading>
-                        </CardHeader>
-                        <CardBody>
-                            <VStack spacing={3} align="stretch">
+                        {/* Recent Activity Card */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <h2 style={{
+                                fontSize: '20px',
+                                fontWeight: '700',
+                                color: '#1f2937',
+                                marginBottom: '20px'
+                            }}>
+                                Recent Activity
+                            </h2>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                 {courses.slice(0, 3).map((course) => (
-                                    <Box
+                                    <div
                                         key={course.id}
-                                        p={3}
-                                        bg="gray.50"
-                                        borderRadius="md"
-                                        borderLeft="3px solid"
-                                        borderLeftColor="blue.500"
+                                        style={{
+                                            padding: '12px 16px',
+                                            backgroundColor: '#f9fafb',
+                                            borderRadius: '8px',
+                                            borderLeft: '3px solid #3b82f6',
+                                            cursor: 'pointer',
+                                            transition: 'all 0.2s ease'
+                                        }}
+                                        onClick={() => navigate(`/dashboard/mosque-admin/courses/${course.id}`)}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                            e.currentTarget.style.transform = 'translateX(4px)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.backgroundColor = '#f9fafb';
+                                            e.currentTarget.style.transform = 'translateX(0)';
+                                        }}
                                     >
-                                        <Text fontWeight="600" fontSize="sm">
+                                        <p style={{
+                                            fontWeight: '600',
+                                            fontSize: '14px',
+                                            color: '#1f2937',
+                                            margin: '0 0 4px 0'
+                                        }}>
                                             {course.name}
-                                        </Text>
-                                        <Text fontSize="xs" color="gray.600">
+                                        </p>
+                                        <p style={{
+                                            fontSize: '12px',
+                                            color: '#6b7280',
+                                            margin: 0
+                                        }}>
                                             {course.enrolled_students || 0} students enrolled
-                                        </Text>
-                                    </Box>
+                                        </p>
+                                    </div>
                                 ))}
                                 {courses.length === 0 && (
-                                    <Text fontSize="sm" color="gray.500" textAlign="center" py={4}>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        color: '#9ca3af',
+                                        textAlign: 'center',
+                                        padding: '32px 0',
+                                        fontStyle: 'italic'
+                                    }}>
                                         No courses yet. Create your first course!
-                                    </Text>
+                                    </p>
                                 )}
-                            </VStack>
-                        </CardBody>
-                    </Card>
-                </GridItem>
-            </Grid>
-        </Box>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
+
 export default MyMosqueView;
