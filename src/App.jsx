@@ -35,6 +35,10 @@ import MyMosqueView from './pages/MosqueAdminDashboard/MyMosque/MyMosqueView';
 
 import './App.css';
 
+import Home from "./pages/Home"; 
+import Profile from "./pages/ProfilePage";
+import ProfileDetails from "./pages/ProfileDetails"; // <-- تمت الإضافة هنا
+
 function App() {
   return (
 
@@ -44,7 +48,14 @@ function App() {
           <div className="App" style={{ height: '100vh', width: '100vw' }}>
 
             <Routes>
-              {/* Default Route → show Login */}
+              {/* Default Route → Home */} 
+          <Route path="/" element={<Home />} />
+
+          {/* Profile Details Page */} 
+          <Route path="/profile-details" element={<ProfileDetails />} /> 
+          {/* <-- الإضافة المهمة */}
+
+          {/* Auth Pages */}
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -92,7 +103,7 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="profile" element={<div>Profile Page</div>} />
+                <Route path="Profile" element={<div>Profile Page</div>} />
                 <Route path="settings/*" element={<div>Settings</div>} />
                 <Route path="donations/*" element={<div>Donations</div>} />
 
@@ -274,6 +285,9 @@ function App() {
 
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
+
+{/* for the profile page */}
+<Route path="/profile" element={<Profile />} />
 
             </Routes>
           </div>

@@ -367,12 +367,17 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                     <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
                         <UserOutlined />
                     </div>
-                    {!collapsed && (
-                        <div className="user-details">
-                            <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
-                            <p className="user-role">{user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}</p>
-                        </div>
-                    )}
+
+{!collapsed && (
+    <div className="user-details">
+        <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
+        <p className="user-role">
+            {user?.roles && user.roles.length > 0 
+                ? user.roles[0].replace('_', ' ').toUpperCase() 
+                : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
+        </p>
+    </div>
+)}
                 </div>
 
                 {/* Navigation Menu - FILTERED BY ROLE */}
