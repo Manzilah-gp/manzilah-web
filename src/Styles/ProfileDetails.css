@@ -1,0 +1,117 @@
+/* === PAGE LAYOUT === */
+.profile-layout {
+  display: flex;
+  background: #f4f7fb;
+  min-height: 100vh;
+}
+
+/* === MAIN PROFILE CONTAINER === */
+.profile-container {
+  flex: 1;
+  padding: 40px;
+}
+
+.profile-title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #1d4ed8; /* Blue */
+  font-weight: bold;
+}
+
+/* === FORM STYLING === */
+.profile-form {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* GRID ROW */
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  width: 100%;
+}
+
+/* Label Style */
+.profile-form label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #1e293b; /* dark slate */
+}
+
+/* Inputs baseline */
+.profile-form input,
+.profile-form select,
+.profile-form textarea {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  font-size: 15px;
+  background: #f8fafc;
+  color: #1e293b; /* always readable */
+  transition: all 0.2s ease;
+}
+
+/* Placeholder visible */
+.profile-form input::placeholder,
+.profile-form textarea::placeholder {
+  color: #64748b;
+}
+
+/* ========== FOCUS FIXED (no blue background) ========== */
+.profile-form input:focus,
+.profile-form select:focus,
+.profile-form textarea:focus {
+  border-color: #1d4ed8;
+  box-shadow: 0 0 6px rgba(29,78,216,0.35);
+  background: #ffffff;          /* KEEP background white */
+  color: #0f172a;               /* dark clear text */
+}
+
+/* Dropdown Styling */
+.profile-form select {
+  background: #f8fafc;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.profile-form select option {
+  background: white;
+  color: #1e293b;
+}
+
+/* Textarea */
+.profile-form textarea {
+  height: 120px;
+  resize: none;
+}
+
+/* Save Button */
+.save-btn {
+  padding: 14px;
+  background: #1d4ed8;
+  color: white;
+  font-size: 17px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.save-btn:hover {
+  background: #173ea6;
+  transform: scale(1.02);
+}
