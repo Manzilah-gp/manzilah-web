@@ -37,7 +37,6 @@ const TeacherRegistrationPage = () => {
         address: {
             address_line1: '',
             address_line2: '',
-            // city: '',
             region: '',
             governorate: '',
             postal_code: '',
@@ -51,19 +50,13 @@ const TeacherRegistrationPage = () => {
         has_sharea_certificate: false,
         tajweed_certificate_url: '',
         sharea_certificate_url: '',
-        experience_years: 0,
-        previous_mosques: [],
-        additional_qualifications: '',
 
         // Expertise & Preferences (merged into step 3)
         course_expertise: [],
         max_level_qualified: 1,
         hourly_rate_cents: 0,
-        preferred_mosques: [],
+        years_experience: 0,
         availability: {},
-        preferred_teaching_format: 'onsite',
-        teaching_style: [],
-        student_age_preference: []
     });
 
     const { submitRegistration, loading, error } = useTeacherRegistration();
@@ -120,17 +113,18 @@ const TeacherRegistrationPage = () => {
         try {
             const result = await submitRegistration(formData);
             if (result.success) {
-                message.success('تم تقديم طلب التسجيل بنجاح! يرجى انتظار موافقة الإدارة.');
+                message.success(t('teacher.successMessage'));
                 // Reset form or redirect
                 setCurrentStep(0);
                 setFormData({});
             } else {
-                message.error(error || 'فشل في التسجيل. يرجى المحاولة مرة أخرى.');
+                message.error(error || t('teacher.errorMessage'));
             }
         } catch (err) {
-            message.error('حدث خطأ أثناء التسجيل.');
+            message.error(t('teacher.errorTitle'));
         }
     };
+
 
     const CurrentFormComponent = steps[currentStep].component;
 

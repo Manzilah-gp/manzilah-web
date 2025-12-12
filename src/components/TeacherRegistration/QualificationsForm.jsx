@@ -119,7 +119,7 @@ const QualificationsForm = ({ formData, updateFormData }) => {
                         <Row gutter={16}>
                             <Col xs={24} md={12}>
                                 <Form.Item
-                                    name="experience_years"
+                                    name="years_experience"
                                     label="Years of Teaching Experience"
                                     rules={[{ required: true, message: 'Please enter years of experience' }]}
                                 >
@@ -132,29 +132,8 @@ const QualificationsForm = ({ formData, updateFormData }) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col xs={24} md={12}>
-                                <Form.Item
-                                    name="previous_mosques"
-                                    label="Previously Taught At"
-                                >
-                                    <Select
-                                        mode="tags"
-                                        placeholder="Add mosques or institutions"
-                                        tokenSeparators={[',']}
-                                    />
-                                </Form.Item>
-                            </Col>
                         </Row>
 
-                        <Form.Item
-                            name="additional_qualifications"
-                            label="Additional Qualifications"
-                        >
-                            <TextArea
-                                rows={4}
-                                placeholder="List any additional qualifications, training, or specializations..."
-                            />
-                        </Form.Item>
                     </div>
                 </Card>
             </Form>

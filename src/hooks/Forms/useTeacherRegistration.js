@@ -42,7 +42,7 @@ export const useTeacherRegistration = () => {
         return courseExpertise.map(courseTypeId => {
             const exp = {
                 course_type_id: courseTypeId,
-                years_experience: formData.experience_years || 0,
+                years_experience: formData.years_experience || 0,
                 hourly_rate_cents: formData.hourly_rate_cents || 0
             };
 
@@ -91,12 +91,6 @@ export const useTeacherRegistration = () => {
                     has_sharea_certificate: formData.has_sharea_certificate || false,
                     tajweed_certificate_url: formData.tajweed_certificate_url || null,
                     sharea_certificate_url: formData.sharea_certificate_url || null,
-                    experience_years: formData.experience_years || 0,
-                    previous_mosques: formData.previous_mosques || [],
-                    additional_qualifications: formData.additional_qualifications || '',
-                    preferred_teaching_format: formData.preferred_teaching_format || 'onsite',
-                    student_age_preference: formData.student_age_preference || [],
-                    hourly_rate_cents: formData.hourly_rate_cents || 0,
                 },
 
                 // Transform expertise
