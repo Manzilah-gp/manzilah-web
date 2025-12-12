@@ -44,7 +44,7 @@ const EditMosqueForm = () => {
     const fetchMosqueData = async () => {
         if (!id) {
             message.error('No mosque ID provided');
-            navigate('/dashboard/mosque-list');
+            navigate('/mosque-list');
             return;
         }
 
@@ -95,13 +95,13 @@ const EditMosqueForm = () => {
             } else {
                 console.error('Invalid mosque data structure:', mosqueData);
                 message.error('Mosque not found or invalid data structure');
-                navigate('/dashboard/mosque-list');
+                navigate('/mosque-list');
             }
 
         } catch (error) {
             console.error('Error fetching mosque:', error);
             message.error('Failed to load mosque data');
-            navigate('/dashboard/mosque-list');
+            navigate('/mosque-list');
         } finally {
             setFetching(false);
         }
@@ -154,7 +154,7 @@ const EditMosqueForm = () => {
 
             if (response.success || response.data) {
                 message.success('Mosque updated successfully!');
-                navigate('/dashboard/mosque-list');
+                navigate('/mosque-list');
             } else {
                 throw new Error(response.message || 'Update failed');
             }
@@ -192,7 +192,7 @@ const EditMosqueForm = () => {
         return (
             <div className="error-container">
                 <Text type="danger">Mosque not found</Text>
-                <Button onClick={() => navigate('/dashboard/mosque-list')}>
+                <Button onClick={() => navigate('/mosque-list')}>
                     Back to Dashboard
                 </Button>
             </div>
@@ -207,7 +207,7 @@ const EditMosqueForm = () => {
                     <Button
                         type="text"
                         icon={<ArrowLeftOutlined />}
-                        onClick={() => navigate('/dashboard/mosque-list')}
+                        onClick={() => navigate('/mosque-list')}
                         className="back-button"
                     >
                         Back to List
@@ -349,7 +349,7 @@ const EditMosqueForm = () => {
                                 Update Mosque
                             </Button>
                             <Button
-                                onClick={() => navigate('/dashboard/mosque-list')}
+                                onClick={() => navigate('/mosque-list')}
                                 size="large"
                                 disabled={loading}
                             >

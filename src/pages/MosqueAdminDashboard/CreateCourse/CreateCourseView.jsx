@@ -125,7 +125,7 @@ const CreateCourseView = () => {
             const response = await createCourse(formData);
             if (response.status === 201) {
                 alert('Course created successfully');
-                navigate('/dashboard/mosque-admin/courses');
+                navigate('/mosque-admin/courses');
             }
         } catch (error) {
             alert(error.response?.data?.message || 'Failed to create course');
@@ -176,7 +176,7 @@ const CreateCourseView = () => {
                 {/* Header */}
                 <div style={{ marginBottom: '32px' }}>
                     <button
-                        onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                        onClick={() => navigate('/mosque-admin/courses')}
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',

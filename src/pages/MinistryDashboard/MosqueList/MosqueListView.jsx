@@ -264,7 +264,7 @@ const MosqueListView = () => {
         console.log('Editing mosque:', mosque);
 
         // FIXED: Use the correct navigation path
-        navigate(`/dashboard/edit-mosque/${mosque.id}`);
+        navigate(`/edit-mosque/${mosque.id}`);
 
         message.info(`Opening edit form for: ${mosque.name}`);
     };

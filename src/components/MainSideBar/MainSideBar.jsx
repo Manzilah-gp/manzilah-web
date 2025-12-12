@@ -68,7 +68,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <BarChartOutlined />,
             label: t('sidebar.statistics') || 'Statistics',
             roles: ['mosque_admin', 'ministry_admin'],
-            link: '/dashboard/statistics'
+            link: '/statistics'
         },
         {
             key: 'mosques',
@@ -79,14 +79,14 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 {
                     key: 'add-mosque',
                     label: 'Add Mosque',
-                    link: '/dashboard/add-mosque',
+                    link: '/add-mosque',
                     icon: <PlusOutlined />,
                     roles: ['ministry_admin']
                 },
                 {
                     key: 'mosque-list',
                     label: 'Mosque List',
-                    link: '/dashboard/mosque-list',
+                    link: '/mosque-list',
                     icon: <UnorderedListOutlined />,
                     roles: ['ministry_admin']
                 }
@@ -97,66 +97,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <DollarOutlined />,
             label: t('sidebar.Donationds') || 'Donations',
             roles: ['ministry_admin'],
-            children: [
-                {
-                    key: 'pending-donations',
-                    label: 'Pending',
-                    link: '/dashboard/donations/pending',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'approved-donations',
-                    label: 'Approved',
-                    link: '/dashboard/donations/approved',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'rejected-donations',
-                    label: 'Rejected',
-                    link: '/dashboard/donations/rejected',
-                    roles: ['ministry_admin']
-                }
-            ]
-        },
-        {
-            key: 'user-management',
-            icon: <TeamOutlined />,
-            label: t('sidebar.userManagement') || 'User Management',
-            roles: ['ministry_admin'],
-            children: [
-                {
-                    key: 'add-user',
-                    label: 'Add User',
-                    link: '/dashboard/users/add',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'user-list',
-                    label: 'User List',
-                    link: '/dashboard/users/list',
-                    roles: ['ministry_admin']
-                }
-            ]
-        },
-        {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: t('sidebar.systemSettings') || 'Settings',
-            roles: ['ministry_admin'],
-            children: [
-                {
-                    key: 'general-settings',
-                    label: 'General',
-                    link: '/settings/general',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'notifications',
-                    label: 'Notifications',
-                    link: '/settings/notifications',
-                    roles: ['ministry_admin']
-                }
-            ]
+            link: '/donations'
         },
 
         // ==================== MOSQUE ADMIN ONLY ====================
@@ -165,9 +106,21 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <BankOutlined />,
             label: 'My Mosque',
             roles: ['mosque_admin'],
-            link: '/dashboard/my-mosque'
+            link: '/my-mosque'
         },
         {
+            key: 'teachers-management',
+            icon: <TeamOutlined />,
+            label: t('sidebar.teachersManagement') || 'Teachers Management',
+            roles: ['mosque_admin'],
+            link: '/teachers-management'
+        }, {
+            key: 'events-management',
+            icon: <TeamOutlined />,
+            label: t('sidebar.eventsManagement') || 'Events Management',
+            roles: ['mosque_admin'],
+            link: '/events-management'
+        }, {
             key: 'courses',
             icon: <BookOutlined />,
             label: 'Courses',
@@ -176,13 +129,13 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 {
                     key: 'course-list',
                     label: 'All Courses',
-                    link: '/dashboard/mosque-admin/courses',
+                    link: '/mosque-admin/courses',
                     roles: ['mosque_admin', 'teacher']
                 },
                 {
                     key: 'add-course',
                     label: 'Add Course',
-                    link: '/dashboard/mosque-admin/courses/create',
+                    link: '/mosque-admin/courses/create',
                     roles: ['mosque_admin']
                 }
 
@@ -195,14 +148,14 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <BookOutlined />,
             label: 'My Courses',
             roles: ['teacher'],
-            link: '/dashboard/my-courses'
+            link: '/my-courses'
         },
         {
             key: 'students',
             icon: <TeamOutlined />,
             label: 'My Students',
             roles: ['teacher'],
-            link: '/dashboard/students'
+            link: '/students'
         },
 
         // ==================== STUDENT ONLY ====================
@@ -227,7 +180,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <TeamOutlined />,
             label: 'My Children',
             roles: ['parent'],
-            link: '/dashboard/children'
+            link: '/children'
         },
         {
             key: 'progress',
@@ -368,16 +321,16 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                         <UserOutlined />
                     </div>
 
-{!collapsed && (
-    <div className="user-details">
-        <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
-        <p className="user-role">
-            {user?.roles && user.roles.length > 0 
-                ? user.roles[0].replace('_', ' ').toUpperCase() 
-                : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
-        </p>
-    </div>
-)}
+                    {!collapsed && (
+                        <div className="user-details">
+                            <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
+                            <p className="user-role">
+                                {user?.roles && user.roles.length > 0
+                                    ? user.roles[0].replace('_', ' ').toUpperCase()
+                                    : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Navigation Menu - FILTERED BY ROLE */}
