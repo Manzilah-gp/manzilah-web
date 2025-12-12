@@ -59,6 +59,13 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent', 'donor'],
             link: '/calendar'
         },
+        {//For Events 
+    key: 'events',
+    icon: <CalendarOutlined />,
+    label: t('events') || 'Events',
+    roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher', 'donor'],
+    link: '/events'
+},
 
 
         // ==================== MINISTRY ADMIN ONLY ====================
@@ -92,32 +99,13 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 }
             ]
         },
-        {
-            key: 'donations',
-            icon: <DollarOutlined />,
-            label: t('sidebar.Donationds') || 'Donations',
-            roles: ['ministry_admin'],
-            children: [
-                {
-                    key: 'pending-donations',
-                    label: 'Pending',
-                    link: '/dashboard/donations/pending',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'approved-donations',
-                    label: 'Approved',
-                    link: '/dashboard/donations/approved',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'rejected-donations',
-                    label: 'Rejected',
-                    link: '/dashboard/donations/rejected',
-                    roles: ['ministry_admin']
-                }
-            ]
-        },
+       {
+    key: 'fundraising-events',
+    icon: <DollarOutlined />,
+    label: 'Fundraising Events',
+    link: '/fundraising-approvals',
+    roles: ['ministry_admin']
+},
         {
             key: 'user-management',
             icon: <TeamOutlined />,

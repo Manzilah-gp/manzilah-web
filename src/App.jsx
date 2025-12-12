@@ -34,6 +34,11 @@ import ViewCourseView from './pages/MosqueAdminDashboard/ViewCourse/ViewCourseVi
 import MyMosqueView from './pages/MosqueAdminDashboard/MyMosque/MyMosqueView';
 
 
+// Events 
+import EventsPage from './pages/EventsPage';
+import EventDetailsPage from './pages/Eventdetailspage';
+import FundraisingApprovalsPage from './pages/Fundraisingapprovalspage';
+
 
 import './App.css';
 
@@ -290,6 +295,13 @@ function App() {
 
 {/* for the profile page */}
 <Route path="/profile" element={<Profile />} />
+{/* Events Page */}
+<Route path="/events" element={<EventsPage />} />
+<Route path="/events/:id" element={<EventDetailsPage />} />
+<Route path="/fundraising-approvals" element={<FundraisingApprovalsPage />} />
+
+
+
 
             </Routes>
           </div>
