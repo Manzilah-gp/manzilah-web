@@ -17,6 +17,7 @@ import {
 } from '@ant-design/icons';
 import { message, Select, Button, Spin, Radio } from 'antd';
 import '../Styles/Events.css';
+import EditEventModal from '../components/Events/EditEventModal';
 
 const { Option } = Select;
 
@@ -33,6 +34,8 @@ function EventsPage() {
   
   const [filterType, setFilterType] = useState('all');
   const [filterScope, setFilterScope] = useState('all');
+  const [editModalVisible, setEditModalVisible] = useState(false);
+const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
   
   // Check user roles
   const isMosqueAdmin = user?.roles?.includes('mosque_admin');
@@ -156,6 +159,21 @@ function EventsPage() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
+  // Handle edit event button click
+const handleEditEvent = (event) => {
+  console.log('Edit event:', event);
+  setSelectedEventForEdit(event);
+  setEditModalVisible(true);
+};
+
+// Handle event updated successfully
+const handleEventUpdated = () => {
+  setEditModalVisible(false);
+  setSelectedEventForEdit(null);
+  fetchEvents();
+  message.success('Event updated and resubmitted for approval!');
+};
+
   // Check if event belongs to current user
   const isMyEvent = (event) => {
     return event.created_by === user?.id;
@@ -277,19 +295,20 @@ function EventsPage() {
           {/* Events Grid */}
           <div className="events-grid">
             {events.length > 0 ? (
-              events.map(event => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onLike={handleLike}
-                  onUnlike={handleUnlike}
-                  onRSVP={handleRSVP}
-                  onView={handleViewEvent}
-                  onViewInteractions={handleViewInteractions}
-                  isMosqueAdmin={isMosqueAdmin}
-                  isMyEvent={isMyEvent(event)}
-                />
-              ))
+         events.map(event => (
+  <EventCard
+    key={event.id}
+    event={event}
+    onLike={handleLike}
+    onUnlike={handleUnlike}
+    onRSVP={handleRSVP}
+    onView={handleViewEvent}
+    onViewInteractions={handleViewInteractions}
+    onEdit={handleEditEvent}  // ← ADD THIS LINE
+    isMosqueAdmin={isMosqueAdmin}
+    isMyEvent={isMyEvent(event)}
+  />
+))
             ) : (
               <div className="no-events">
                 <CalendarOutlined style={{ fontSize: 64, color: '#ccc' }} />
@@ -328,7 +347,18 @@ function EventsPage() {
           eventId={selectedEventId}
         />
       )}
-
+{/* Edit Event Modal */}
+{editModalVisible && (
+  <EditEventModal
+    visible={editModalVisible}
+    onClose={() => {
+      setEditModalVisible(false);
+      setSelectedEventForEdit(null);
+    }}
+    onSuccess={handleEventUpdated}
+    event={selectedEventForEdit}
+  />
+)}
       <Footer />
     </>
   );

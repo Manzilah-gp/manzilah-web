@@ -11,11 +11,14 @@ import {
   CalendarOutlined,
   BankOutlined,
   TeamOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import { Tag, Button } from 'antd';
 import './EventCard.css';
+import './RejectionBanner.css';
 
-const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions, isMosqueAdmin, isMyEvent }) => {
+// EventCard component with rejection notification and edit functionality
+const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions, onEdit, isMosqueAdmin, isMyEvent }) => {
   const {
     id,
     title,
@@ -32,6 +35,8 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
     comments_count,
     user_liked,
     user_rsvp,
+    approval_status,
+    rejection_reason,
   } = event;
 
   const eventTypeColors = {
@@ -48,6 +53,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
     fundraising: 'Fundraising'
   };
 
+  // Format date helper function
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       weekday: 'long',
@@ -57,6 +63,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
     });
   };
 
+  // Handle like/unlike button click
   const handleLikeClick = () => {
     if (user_liked) {
       onUnlike(id);
@@ -65,12 +72,65 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
     }
   };
 
+  // Handle RSVP button click
   const handleRSVPClick = (rsvpStatus) => {
     onRSVP(id, rsvpStatus);
   };
 
   return (
     <div className="event-card">
+      
+      {/* Rejection Banner - Shows only for rejected events */}
+      {approval_status === 'rejected' && (
+        <div className="rejection-banner">
+          <div className="rejection-banner-header">
+            <CloseCircleOutlined className="rejection-banner-icon" />
+            <h4 className="rejection-banner-title">Event Rejected by Ministry</h4>
+          </div>
+          
+          {rejection_reason && (
+            <div className="rejection-reason-box">
+              <div className="rejection-reason-label">
+                <ExclamationCircleOutlined /> Reason for Rejection:
+              </div>
+              <p className="rejection-reason-text">
+                {rejection_reason}
+              </p>
+            </div>
+          )}
+          
+          <p className="rejection-help-text">
+            💡 Please update your event according to the feedback above and resubmit for approval.
+          </p>
+          
+          {/* Edit & Resubmit Button for rejected events */}
+          {isMyEvent && (
+            <Button
+              type="primary"
+              danger
+              onClick={() => onEdit(event)}
+              style={{ marginTop: '12px', width: '100%' }}
+            >
+              ✏️ Edit & Resubmit Event
+            </Button>
+          )}
+        </div>
+      )}
+
+      {/* Pending Approval Notice - Shows for pending fundraising events */}
+      {approval_status === 'pending' && event_type === 'fundraising' && (
+        <div className="pending-banner">
+          <div className="pending-banner-header">
+            <ClockCircleOutlined className="pending-banner-icon" />
+            <h4 className="pending-banner-title">Awaiting Ministry Approval</h4>
+          </div>
+          <p className="pending-help-text">
+            ⏳ This fundraising event is pending approval from the ministry. You will be notified once reviewed.
+          </p>
+        </div>
+      )}
+
+      {/* Event Card Header */}
       <div className="event-card-header">
         <div className="event-type-badge">
           <Tag color={eventTypeColors[event_type]}>
@@ -83,6 +143,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
         </div>
       </div>
 
+      {/* Event Content */}
       <div className="event-card-content">
         <h3 className="event-title">{title}</h3>
         <p className="event-description">
@@ -113,6 +174,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
         </div>
       </div>
 
+      {/* Event Stats */}
       <div className="event-stats">
         <div className="stat-item">
           {user_liked ? <HeartFilled style={{ color: '#ff4d4f' }} /> : <HeartOutlined />}
@@ -128,6 +190,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
         </div>
       </div>
 
+      {/* Event Actions */}
       <div className="event-actions">
         <button
           className={`action-btn ${user_liked ? 'liked' : ''}`}
@@ -162,6 +225,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
         </button>
       </div>
 
+      {/* View Interactions Button - Only for mosque admin's own events */}
       {isMosqueAdmin && isMyEvent && (
         <Button
           type="default"
@@ -182,6 +246,7 @@ const EventCard = ({ event, onLike, onUnlike, onRSVP, onView, onViewInteractions
         </Button>
       )}
 
+      {/* View Details Button */}
       <Button
         type="link"
         onClick={() => onView(id)}

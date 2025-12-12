@@ -1,0 +1,84 @@
+/* Rejection Banner Styles */
+.rejection-banner {
+    background: linear-gradient(135deg, #fff1f0 0%, #ffccc7 100%);
+    border: 2px solid #ff4d4f;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rejection-banner-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.rejection-banner-icon {
+    font-size: 20px;
+    color: #cf1322;
+}
+
+.rejection-banner-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #cf1322;
+    margin: 0;
+}
+
+.rejection-reason-box {
+    background: white;
+    border-radius: 8px;
+    padding: 12px;
+    border-left: 4px solid #ff4d4f;
+}
+
+.rejection-reason-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #8c8c8c;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.rejection-reason-text {
+    font-size: 14px;
+    color: #262626;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.rejection-help-text {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #595959;
+    font-style: italic;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .rejection-banner {
+        padding: 12px;
+    }
+    
+    .rejection-banner-title {
+        font-size: 14px;
+    }
+    
+    .rejection-reason-text {
+        font-size: 13px;
+    }
+}
