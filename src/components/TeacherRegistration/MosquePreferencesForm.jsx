@@ -152,25 +152,6 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                         </Form.Item>
 
                         <Row gutter={16}>
-
-                            <Col xs={24} md={12}>
-                                <Form.Item
-                                    name="student_age_preference"
-                                    label={t('teacher.agePreference')}
-                                >
-                                    <Select
-                                        mode="multiple"
-                                        placeholder={t('teacher.agePreference')}
-                                    >
-                                        {agePreferences.map(age => (
-                                            <Option key={age.value} value={age.value}>
-                                                {age.label}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-
                             <Col xs={24} md={12}>
                                 <Form.Item
                                     name="hourly_rate_cents"
@@ -196,17 +177,17 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                     <div className="form-section">
                         <h3>
                             <EnvironmentOutlined style={{ marginLeft: 8 }} />
-                            {t('teacher.preferredMosques') || 'المساجد المفضلة'}
+                            {t('teacher.availableMosques') || 'المساجد المتاحة للانضمام إليها'}
                         </h3>
 
                         <Form.Item
                             name="preferred_mosques"
-                            label={t('teacher.preferredMosques')}
+                            label={t('teacher.MosqueToJoin')}
                             rules={[{ required: true, message: t('teacher.selectMosque') }]}
                         >
                             <Select
                                 mode="multiple"
-                                placeholder={t('teacher.preferredMosques')}
+                                placeholder={t('teacher.availableMosques')}
                                 optionLabelProp="label"
                                 loading={loadingMosques}
                                 notFoundContent={loadingMosques ? <Spin size="small" /> : 'لا توجد مساجد'}
@@ -231,19 +212,7 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                             </Select>
                         </Form.Item>
 
-                        <Form.Item
-                            name="preferred_teaching_format"
-                            label={t('teacher.teachingFormat')}
-                            rules={[{ required: true, message: t('teacher.selectFormat') }]}
-                        >
-                            <Select placeholder="اختر نمط التدريس">
-                                {teachingFormats.map(format => (
-                                    <Option key={format.value} value={format.value}>
-                                        {format.label}
-                                    </Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
+
                     </div>
                 </Card>
 

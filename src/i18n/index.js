@@ -149,6 +149,11 @@ const resources = {
             'teacher.selectFormat': 'Please select teaching format',
             'teacher.selectDaysandTimes': ' Select preferred days and times for teaching',
             'teacher.joinUs': 'Join our team of exceptional teachers and help build an informed and educated generation',
+            'teacher.MosqueToJoin': 'Select the mosque you want to join',
+            'teacher.availableMosques': 'Available mosques for joining',
+            'teacher.successMessage': 'Your registration request has been submitted successfully! Please wait for admin approval.',
+            'teacher.errorMessage': 'Registration failed. Please try again.',
+            'teacher.errorTitle': 'An error occurred during registration.',
             // Course types
             'course.memorization': 'Quran Memorization (Hifz)',
             'course.tajweed': 'Tajweed',
@@ -403,6 +408,11 @@ const resources = {
             'teacher.availability': 'جدول التوفر',
             'teacher.selectDaysandTimes': ' اختر الأيام والأوقات المناسبة للتدريس',
             'teacher.joinUs': 'انضم إلى فريقنا من المعلمين المتميزين وساعد في بناء جيل واعٍ ومثقف',
+            'teacher.MosqueToJoin': 'اختر المسجد الذي تريد الانضمام إليه',
+            'teacher.availableMosques': 'المساجد المتاحة للانضمام إليها',
+            'teacher.successMessage': 'تم تقديم طلب التسجيل بنجاح! يرجى انتظار موافقة الإدارة.',
+            'teacher.errorMessage': 'حدث خطأ أثناء تقديم طلب التسجيل. يرجى المحاولة مرة أخرى.',
+            'teacher.errorTitle': 'خطأ في تقديم طلب التسجيل',
             // Course types
             'course.memorization': 'حفظ القرآن (Hifz)',
             'course.tajweed': 'التجويد (Tajweed)',

@@ -165,7 +165,7 @@ const TeacherSelectionModal = ({ isOpen, onClose, teachers, onSelect, courseData
                                 <div className="bonus-points">
                                     <div className="bonus-item">
                                         <TrophyOutlined />
-                                        <span>{teacher.experience_years || 0} years exp</span>
+                                        <span>{teacher.years_experience || 0} years exp</span>
                                     </div>
 
                                     {(teacher.has_tajweed_certificate || teacher.has_sharea_certificate) && (
