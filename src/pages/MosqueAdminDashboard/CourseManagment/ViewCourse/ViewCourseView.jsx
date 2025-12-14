@@ -13,7 +13,7 @@ import {
     BookOutlined,
     CheckCircleOutlined
 } from '@ant-design/icons';
-import { getCourseById, deleteCourse } from '../../../api/course';
+import { getCourseById, deleteCourse } from '../../../../api/course';
 import './ViewCourseView.css';
 
 const ViewCourseView = () => {
@@ -136,7 +136,7 @@ const ViewCourseView = () => {
                     marginBottom: '32px'
                 }}>
                     <button
-                        onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                        onClick={() => navigate('/mosque-admin/courses')}
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',

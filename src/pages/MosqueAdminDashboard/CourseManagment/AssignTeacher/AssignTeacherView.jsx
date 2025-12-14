@@ -17,8 +17,8 @@ import {
     getCourseById,
     getSuggestedTeachers,
     assignTeacherToCourse
-} from '../../../api/course';
-import TeacherSelectionModal from '../../../components/Course/TeacherSelectionModal';
+} from '../../../../api/course';
+import TeacherSelectionModal from '../../../../components/Course/TeacherSelectionModal';
 import './AssignTeacherView.css';
 
 const AssignTeacherView = () => {

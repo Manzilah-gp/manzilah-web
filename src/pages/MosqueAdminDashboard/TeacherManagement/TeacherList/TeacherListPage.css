@@ -1,0 +1,99 @@
+.teacher-list-page {
+    padding: 24px;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.teacher-list-header {
+    margin-bottom: 24px;
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #23d5ab, #23a6d5);
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
+    border: none;
+}
+
+.teacher-list-header .page-title,
+.teacher-list-header .ant-typography {
+    color: white !important;
+    margin-bottom: 0 !important;
+}
+
+.teacher-list-page .stats-row {
+    margin-bottom: 24px;
+}
+
+.teacher-list-page .stat-card {
+    text-align: center;
+    border-radius: 8px;
+    height: 100%;
+    /* Ensure no external overrides affect standard card behavior */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.teacher-list-page .stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.teacher-list-page .stat-card.total {
+    border-top: 4px solid #1890ff;
+}
+
+.teacher-list-page .stat-card.active {
+    border-top: 4px solid #52c41a;
+}
+
+.teacher-list-page .stat-card.inactive {
+    border-top: 4px solid #ff4d4f;
+}
+
+.teacher-list-page .stat-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.teacher-list-page .stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: #262626;
+}
+
+.teacher-list-page .stat-label {
+    font-size: 16px;
+    color: #8c8c8c;
+}
+
+.teacher-list-page .filters-card {
+    margin-bottom: 24px;
+}
+
+.teacher-list-page .grid-card {
+    margin-bottom: 24px;
+}
+
+.teacher-list-page .teacher-name {
+    font-weight: 500;
+    color: #1890ff;
+}
+
+.teacher-list-page .email-cell,
+.teacher-list-page .phone-cell {
+    color: #595959;
+}

@@ -18,7 +18,8 @@ import {
     TeamOutlined,
     BookOutlined,
     DollarOutlined,
-    CalendarOutlined
+    CalendarOutlined,
+    ScheduleOutlined
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
@@ -113,10 +114,10 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <TeamOutlined />,
             label: t('sidebar.teachersManagement') || 'Teachers Management',
             roles: ['mosque_admin'],
-            link: '/teachers-management'
+            link: 'mosque-admin/teacher-list'
         }, {
             key: 'events-management',
-            icon: <TeamOutlined />,
+            icon: <ScheduleOutlined />,
             label: t('sidebar.eventsManagement') || 'Events Management',
             roles: ['mosque_admin'],
             link: '/events-management'

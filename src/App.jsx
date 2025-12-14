@@ -24,15 +24,15 @@ import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView'
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
 
 // Course - Mosque Dashboard
-import CourseListView from './pages/MosqueAdminDashboard/CourseList/CourseListView';
-import CreateCourseView from './pages/MosqueAdminDashboard/CreateCourse/CreateCourseView';
-import EditCourseView from './pages/MosqueAdminDashboard/EditCourse/EditCourseView';
-import AssignTeacherView from './pages/MosqueAdminDashboard/AssignTeacher/AssignTeacherView';
-import ViewCourseView from './pages/MosqueAdminDashboard/ViewCourse/ViewCourseView';
+import CourseListView from './pages/MosqueAdminDashboard/CourseManagment/CourseList/CourseListView';
+import CreateCourseView from './pages/MosqueAdminDashboard/CourseManagment/CreateCourse/CreateCourseView';
+import EditCourseView from './pages/MosqueAdminDashboard/CourseManagment/EditCourse/EditCourseView';
+import AssignTeacherView from './pages/MosqueAdminDashboard/CourseManagment/AssignTeacher/AssignTeacherView';
+import ViewCourseView from './pages/MosqueAdminDashboard/CourseManagment/ViewCourse/ViewCourseView';
 import MyMosqueView from './pages/MosqueAdminDashboard/MyMosque/MyMosqueView';
 
-
-
+import TeacherListPage from './pages/MosqueAdminDashboard/TeacherManagement/TeacherList/TeacherListPage';
+import TeacherInfoPage from './pages/MosqueAdminDashboard/TeacherManagement/TeacherInfo/TeacherInfoPage';
 import './App.css';
 
 import Home from "./pages/Home";
@@ -127,26 +127,10 @@ function App() {
 
                 {/* Donation Routes - Ministry Admin only */}
                 <Route
-                  path="donations/pending"
+                  path="donations"
                   element={
                     <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Pending Donations - To be implemented</div>
-                    </RoleProtectedRoute>
-                  }
-                />
-                <Route
-                  path="donations/approved"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Approved Donations - To be implemented</div>
-                    </RoleProtectedRoute>
-                  }
-                />
-                <Route
-                  path="donations/rejected"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Rejected Donations - To be implemented</div>
+                      <div>Donations</div>
                     </RoleProtectedRoute>
                   }
                 />
@@ -201,6 +185,22 @@ function App() {
                   element={
                     <RoleProtectedRoute allowedRoles={['mosque_admin']}>
                       <MyMosqueView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="mosque-admin/teacher-list"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <TeacherListPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="mosque-admin/teacher-info/:id"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <TeacherInfoPage />
                     </RoleProtectedRoute>
                   }
                 />

@@ -43,7 +43,7 @@ import {
     getMemorizationLevels,
     getCourseById,
     updateCourse
-} from '../../../api/course';
+} from '../../../../api/course';
 import './EditCourseView.css';
 
 const EditCourseView = () => {

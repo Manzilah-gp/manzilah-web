@@ -15,8 +15,8 @@ import {
     MoreOutlined,
     SearchOutlined
 } from '@ant-design/icons';
-import { getCoursesByMosque, deleteCourse, getMyMosqueId } from '../../../api/course.js';
-import useAuth from "../../../hooks/useAuth.js";
+import { getCoursesByMosque, deleteCourse, getMyMosqueId } from '../../../../api/course.js';
+import useAuth from "../../../../hooks/useAuth.js";
 import './CourseListView.css';
 
 const CourseListView = () => {
@@ -448,7 +448,7 @@ const CourseListView = () => {
                                                         backgroundColor: '#f3f4f6',
                                                         color: '#374151'
                                                     }}>
-                                                        {getDifficultyLabel(course.difficulty_level)}
+                                                        {getDifficultyLabel(course.course_level)}
                                                     </span>
                                                 </div>
                                             </div>

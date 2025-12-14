@@ -11,8 +11,8 @@ import {
     getMemorizationLevels,
     createCourse,
     getSuggestedTeachers
-} from '../../../api/course';
-import TeacherSelectionModal from '../../../components/Course/TeacherSelectionModal';
+} from '../../../../api/course';
+import TeacherSelectionModal from '../../../../components/Course/TeacherSelectionModal';
 import './CreateCourseView.css';
 
 const CreateCourseView = () => {
@@ -35,7 +35,6 @@ const CreateCourseView = () => {
         name: '',
         description: '',
         course_format: 'short',
-        difficulty_level: 1,
         price_cents: 0,
         duration_weeks: null,
         total_sessions: null,
