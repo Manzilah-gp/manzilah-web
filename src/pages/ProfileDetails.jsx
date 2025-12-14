@@ -9,10 +9,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 function ProfileDetails() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // ✅ Sidebar state management
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
-  
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [user, setUser] = useState({
@@ -71,7 +71,7 @@ function ProfileDetails() {
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('token');
-      
+
       if (!token) {
         navigate('/login');
         return;
@@ -89,7 +89,7 @@ function ProfileDetails() {
       }
 
       const data = await response.json();
-      
+
       if (data.success && data.user) {
         setUser({
           fullName: data.user.full_name || "",
@@ -104,7 +104,7 @@ function ProfileDetails() {
           postal_code: data.user.location?.postal_code || ""
         });
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -123,7 +123,7 @@ function ProfileDetails() {
 
     try {
       const token = localStorage.getItem('token');
-      
+
       if (!token) {
         navigate('/login');
         return;
@@ -171,7 +171,7 @@ function ProfileDetails() {
       }
 
       message.success('تم حفظ التغييرات بنجاح');
-      
+
       setTimeout(() => {
         navigate('/profile');
       }, 1000);
@@ -205,9 +205,9 @@ function ProfileDetails() {
     return (
       <>
         <Header />
-        <MainSideBar 
-          collapsed={sidebarCollapsed} 
-          onToggleCollapse={handleToggleSidebar} 
+        <MainSideBar
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={handleToggleSidebar}
         />
         <div className="main-content-wrapper">
           <div className="profile-container">
@@ -222,11 +222,11 @@ function ProfileDetails() {
   return (
     <>
       <Header />
-      
+
       {/* ✅ Pass collapsed state and toggle function */}
-      <MainSideBar 
-        collapsed={sidebarCollapsed} 
-        onToggleCollapse={handleToggleSidebar} 
+      <MainSideBar
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={handleToggleSidebar}
       />
 
       <div className="main-content-wrapper">
@@ -238,10 +238,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>الاسم الكامل *</label>
-                <input 
-                  type="text" 
-                  name="fullName" 
-                  value={user.fullName} 
+                <input
+                  type="text"
+                  name="fullName"
+                  value={user.fullName}
                   onChange={handleChange}
                   required
                 />
@@ -249,10 +249,10 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>البريد الإلكتروني *</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={user.email} 
+                <input
+                  type="email"
+                  name="email"
+                  value={user.email}
                   onChange={handleChange}
                   required
                 />
@@ -262,10 +262,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>رقم الهاتف</label>
-                <input 
-                  type="text" 
-                  name="phone" 
-                  value={user.phone} 
+                <input
+                  type="text"
+                  name="phone"
+                  value={user.phone}
                   onChange={handleChange}
                   placeholder="970599123456"
                 />
@@ -273,9 +273,9 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>الجنس *</label>
-                <select 
-                  name="gender" 
-                  value={user.gender} 
+                <select
+                  name="gender"
+                  value={user.gender}
                   onChange={handleChange}
                   required
                 >
@@ -289,10 +289,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>تاريخ الميلاد *</label>
-                <input 
-                  type="date" 
-                  name="birthday" 
-                  value={user.birthday} 
+                <input
+                  type="date"
+                  name="birthday"
+                  value={user.birthday}
                   onChange={handleChange}
                   required
                 />
@@ -300,9 +300,9 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>العمر</label>
-                <input 
-                  type="text" 
-                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} سنة` : ""} 
+                <input
+                  type="text"
+                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} سنة` : ""}
                   disabled
                   style={{ background: '#f0f0f0', cursor: 'not-allowed' }}
                 />
@@ -317,9 +317,9 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>المحافظة</label>
-                <select 
-                  name="governorate" 
-                  value={user.governorate} 
+                <select
+                  name="governorate"
+                  value={user.governorate}
                   onChange={handleChange}
                 >
                   <option value="">اختر المحافظة</option>
@@ -333,10 +333,10 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>المنطقة/المدينة</label>
-                <input 
-                  type="text" 
-                  name="region" 
-                  value={user.region} 
+                <input
+                  type="text"
+                  name="region"
+                  value={user.region}
                   onChange={handleChange}
                   placeholder="مثال: البيرة، البلدة القديمة"
                 />
@@ -346,10 +346,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>العنوان 1</label>
-                <input 
-                  type="text" 
-                  name="address_line1" 
-                  value={user.address_line1} 
+                <input
+                  type="text"
+                  name="address_line1"
+                  value={user.address_line1}
                   onChange={handleChange}
                   placeholder="الشارع، رقم المبنى"
                 />
@@ -357,10 +357,10 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>العنوان 2</label>
-                <input 
-                  type="text" 
-                  name="address_line2" 
-                  value={user.address_line2} 
+                <input
+                  type="text"
+                  name="address_line2"
+                  value={user.address_line2}
                   onChange={handleChange}
                   placeholder="تفاصيل إضافية"
                 />
@@ -370,10 +370,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>الرمز البريدي</label>
-                <input 
-                  type="text" 
-                  name="postal_code" 
-                  value={user.postal_code} 
+                <input
+                  type="text"
+                  name="postal_code"
+                  value={user.postal_code}
                   onChange={handleChange}
                   placeholder="12345"
                 />
@@ -383,8 +383,8 @@ function ProfileDetails() {
               </div>
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="save-btn"
               disabled={saving}
             >

@@ -65,16 +65,16 @@ const MyMosqueView = () => {
 
     const handleEditMosque = () => {
         if (mosque) {
-            navigate(`/dashboard/edit-mosque/${mosque.id}`);
+            navigate(`/mosque-admin/edit-mosque/${mosque.id}`);
         }
     };
 
     const handleAddCourse = () => {
-        navigate('/dashboard/mosque-admin/courses/create');
+        navigate('/mosque-admin/courses/create');
     };
 
     const handleViewCourses = () => {
-        navigate('/dashboard/mosque-admin/courses');
+        navigate('/mosque-admin/courses');
     };
 
     if (loading) {
@@ -464,7 +464,7 @@ const MyMosqueView = () => {
                                             cursor: 'pointer',
                                             transition: 'all 0.2s ease'
                                         }}
-                                        onClick={() => navigate(`/dashboard/mosque-admin/courses/${course.id}`)}
+                                        onClick={() => navigate(`/mosque-admin/courses/${course.id}`)}
                                         onMouseEnter={(e) => {
                                             e.currentTarget.style.backgroundColor = '#f3f4f6';
                                             e.currentTarget.style.transform = 'translateX(4px)';

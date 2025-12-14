@@ -34,6 +34,8 @@ const resources = {
             "sidebar.addMosque": "Add Mosque",
             "sidebar.mosqueList": "Mosque List",
             "sidebar.donations": "Donations",
+            "sidebar.teachersManagement": "Teachers Management",
+            "sidebar.eventsManagement": "Events Management",
 
 
             // Dashboard
@@ -200,7 +202,7 @@ const resources = {
             'hero.mosques': 'Mosques',
             'hero.courses': 'Courses',
             'hero.community': 'Community',
-            
+
             'features.title': 'Our Key Services',
             'features.subtitle': 'Comprehensive management for mosques and Quran memorization centers, supporting students, parents, teachers, and donors.',
             'features.courses.title': 'Islamic Courses',
@@ -212,7 +214,7 @@ const resources = {
             'features.mosques.title': 'Mosque & Center Finder',
             'features.mosques.description': 'Locate mosques and Quran memorization centers. Get event schedules, prayer times, and stay connected with your local community.',
             'features.mosques.button': 'Find Mosques',
-            
+
             'journey.title': 'The Hafiz\'s Journey in Our App',
             'journey.subtitle': 'Simple Steps to Easily and Dedicatedly Memorize the Quran',
             'journey.step1.title': 'Registration and Joining',
@@ -227,7 +229,7 @@ const resources = {
             'journey.step5.description': 'Participate in mosque competitions and events, earning digital badges and certificates.',
             'journey.step6.title': 'Achievement and Recognition',
             'journey.step6.description': 'Upon completion, the student is recognized and displayed on the honor roll and mosque\'s honor board.',
-            
+
             'donations.title': 'Support & Participate',
             'donations.subtitle': 'Contribute to approved donation campaigns or join events organized by mosques and centers.',
             'donations.donations.title': 'Donations',
@@ -236,14 +238,14 @@ const resources = {
             'donations.events.title': 'Events',
             'donations.events.description': 'Participate in approved events, workshops, and community activities hosted by mosques and memorization centers.',
             'donations.events.button': 'View Events',
-            
+
             'stats.title': 'Our Impact',
             'stats.subtitle': 'Empowering students, families, and communities across Palestine',
             'stats.courses': 'Courses Available',
             'stats.mosques': 'Mosques & Centers',
             'stats.students': 'Students Enrolled',
             'stats.support': 'Support Available',
-            
+
             'faq.title': 'Common Questions',
             'faq.subtitle': 'Find quick answers to the most frequently asked questions about our platform and services.',
             'faq.question1': 'How do I register for a course?',
@@ -254,7 +256,7 @@ const resources = {
             'faq.answer3': 'You can donate securely through our integrated payment gateway in the Donations section. All campaigns are vetted and approved to ensure your contribution goes directly to the intended cause.',
             'faq.question4': 'Can parents track their children\'s progress?',
             'faq.answer4': 'Yes, parents who register their children will have access to a dedicated dashboard to monitor attendance, view grades, and track overall progress in real-time.',
-            
+
             'cta.title': 'Start Your Spiritual Journey Today',
             'cta.description': 'Join thousands of students, parents, and donors who are benefiting from Manzilah\'s unified platform.',
             'cta.getStarted': 'Get Started',
@@ -459,7 +461,7 @@ const resources = {
             'hero.mosques': 'المساجد',
             'hero.courses': 'الدورات',
             'hero.community': 'المجتمع',
-            
+
             'features.title': 'خدماتنا الرئيسية',
             'features.subtitle': 'إدارة شاملة للمساجد ومراكز حفظ القرآن، داعمة للطلاب وأولياء الأمور والمعلمين والمانحين.',
             'features.courses.title': 'الدورات الإسلامية',
@@ -471,7 +473,7 @@ const resources = {
             'features.mosques.title': 'البحث عن المساجد والمراكز',
             'features.mosques.description': 'حدد مواقع المساجد ومراكز حفظ القرآن. احصل على جداول الفعاليات، أوقات الصلاة، وابق على اتصال مع مجتمعك المحلي.',
             'features.mosques.button': 'ابحث عن المساجد',
-            
+
             'journey.title': 'رحلة الحافظ في تطبيقنا',
             'journey.subtitle': 'خطوات بسيطة لحفظ القرآن بسهولة واجتهاد',
             'journey.step1.title': 'التسجيل والانضمام',
@@ -486,7 +488,7 @@ const resources = {
             'journey.step5.description': 'شارك في مسابقات وفعاليات المساجد، وكسب شارات رقمية وشهادات.',
             'journey.step6.title': 'الإنجاز والاعتراف',
             'journey.step6.description': 'بعد الانتهاء، يتم تكريم الطالب وعرضه على لوحة الشرف ولوحة شرف المسجد.',
-            
+
             'donations.title': 'ادعم وشارك',
             'donations.subtitle': 'ساهم في حملات التبرع المعتمدة أو انضم إلى الفعاليات التي تنظمها المساجد والمراكز.',
             'donations.donations.title': 'التبرعات',
@@ -495,14 +497,14 @@ const resources = {
             'donations.events.title': 'الفعاليات',
             'donations.events.description': 'شارك في الفعاليات وورش العمل والأنشطة المجتمعية المعتمدة التي تستضيفها المساجد ومراكز الحفظ.',
             'donations.events.button': 'عرض الفعاليات',
-            
+
             'stats.title': 'تأثيرنا',
             'stats.subtitle': 'تمكين الطلاب والعائلات والمجتمعات في جميع أنحاء فلسطين',
             'stats.courses': 'الدورات المتاحة',
             'stats.mosques': 'المساجد والمراكز',
             'stats.students': 'الطلاب المسجلين',
             'stats.support': 'الدعم المتاح 24/7',
-            
+
             'faq.title': 'أسئلة شائعة',
             'faq.subtitle': 'ابحث عن إجابات سريعة للأسئلة الأكثر شيوعًا حول منصتنا وخدماتنا.',
             'faq.question1': 'كيف أسجل في دورة؟',
@@ -513,7 +515,7 @@ const resources = {
             'faq.answer3': 'يمكنك التبرع بأمان عبر بوابة الدفع المتكاملة في قسم التبرعات. يتم فحص جميع الحملات والموافقة عليها لضمان وصول مساهمتك مباشرة إلى الهدف المقصود.',
             'faq.question4': 'هل يمكن لأولياء الأمور تتبع تقدم أطفالهم؟',
             'faq.answer4': 'نعم، يمكن لأولياء الأمور الذين يسجلون أطفالهم الوصول إلى لوحة تحكم مخصصة لمراقبة الحضور وعرض الدرجات وتتبع التقدم العام في الوقت الفعلي.',
-            
+
             'cta.title': 'ابدأ رحلتك الروحية اليوم',
             'cta.description': 'انضم إلى آلاف الطلاب وأولياء الأمور والمانحين الذين يستفيدون من منصة منزلة الموحدة.',
             'cta.getStarted': 'ابدأ الآن',

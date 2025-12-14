@@ -15,8 +15,8 @@ import {
     MoreOutlined,
     SearchOutlined
 } from '@ant-design/icons';
-import { getCoursesByMosque, deleteCourse, getMyMosqueId } from '../../../api/course.js';
-import useAuth from "../../../hooks/useAuth.js";
+import { getCoursesByMosque, deleteCourse, getMyMosqueId } from '../../../../api/course.js';
+import useAuth from "../../../../hooks/useAuth.js";
 import './CourseListView.css';
 
 const CourseListView = () => {
@@ -168,7 +168,7 @@ const CourseListView = () => {
                 </p>
                 <button
                     style={{ backgroundColor: '#3b82f6', color: 'white', padding: '12px 24px', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-                    onClick={() => navigate('/dashboard/mosque-admin/courses/create')}
+                    onClick={() => navigate('/mosque-admin/courses/create')}
                 >
                     <PlusOutlined />
                     Create First Course
@@ -331,7 +331,7 @@ const CourseListView = () => {
                             fontWeight: '600',
                             boxShadow: '0 2px 4px rgba(59, 130, 246, 0.3)'
                         }}
-                        onClick={() => navigate('/dashboard/mosque-admin/courses/create')}
+                        onClick={() => navigate('/mosque-admin/courses/create')}
                     >
                         <PlusOutlined />
                         Create Course
@@ -398,7 +398,7 @@ const CourseListView = () => {
                                         transition: 'all 0.3s ease',
                                         cursor: 'pointer'
                                     }}
-                                    onClick={() => navigate(`/dashboard/mosque-admin/courses/${course.id}`)}
+                                    onClick={() => navigate(`/mosque-admin/courses/${course.id}`)}
                                 >
                                     {/* Inactive Badge */}
                                     {!course.is_active && (
@@ -448,7 +448,7 @@ const CourseListView = () => {
                                                         backgroundColor: '#f3f4f6',
                                                         color: '#374151'
                                                     }}>
-                                                        {getDifficultyLabel(course.difficulty_level)}
+                                                        {getDifficultyLabel(course.course_level)}
                                                     </span>
                                                 </div>
                                             </div>

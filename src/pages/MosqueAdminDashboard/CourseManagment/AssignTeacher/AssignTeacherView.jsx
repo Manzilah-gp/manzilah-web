@@ -17,8 +17,8 @@ import {
     getCourseById,
     getSuggestedTeachers,
     assignTeacherToCourse
-} from '../../../api/course';
-import TeacherSelectionModal from '../../../components/Course/TeacherSelectionModal';
+} from '../../../../api/course';
+import TeacherSelectionModal from '../../../../components/Course/TeacherSelectionModal';
 import './AssignTeacherView.css';
 
 const AssignTeacherView = () => {
@@ -93,7 +93,7 @@ const AssignTeacherView = () => {
                 });
 
                 // Navigate back to course list
-                navigate('/dashboard/mosque-admin/courses');
+                navigate('/mosque-admin/courses');
             }
         } catch (error) {
             toast({
@@ -157,7 +157,7 @@ const AssignTeacherView = () => {
                 {/* Header */}
                 <div style={{ marginBottom: '32px' }}>
                     <button
-                        onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                        onClick={() => navigate('/mosque-admin/courses')}
                         style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -539,7 +539,7 @@ const AssignTeacherView = () => {
                         </div>
 
                         <button
-                            onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                            onClick={() => navigate('/mosque-admin/courses')}
                             style={{
                                 padding: '10px 20px',
                                 backgroundColor: 'transparent',

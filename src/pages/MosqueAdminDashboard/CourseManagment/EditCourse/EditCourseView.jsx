@@ -43,7 +43,7 @@ import {
     getMemorizationLevels,
     getCourseById,
     updateCourse
-} from '../../../api/course';
+} from '../../../../api/course';
 import './EditCourseView.css';
 
 const EditCourseView = () => {
@@ -116,7 +116,7 @@ const EditCourseView = () => {
                 duration: 3000,
                 isClosable: true,
             });
-            navigate('/dashboard/mosque-admin/courses');
+            navigate('/mosque-admin/courses');
         } finally {
             setLoading(false);
         }
@@ -184,7 +184,7 @@ const EditCourseView = () => {
                     isClosable: true,
                 });
 
-                navigate('/dashboard/mosque-admin/courses');
+                navigate('/mosque-admin/courses');
             }
         } catch (error) {
             toast({
@@ -243,7 +243,7 @@ const EditCourseView = () => {
                 }}>
                     <div>
                         <button
-                            onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                            onClick={() => navigate('/mosque-admin/courses')}
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -981,7 +981,7 @@ const EditCourseView = () => {
                             <div style={{ display: 'flex', gap: '12px' }}>
                                 <button
                                     type="button"
-                                    onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                                    onClick={() => navigate('/mosque-admin/courses')}
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',

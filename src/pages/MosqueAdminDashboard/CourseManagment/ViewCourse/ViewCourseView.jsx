@@ -13,7 +13,7 @@ import {
     BookOutlined,
     CheckCircleOutlined
 } from '@ant-design/icons';
-import { getCourseById, deleteCourse } from '../../../api/course';
+import { getCourseById, deleteCourse } from '../../../../api/course';
 import './ViewCourseView.css';
 
 const ViewCourseView = () => {
@@ -40,18 +40,18 @@ const ViewCourseView = () => {
         } catch (error) {
             console.error('Error fetching course:', error);
             alert('Failed to load course data');
-            navigate('/dashboard/mosque-admin/courses');
+            navigate('/mosque-admin/courses');
         } finally {
             setLoading(false);
         }
     };
 
     const handleEdit = () => {
-        navigate(`/dashboard/mosque-admin/courses/edit/${id}`);
+        navigate(`/mosque-admin/courses/edit/${id}`);
     };
 
     const handleAssignTeacher = () => {
-        navigate(`/dashboard/mosque-admin/courses/assign-teacher/${id}`);
+        navigate(`/mosque-admin/courses/assign-teacher/${id}`);
     };
 
     const handleDelete = async () => {
@@ -60,7 +60,7 @@ const ViewCourseView = () => {
                 setDeleting(true);
                 await deleteCourse(id);
                 alert('Course deleted successfully');
-                navigate('/dashboard/mosque-admin/courses');
+                navigate('/mosque-admin/courses');
             } catch (error) {
                 alert('Failed to delete course');
             } finally {
@@ -136,7 +136,7 @@ const ViewCourseView = () => {
                     marginBottom: '32px'
                 }}>
                     <button
-                        onClick={() => navigate('/dashboard/mosque-admin/courses')}
+                        onClick={() => navigate('/mosque-admin/courses')}
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',

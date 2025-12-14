@@ -24,20 +24,20 @@ import MosqueListView from './pages/MinistryDashboard/MosqueList/MosqueListView'
 import EditMosqueForm from './pages/MinistryDashboard/EditMosqueForm/EditMosqueForm';
 
 // Course - Mosque Dashboard
-import CourseListView from './pages/MosqueAdminDashboard/CourseList/CourseListView';
-import CreateCourseView from './pages/MosqueAdminDashboard/CreateCourse/CreateCourseView';
-import EditCourseView from './pages/MosqueAdminDashboard/EditCourse/EditCourseView';
-import AssignTeacherView from './pages/MosqueAdminDashboard/AssignTeacher/AssignTeacherView';
-import ViewCourseView from './pages/MosqueAdminDashboard/ViewCourse/ViewCourseView';
+import CourseListView from './pages/MosqueAdminDashboard/CourseManagment/CourseList/CourseListView';
+import CreateCourseView from './pages/MosqueAdminDashboard/CourseManagment/CreateCourse/CreateCourseView';
+import EditCourseView from './pages/MosqueAdminDashboard/CourseManagment/EditCourse/EditCourseView';
+import AssignTeacherView from './pages/MosqueAdminDashboard/CourseManagment/AssignTeacher/AssignTeacherView';
+import ViewCourseView from './pages/MosqueAdminDashboard/CourseManagment/ViewCourse/ViewCourseView';
 import MyMosqueView from './pages/MosqueAdminDashboard/MyMosque/MyMosqueView';
 
-
-
+import TeacherListPage from './pages/MosqueAdminDashboard/TeacherManagement/TeacherList/TeacherListPage';
+import TeacherInfoPage from './pages/MosqueAdminDashboard/TeacherManagement/TeacherInfo/TeacherInfoPage';
 import './App.css';
 
-import Home from "./pages/Home"; 
+import Home from "./pages/Home";
 import Profile from "./pages/ProfilePage";
-import ProfileDetails from "./pages/ProfileDetails"; // <-- تمت الإضافة هنا
+import ProfileDetails from "./pages/ProfileDetails";
 
 function App() {
   return (
@@ -48,14 +48,13 @@ function App() {
           <div className="App" style={{ height: '100vh', width: '100vw' }}>
 
             <Routes>
-              {/* Default Route → Home */} 
-          <Route path="/" element={<Home />} />
+              {/* Default Route → Home  */}
+              <Route path="/" element={<Home />} />
+              {/* Profile Details Page */}
+              <Route path="/profile-details" element={<ProfileDetails />} />
+              {/* <-- الإضافة المهمة */}
 
-          {/* Profile Details Page */} 
-          <Route path="/profile-details" element={<ProfileDetails />} /> 
-          {/* <-- الإضافة المهمة */}
-
-          {/* Auth Pages */}
+              {/* Auth Pages */}
               {/* <Route path="/" element={<Home />} /> */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
@@ -66,15 +65,17 @@ function App() {
 
               {/* Protected Dashboard Routes - wrapped in DashboardLayout */}
               <Route
-                path="/dashboard"
+                path="/"
                 element={
                   <ProtectedRoute>
                     <MainLayout />
                   </ProtectedRoute>
                 }
               >
+
                 {/* Default redirect */}
-                <Route index element={<Navigate to="/dashboard/statistics" replace />} />
+                <Route index element={<Navigate to="/profile" replace />} />
+
 
                 {/* Ministry Admin Routes */}
                 <Route path="statistics" element={
@@ -103,9 +104,8 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="Profile" element={<div>Profile Page</div>} />
-                <Route path="settings/*" element={<div>Settings</div>} />
-                <Route path="donations/*" element={<div>Donations</div>} />
+                <Route path="profile" element={<div>Profile Page</div>} />
+                <Route path="donations" element={<div>Donations</div>} />
 
                 {/* Settings Routes - Ministry Admin only */}
                 <Route
@@ -127,26 +127,10 @@ function App() {
 
                 {/* Donation Routes - Ministry Admin only */}
                 <Route
-                  path="donations/pending"
+                  path="donations"
                   element={
                     <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Pending Donations - To be implemented</div>
-                    </RoleProtectedRoute>
-                  }
-                />
-                <Route
-                  path="donations/approved"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Approved Donations - To be implemented</div>
-                    </RoleProtectedRoute>
-                  }
-                />
-                <Route
-                  path="donations/rejected"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Rejected Donations - To be implemented</div>
+                      <div>Donations</div>
                     </RoleProtectedRoute>
                   }
                 />
@@ -201,6 +185,22 @@ function App() {
                   element={
                     <RoleProtectedRoute allowedRoles={['mosque_admin']}>
                       <MyMosqueView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="mosque-admin/teacher-list"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <TeacherListPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="mosque-admin/teacher-info/:id"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['mosque_admin']}>
+                      <TeacherInfoPage />
                     </RoleProtectedRoute>
                   }
                 />
@@ -263,7 +263,7 @@ function App() {
 
               {/* Edit Mosque - Separate route outside dashboard layout */}
               <Route
-                path="/dashboard/edit-mosque/:id"
+                path="/edit-mosque/:id"
                 element={
                   <ProtectedRoute>
                     <RoleProtectedRoute allowedRoles={['ministry_admin']}>
@@ -286,8 +286,8 @@ function App() {
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
 
-{/* for the profile page */}
-<Route path="/profile" element={<Profile />} />
+              {/* for the profile page */}
+              <Route path="/profile" element={<Profile />} />
 
             </Routes>
           </div>

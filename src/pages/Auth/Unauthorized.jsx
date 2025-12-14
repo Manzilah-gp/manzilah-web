@@ -9,10 +9,10 @@ const Unauthorized = () => {
             <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
             <p className="text-gray-600 mb-6">You don't have permission to access this page.</p>
             <button
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/")}
                 className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
             >
-                Go to Dashboard
+                Go to Home
             </button>
         </div>
     );

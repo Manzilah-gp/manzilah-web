@@ -1,0 +1,114 @@
+.teacher-info-page {
+    padding: 24px;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.teacher-info-header {
+    margin-bottom: 24px;
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #23d5ab, #23a6d5);
+    background-size: 400% 400%;
+    animation: gradient-animation 15s ease infinite;
+    border: none;
+}
+
+.teacher-info-header .ant-typography,
+.teacher-info-header .anticon {
+    color: white !important;
+}
+
+.teacher-info-header .ant-tag {
+    border: none;
+}
+
+.info-card,
+.tabs-card,
+.cert-card-container {
+    height: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.info-card:hover,
+.tabs-card:hover,
+.cert-card-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-avatar-section {
+    text-align: center;
+}
+
+.teacher-avatar {
+    background-color: #f56a00;
+    vertical-align: middle;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.info-section-title {
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 8px;
+    color: #1e3c72 !important;
+}
+
+.info-item {
+    margin-bottom: 16px;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #8c8c8c;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    color: #262626;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.availability-card {
+    background: #f0f5ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    text-align: center;
+    border: 1px solid #d6e4ff;
+}
+
+.availability-day {
+    font-weight: bold;
+    color: #1890ff;
+    margin-bottom: 4px;
+}
+
+.cert-card {
+    text-align: center;
+    padding: 16px;
+    border: 1px solid #e6f7ff;
+    background: #f0f5ff;
+    border-radius: 8px;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+}
