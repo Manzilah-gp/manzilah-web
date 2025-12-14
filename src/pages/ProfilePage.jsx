@@ -22,13 +22,14 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import useUserEvents from '../hooks/useUserEvents';
 
 function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user: authUser, logout } = useAuth();
   
-  // ✅ Sidebar state management
+  //  Sidebar state management
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
   
   const [loading, setLoading] = useState(true);
@@ -36,14 +37,21 @@ function ProfilePage() {
   const [userData, setUserData] = useState(null);
   const [roleData, setRoleData] = useState({});
 
-  // ✅ Auto-collapse sidebar on mobile when route changes
+  //  Calendar hook
+  const { events, loading: calendarLoading, error } = useUserEvents();
+
+  console.log('Calendar events:', events);
+  console.log('Calendar Loading:', calendarLoading);
+  console.log('Calendar Error:', error);
+
+  //  Auto-collapse sidebar on mobile when route changes
   useEffect(() => {
     if (window.innerWidth < 768) {
       setSidebarCollapsed(true);
     }
   }, [location.pathname]);
 
-  // ✅ Handle window resize
+  //  Handle window resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -65,15 +73,15 @@ function ProfilePage() {
     try {
       const token = localStorage.getItem('token');
       
-      console.log('🔑 Token:', token ? 'Exists' : 'Missing');
+      console.log(' Token:', token ? 'Exists' : 'Missing');
       
       if (!token) {
-        console.error('❌ No token found');
+        console.error(' No token found');
         navigate('/login');
         return;
       }
 
-      console.log('📡 Fetching from: http://localhost:5000/api/profile');
+      console.log(' Fetching from: http://localhost:5000/api/profile');
 
       const response = await fetch('http://localhost:5000/api/profile', {
         headers: {
@@ -82,26 +90,26 @@ function ProfilePage() {
         }
       });
 
-      console.log('📊 Response status:', response.status);
+      console.log(' Response status:', response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ Response error:', errorText);
+        console.error(' Response error:', errorText);
         throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('✅ Data received:', data);
+      console.log(' Data received:', data);
       
       if (data.success) {
         setUserData(data.user);
         setRoleData(data.roleSpecificData);
-        console.log('✅ Active Roles:', data.user.activeRoles);
+        console.log(' Active Roles:', data.user.activeRoles);
       }
       
       setLoading(false);
     } catch (error) {
-      console.error('❌ Error fetching profile:', error);
+      console.error(' Error fetching profile:', error);
       setLoading(false);
     }
   };
@@ -411,7 +419,7 @@ function ProfilePage() {
     navigate('/login');
   };
 
-  // ✅ Toggle sidebar function
+  //  Toggle sidebar function
   const handleToggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
@@ -452,7 +460,7 @@ function ProfilePage() {
     <div className="profile-page">
       <Header />
       
-      {/* ✅ Pass collapsed state and toggle function */}
+      {/*  Pass collapsed state and toggle function */}
       <MainSideBar 
         collapsed={sidebarCollapsed} 
         onToggleCollapse={handleToggleSidebar} 
@@ -545,7 +553,21 @@ function ProfilePage() {
             {activeTab === 'teacher' && renderTeacherInfo()}
             {activeTab === 'parent' && renderParentInfo()}
             {activeTab === 'donor' && renderDonorInfo()}
-            {activeTab === 'calendar' && <UserCalendar />}
+            
+            {activeTab === 'calendar' && (
+              <div>
+            
+
+                {/* Calendar Component */}
+                <UserCalendar 
+                  events={events || []}
+                  loading={calendarLoading}
+                  title="Your Event Schedule"
+                  subtitle="Events you're attending "
+                  showAttendingBadge={true}
+                />
+              </div>
+            )}
           </div>
 
           {/* Action Buttons */}

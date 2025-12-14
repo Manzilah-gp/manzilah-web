@@ -1,3 +1,11 @@
+/**
+ * ProfileDetails Component
+ * 
+ * Allows users to view and edit their profile information
+ * Includes personal details and location information
+ * Features mobile responsive design with collapsible sidebar
+ */
+
 import React, { useState, useEffect } from "react";
 import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
@@ -10,9 +18,10 @@ function ProfileDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // ✅ Sidebar state management
+  // Sidebar state management - auto-collapse on mobile
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
   
+  // Component state
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [user, setUser] = useState({
@@ -28,29 +37,34 @@ function ProfileDetails() {
     postal_code: ""
   });
 
+  // Palestine governorates list
   const governorates = [
-    { value: "jerusalem", label: "القدس" },
-    { value: "gaza", label: "غزة" },
-    { value: "ramallah", label: "رام الله" },
-    { value: "hebron", label: "الخليل" },
-    { value: "bethlehem", label: "بيت لحم" },
-    { value: "nablus", label: "نابلس" },
-    { value: "jenin", label: "جنين" },
-    { value: "tulkarm", label: "طولكرم" },
-    { value: "qalqilya", label: "قلقيلية" },
-    { value: "tubas", label: "طوباس" },
-    { value: "salfit", label: "سلفيت" },
-    { value: "jericho", label: "أريحا" }
+    { value: "jerusalem", label: "Jerusalem" },
+    { value: "gaza", label: "Gaza" },
+    { value: "ramallah", label: "Ramallah" },
+    { value: "hebron", label: "Hebron" },
+    { value: "bethlehem", label: "Bethlehem" },
+    { value: "nablus", label: "Nablus" },
+    { value: "jenin", label: "Jenin" },
+    { value: "tulkarm", label: "Tulkarm" },
+    { value: "qalqilya", label: "Qalqilya" },
+    { value: "tubas", label: "Tubas" },
+    { value: "salfit", label: "Salfit" },
+    { value: "jericho", label: "Jericho" }
   ];
 
-  // ✅ Auto-collapse sidebar on mobile when route changes
+  /**
+   * Auto-collapse sidebar on mobile when route changes
+   */
   useEffect(() => {
     if (window.innerWidth < 768) {
       setSidebarCollapsed(true);
     }
   }, [location.pathname]);
 
-  // ✅ Handle window resize
+  /**
+   * Handle window resize - collapse sidebar on mobile
+   */
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -64,10 +78,16 @@ function ProfileDetails() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  /**
+   * Fetch user profile on component mount
+   */
   useEffect(() => {
     fetchUserProfile();
   }, []);
 
+  /**
+   * Fetch user profile data from backend
+   */
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -108,15 +128,21 @@ function ProfileDetails() {
       setLoading(false);
     } catch (error) {
       console.error('Error fetching profile:', error);
-      message.error('فشل تحميل البيانات');
+      message.error('Failed to load profile data');
       setLoading(false);
     }
   };
 
+  /**
+   * Handle form input changes
+   */
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  /**
+   * Handle form submission - save profile changes
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -129,7 +155,7 @@ function ProfileDetails() {
         return;
       }
 
-      // Update basic info
+      // Update basic profile information
       const profileResponse = await fetch('http://localhost:5000/api/profile', {
         method: 'PUT',
         headers: {
@@ -150,7 +176,7 @@ function ProfileDetails() {
         throw new Error(errorData.message || 'Failed to update profile');
       }
 
-      // Update location
+      // Update location information
       const locationResponse = await fetch('http://localhost:5000/api/profile/location', {
         method: 'PUT',
         headers: {
@@ -170,20 +196,24 @@ function ProfileDetails() {
         throw new Error('Failed to update location');
       }
 
-      message.success('تم حفظ التغييرات بنجاح');
+      message.success('Profile updated successfully');
       
+      // Navigate back to profile page after 1 second
       setTimeout(() => {
         navigate('/profile');
       }, 1000);
 
     } catch (error) {
       console.error('Error saving profile:', error);
-      message.error(error.message || 'فشل حفظ التغييرات');
+      message.error(error.message || 'Failed to save changes');
     } finally {
       setSaving(false);
     }
   };
 
+  /**
+   * Calculate age from birthday
+   */
   const calculateAge = (birthday) => {
     if (!birthday) return "";
     const today = new Date();
@@ -196,11 +226,14 @@ function ProfileDetails() {
     return age;
   };
 
-  // ✅ Toggle sidebar function
+  /**
+   * Toggle sidebar collapsed state
+   */
   const handleToggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
+  // Loading state
   if (loading) {
     return (
       <>
@@ -211,7 +244,7 @@ function ProfileDetails() {
         />
         <div className="main-content-wrapper">
           <div className="profile-container">
-            <h2 className="profile-title">جاري التحميل...</h2>
+            <h2 className="profile-title">Loading...</h2>
           </div>
         </div>
         <Footer />
@@ -223,7 +256,7 @@ function ProfileDetails() {
     <>
       <Header />
       
-      {/* ✅ Pass collapsed state and toggle function */}
+      {/* Sidebar with collapse functionality */}
       <MainSideBar 
         collapsed={sidebarCollapsed} 
         onToggleCollapse={handleToggleSidebar} 
@@ -231,13 +264,13 @@ function ProfileDetails() {
 
       <div className="main-content-wrapper">
         <div className="profile-container">
-          <h2 className="profile-title">تعديل الملف الشخصي</h2>
+          <h2 className="profile-title">Edit Profile</h2>
 
           <form className="profile-form" onSubmit={handleSubmit}>
-            {/* Basic Information */}
+            {/* Basic Information Section */}
             <div className="form-row">
               <div className="form-group">
-                <label>الاسم الكامل *</label>
+                <label>Full Name *</label>
                 <input 
                   type="text" 
                   name="fullName" 
@@ -248,7 +281,7 @@ function ProfileDetails() {
               </div>
 
               <div className="form-group">
-                <label>البريد الإلكتروني *</label>
+                <label>Email Address *</label>
                 <input 
                   type="email" 
                   name="email" 
@@ -261,7 +294,7 @@ function ProfileDetails() {
 
             <div className="form-row">
               <div className="form-group">
-                <label>رقم الهاتف</label>
+                <label>Phone Number</label>
                 <input 
                   type="text" 
                   name="phone" 
@@ -272,23 +305,23 @@ function ProfileDetails() {
               </div>
 
               <div className="form-group">
-                <label>الجنس *</label>
+                <label>Gender *</label>
                 <select 
                   name="gender" 
                   value={user.gender} 
                   onChange={handleChange}
                   required
                 >
-                  <option value="">اختر الجنس</option>
-                  <option value="male">ذكر</option>
-                  <option value="female">أنثى</option>
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </div>
             </div>
 
             <div className="form-row">
               <div className="form-group">
-                <label>تاريخ الميلاد *</label>
+                <label>Date of Birth *</label>
                 <input 
                   type="date" 
                   name="birthday" 
@@ -299,30 +332,30 @@ function ProfileDetails() {
               </div>
 
               <div className="form-group">
-                <label>العمر</label>
+                <label>Age</label>
                 <input 
                   type="text" 
-                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} سنة` : ""} 
+                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} years` : ""} 
                   disabled
                   style={{ background: '#f0f0f0', cursor: 'not-allowed' }}
                 />
               </div>
             </div>
 
-            {/* Location Information */}
+            {/* Location Information Section */}
             <h3 style={{ marginTop: '30px', marginBottom: '15px', color: '#1d4ed8' }}>
-              معلومات العنوان
+              Address Information
             </h3>
 
             <div className="form-row">
               <div className="form-group">
-                <label>المحافظة</label>
+                <label>Governorate</label>
                 <select 
                   name="governorate" 
                   value={user.governorate} 
                   onChange={handleChange}
                 >
-                  <option value="">اختر المحافظة</option>
+                  <option value="">Select Governorate</option>
                   {governorates.map((gov) => (
                     <option key={gov.value} value={gov.value}>
                       {gov.label}
@@ -332,44 +365,44 @@ function ProfileDetails() {
               </div>
 
               <div className="form-group">
-                <label>المنطقة/المدينة</label>
+                <label>Region/City</label>
                 <input 
                   type="text" 
                   name="region" 
                   value={user.region} 
                   onChange={handleChange}
-                  placeholder="مثال: البيرة، البلدة القديمة"
+                  placeholder="e.g., Al-Bireh, Old City"
                 />
               </div>
             </div>
 
             <div className="form-row">
               <div className="form-group">
-                <label>العنوان 1</label>
+                <label>Address Line 1</label>
                 <input 
                   type="text" 
                   name="address_line1" 
                   value={user.address_line1} 
                   onChange={handleChange}
-                  placeholder="الشارع، رقم المبنى"
+                  placeholder="Street, Building Number"
                 />
               </div>
 
               <div className="form-group">
-                <label>العنوان 2</label>
+                <label>Address Line 2</label>
                 <input 
                   type="text" 
                   name="address_line2" 
                   value={user.address_line2} 
                   onChange={handleChange}
-                  placeholder="تفاصيل إضافية"
+                  placeholder="Additional Details"
                 />
               </div>
             </div>
 
             <div className="form-row">
               <div className="form-group">
-                <label>الرمز البريدي</label>
+                <label>Postal Code</label>
                 <input 
                   type="text" 
                   name="postal_code" 
@@ -379,16 +412,17 @@ function ProfileDetails() {
                 />
               </div>
               <div className="form-group">
-                {/* Empty for alignment */}
+                {/* Empty div for grid alignment */}
               </div>
             </div>
 
+            {/* Submit Button */}
             <button 
               type="submit" 
               className="save-btn"
               disabled={saving}
             >
-              {saving ? 'جاري الحفظ...' : 'حفظ التغييرات'}
+              {saving ? 'Saving...' : 'Save Changes'}
             </button>
           </form>
         </div>
