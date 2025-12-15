@@ -27,10 +27,7 @@ import { Label } from 'recharts';
 
 const { Sider } = Layout;
 
-/**
- * MainSideBar - Navigation sidebar with role-based filtering
- * Only shows menu items that the current user has access to
- */
+
 const MainSideBar = ({ collapsed, onToggleCollapse }) => {
     const { t } = useTranslation();
     const { user, logout } = useAuth();
@@ -38,10 +35,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
     const location = useLocation();
     const [openDropdown, setOpenDropdown] = useState(null);
 
-    /**
-     * Define ALL menu items with their role requirements
-     * Each item specifies which roles can see it
-     */
+
     const ALL_MENU_ITEMS = [
         // ==================== COMMON ITEMS (All Users) ====================
 
@@ -57,15 +51,16 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <CalendarOutlined />,
             label: t('sidebar.calendar') || 'Calendar',
             roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent', 'donor'],
-            link: '/calendar'
+            link: '/profile',
+            state: { tab: 'calendar' }  //   Navigate to profile calendar tab
         },
         {//For Events 
-    key: 'events',
-    icon: <CalendarOutlined />,
-    label: t('events') || 'Events',
-    roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher', 'donor'],
-    link: '/events'
-},
+            key: 'events',
+            icon: <CalendarOutlined />,
+            label: t('events') || 'Events',
+            roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher', 'donor'],
+            link: '/events'
+        },
 
 
         // ==================== MINISTRY ADMIN ONLY ====================
@@ -99,13 +94,13 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 }
             ]
         },
-       {
-    key: 'fundraising-events',
-    icon: <DollarOutlined />,
-    label: 'Fundraising Events',
-    link: '/fundraising-approvals',
-    roles: ['ministry_admin']
-},
+        {
+            key: 'fundraising-events',
+            icon: <DollarOutlined />,
+            label: 'Fundraising Events',
+            link: '/fundraising-approvals',
+            roles: ['ministry_admin']
+        },
         {
             key: 'user-management',
             icon: <TeamOutlined />,
@@ -226,17 +221,12 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         }
     ];
 
-    /**
-     * Filter menu items based on user role
-     * Returns only items that the current user has access to
-     */
-
+  
     const getFilteredMenuItems = useMemo(() => {
         if (!user || !user.roles || user.roles.length === 0) return [];
 
-        const userRoles = user.roles; // This is an ARRAY of roles
+        const userRoles = user.roles; 
 
-        // Helper function to check if user has access to an item
         const hasAccess = (item) => {
             // If item has no role restrictions, allow access
             if (!item.roles || item.roles.length === 0) return true;
@@ -248,7 +238,6 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         // Filter top-level items
         const filteredItems = ALL_MENU_ITEMS.filter(item => hasAccess(item));
 
-        // Filter children for items that have them
         return filteredItems.map(item => {
             if (item.children) {
                 return {
@@ -266,19 +255,20 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         });
     }, [user]);
 
-    /**
-     * Toggle dropdown menu
-     */
+  
     const toggleDropdown = (key) => {
         setOpenDropdown(openDropdown === key ? null : key);
     };
 
-    /**
-     * Handle navigation when menu item is clicked
-     */
-    const handleItemClick = (link) => {
+    
+    const handleItemClick = (link, state = null) => {
         if (link) {
-            navigate(link);
+            // Navigate with state if provided
+            if (state) {
+                navigate(link, { state });
+            } else {
+                navigate(link);
+            }
         }
         // Close mobile menu after navigation
         if (window.innerWidth <= 768 && onToggleCollapse) {
@@ -286,23 +276,16 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         }
     };
 
-    /**
-     * Check if current route matches menu item
-     */
+  
     const isActive = (link) => {
         return location.pathname === link;
     };
 
-    /**
-     * Check if any child is active (for dropdown highlighting)
-     */
     const hasActiveChild = (children) => {
         return children?.some(child => location.pathname === child.link);
     };
 
-    /**
-     * Handle logout
-     */
+   
     const handleLogout = () => {
         logout();
         navigate('/login');
@@ -356,16 +339,16 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                         <UserOutlined />
                     </div>
 
-{!collapsed && (
-    <div className="user-details">
-        <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
-        <p className="user-role">
-            {user?.roles && user.roles.length > 0 
-                ? user.roles[0].replace('_', ' ').toUpperCase() 
-                : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
-        </p>
-    </div>
-)}
+                    {!collapsed && (
+                        <div className="user-details">
+                            <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
+                            <p className="user-role">
+                                {user?.roles && user.roles.length > 0
+                                    ? user.roles[0].replace('_', ' ').toUpperCase()
+                                    : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 {/* Navigation Menu - FILTERED BY ROLE */}
@@ -416,7 +399,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                                                             }`}
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            handleItemClick(child.link);
+                                                            handleItemClick(child.link, child.state);  //  UPDATED: Pass child.state
                                                         }}
                                                     >
                                                         {child.icon && <span className="nav-icon">{child.icon}</span>}
@@ -433,7 +416,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                                         className={`nav-link ${isActive(item.link) ? 'active' : ''}`}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            handleItemClick(item.link);
+                                            handleItemClick(item.link, item.state);  //  UPDATED: Pass item.state
                                         }}
                                     >
                                         <span className="nav-icon">{item.icon}</span>
@@ -452,7 +435,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                                 className="nav-link"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    handleItemClick('/chat');
+                                    handleItemClick('/chat', null);  //  UPDATED: Pass null for state
                                 }}
                             >
                                 <span className="nav-icon"><WechatOutlined /></span>
