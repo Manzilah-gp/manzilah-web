@@ -1,0 +1,248 @@
+.public-mosques-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2c3e50 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.public-mosques-content {
+    flex: 1;
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.page-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.page-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.page-subtitle {
+    font-size: 20px;
+    opacity: 0.9;
+}
+
+.filters-container {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.search-input:focus {
+    border-color: #667eea;
+}
+
+.filter-select {
+    padding: 14px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.results-count {
+    color: white;
+    font-size: 18px;
+    margin-bottom: 24px;
+    opacity: 0.9;
+}
+
+.loading-message {
+    text-align: center;
+    color: white;
+    padding: 60px;
+    font-size: 18px;
+}
+
+.no-results {
+    background-color: white;
+    border-radius: 16px;
+    padding: 60px;
+    text-align: center;
+}
+
+.no-results-icon {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.no-results-title {
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 24px;
+}
+
+.no-results-text {
+    color: #6b7280;
+}
+
+.mosques-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.mosque-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 28px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 2px solid transparent;
+}
+
+.mosque-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border-color: #667eea;
+}
+
+.mosque-header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mosque-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.mosque-location {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.location-icon {
+    font-size: 18px;
+}
+
+.location-text {
+    margin: 0;
+    font-weight: 500;
+}
+
+.address-text {
+    margin: 0;
+    font-size: 14px;
+}
+
+.mosque-contact {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+.contact-icon {
+    font-size: 18px;
+}
+
+.mosque-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-item.active-courses {
+    color: #667eea;
+}
+
+.stat-item.students {
+    color: #764ba2;
+}
+
+.stat-icon {
+    font-size: 20px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.view-details-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #667eea;
+    font-weight: 600;
+    font-size: 16px;
+}

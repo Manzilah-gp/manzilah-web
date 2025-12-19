@@ -53,13 +53,13 @@ const Header = () => {
             key: 'courses',
             label: t('header.courses'),
             icon: <BookOutlined />,
-            onClick: () => navigate('/courses')
+            onClick: () => navigate('/public/courses')
         },
         {
             key: 'mosques',
             label: t('header.mosques'),
             icon: <BankOutlined />,
-            onClick: () => navigate('/mosques')
+            onClick: () => navigate('/public/mosques')
         },
         {
             key: 'registration',
@@ -97,7 +97,7 @@ const Header = () => {
         <>
             <AntHeader
                 style={{
-                    background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+                    background: 'linear-gradient(135deg, rgb(30, 60, 114) 0%, #d9d9d9 100%)',
                     padding: '0 24px',
                     display: 'flex',
                     alignItems: 'center',
