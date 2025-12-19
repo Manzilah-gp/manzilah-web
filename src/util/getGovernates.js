@@ -11,6 +11,7 @@ export const getGovernorates = () => {
         { value: 'qalqilya', label: 'Qalqilya' },
         { value: 'salfit', label: 'Salfit' },
         { value: 'jericho', label: 'Jericho' },
-        { value: 'tubas', label: 'Tubas' }
+        { value: 'tubas', label: 'Tubas' },
+        { value: 'all', label: 'All Governorates' }
     ];
 };

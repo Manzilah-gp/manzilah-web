@@ -12,9 +12,9 @@ function Home() {
   const featuresRef = useRef(null);
   const statsRef = useRef(null);
 
-  const handleExploreClick = () => navigate("/courses");
-  const handleCoursesClick = () => navigate("/courses");
-  const handleMosquesClick = () => navigate("/mosques");
+  const handleExploreClick = () => navigate("/public/courses");
+  const handleCoursesClick = () => navigate("/public/courses");
+  const handleMosquesClick = () => navigate("/public/mosques");
   const handleRegisterClick = () => navigate("/registration");
 
   useEffect(() => {
@@ -164,35 +164,35 @@ function Home() {
           </div>
           <div className="journey-timeline">
             {[
-              { 
-                icon: "📝", 
-                title: t('journey.step1.title', 'Registration and Joining'), 
-                desc: t('journey.step1.description', 'Create your account and choose the mosque or study circle appropriate for your age and level.') 
+              {
+                icon: "📝",
+                title: t('journey.step1.title', 'Registration and Joining'),
+                desc: t('journey.step1.description', 'Create your account and choose the mosque or study circle appropriate for your age and level.')
               },
-              { 
-                icon: "📖", 
-                title: t('journey.step2.title', 'Starting Memorization'), 
-                desc: t('journey.step2.description', 'You are assigned a supervisor, and the app sets the start date for your daily memorization plan.') 
+              {
+                icon: "📖",
+                title: t('journey.step2.title', 'Starting Memorization'),
+                desc: t('journey.step2.description', 'You are assigned a supervisor, and the app sets the start date for your daily memorization plan.')
               },
-              { 
-                icon: "🎧", 
-                title: t('journey.step3.title', 'Recitation and Review'), 
-                desc: t('journey.step3.description', 'Recite directly to your supervisor or use the AI-powered recitation for review.') 
+              {
+                icon: "🎧",
+                title: t('journey.step3.title', 'Recitation and Review'),
+                desc: t('journey.step3.description', 'Recite directly to your supervisor or use the AI-powered recitation for review.')
               },
-              { 
-                icon: "📊", 
-                title: t('journey.step4.title', 'Follow-up and Evaluation'), 
-                desc: t('journey.step4.description', 'Receive periodic progress reports, and parents can monitor their child\'s memorization progress.') 
+              {
+                icon: "📊",
+                title: t('journey.step4.title', 'Follow-up and Evaluation'),
+                desc: t('journey.step4.description', 'Receive periodic progress reports, and parents can monitor their child\'s memorization progress.')
               },
-              { 
-                icon: "🏆", 
-                title: t('journey.step5.title', 'Competitions and Motivation'), 
-                desc: t('journey.step5.description', 'Participate in mosque competitions and events, earning digital badges and certificates.') 
+              {
+                icon: "🏆",
+                title: t('journey.step5.title', 'Competitions and Motivation'),
+                desc: t('journey.step5.description', 'Participate in mosque competitions and events, earning digital badges and certificates.')
               },
-              { 
-                icon: "🌟", 
-                title: t('journey.step6.title', 'Achievement and Recognition'), 
-                desc: t('journey.step6.description', 'Upon completion, the student is recognized and displayed on the honor roll and mosque\'s honor board.') 
+              {
+                icon: "🌟",
+                title: t('journey.step6.title', 'Achievement and Recognition'),
+                desc: t('journey.step6.description', 'Upon completion, the student is recognized and displayed on the honor roll and mosque\'s honor board.')
               },
             ].map((step, index) => (
               <div key={index} className="journey-step">

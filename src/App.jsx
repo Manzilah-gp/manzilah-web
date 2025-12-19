@@ -10,8 +10,7 @@ import RoleProtectedRoute from './components/Auth/RoleProtectedRoute';
 import MainLayout from './components/Layout/MainLayout';
 
 
-// Public Pages
-// import Home from './pages/Home';
+// Auth Pages
 import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Unauthorized from './pages/Auth/Unauthorized';
@@ -39,6 +38,12 @@ import Home from "./pages/Home";
 import Profile from "./pages/ProfilePage";
 import ProfileDetails from "./pages/ProfileDetails";
 
+// Public Pages
+import PublicCourses from "./pages/MosquesCoursesPublicPages/PublicCourses/PublicCoursesPage";
+import PublicMosques from "./pages/MosquesCoursesPublicPages/PublicMosques/PublicMosquesPage";
+import MosqueDetailsPage from './pages/MosquesCoursesPublicPages/MosqueDetails/MosqueDetailsPage';
+import CourseDetailsPage from './pages/MosquesCoursesPublicPages/CourseDetails/CourseDetailsPage';
+
 function App() {
   return (
 
@@ -46,6 +51,9 @@ function App() {
       <AntdConfigProvider>
         <Router>
           <div className="App" style={{ height: '100vh', width: '100vw' }}>
+            {/* ============================================ */}
+            {/* PUBLIC ROUTES - No authentication required */}
+            {/* ============================================ */}
 
             <Routes>
               {/* Default Route → Home  */}
@@ -62,7 +70,18 @@ function App() {
               <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
 
 
+              {/* ============================================ */}
+              {/* PUBLIC BROWSING PAGES */}
+              {/* ============================================ */}
+              <Route path="/public/courses" element={<PublicCourses />} />
+              <Route path="/public/mosques" element={<PublicMosques />} />
+              <Route path="/public/mosque/:id" element={<MosqueDetailsPage />} />
+              <Route path="/public/course/:id" element={<CourseDetailsPage />} />
 
+
+              {/* ============================================ */}
+              {/* PROTECTED DASHBOARD ROUTES */}
+              {/* ============================================ */}
               {/* Protected Dashboard Routes - wrapped in DashboardLayout */}
               <Route
                 path="/"
