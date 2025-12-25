@@ -1,0 +1,444 @@
+.view-course-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2c3e50 100%);
+    padding: 100px 20px 40px;
+}
+
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.back-button-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* Back Button */
+.back-button {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Course Header Card */
+.course-header-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 24px;
+}
+
+.header-left {
+    flex: 1;
+}
+
+.course-title {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 12px 0;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.progress-circle {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    color: white;
+    min-width: 120px;
+}
+
+.progress-number {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.progress-text {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Progress Bar */
+.header-progress {
+    margin-top: 20px;
+}
+
+.progress-bar-full {
+    width: 100%;
+    height: 12px;
+    background-color: #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+}
+
+.progress-label {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+/* Content Grid */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 350px;
+    gap: 24px;
+}
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.content-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.description-text {
+    color: #4b5563;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+/* Schedule List */
+.schedule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.schedule-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+}
+
+.schedule-day {
+    font-weight: 600;
+    color: #1f2937;
+    min-width: 100px;
+}
+
+.schedule-time {
+    color: #667eea;
+    font-weight: 600;
+    flex: 1;
+}
+
+.schedule-location {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Teacher Notes */
+.notes-box {
+    background-color: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 16px;
+    border-radius: 8px;
+    color: #78350f;
+    line-height: 1.6;
+}
+
+/* Course Materials */
+.materials-button {
+    width: 100%;
+    padding: 16px;
+    background-color: #e5e7eb;
+    color: #9ca3af;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: not-allowed;
+    margin-bottom: 12px;
+}
+
+.coming-soon-text {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* Sidebar */
+.course-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.sidebar-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Info List */
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Teacher Info */
+.teacher-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.teacher-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.teacher-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 4px 0;
+}
+
+.teacher-contact {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 2px 0;
+}
+
+/* Mosque Info */
+.mosque-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mosque-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+.mosque-location,
+.mosque-address,
+.mosque-contact {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* Withdraw Button */
+.withdraw-button {
+    width: 100%;
+    padding: 14px;
+    background-color: white;
+    color: #ef4444;
+    border: 2px solid #ef4444;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.withdraw-button:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+.withdraw-note {
+    text-align: center;
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* Loading & Error States */
+.loading-container,
+.error-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.loading-container p,
+.error-container h2 {
+    margin-top: 16px;
+    font-size: 18px;
+}
+
+.error-container .btn-primary {
+    margin-top: 24px;
+    padding: 12px 24px;
+    background-color: white;
+    color: #667eea;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 968px) {
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Removed order: -1 so sidebar stays below on mobile, as generally expected for info cards 
+       unless user specifically wanted them on top. "to the right" implies non-primary position. */
+}
+
+@media (max-width: 768px) {
+    .view-course-page {
+        padding: 20px 16px;
+    }
+
+    .course-header-card {
+        padding: 20px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .progress-circle {
+        align-self: flex-start;
+    }
+
+    .course-title {
+        font-size: 24px;
+    }
+
+    .schedule-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .schedule-day {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .course-title {
+        font-size: 20px;
+    }
+
+    .progress-number {
+        font-size: 28px;
+    }
+
+    .card-title {
+        font-size: 18px;
+    }
+}
