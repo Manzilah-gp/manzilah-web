@@ -44,6 +44,11 @@ import PublicMosques from "./pages/MosquesCoursesPublicPages/PublicMosques/Publi
 import MosqueDetailsPage from './pages/MosquesCoursesPublicPages/MosqueDetails/MosqueDetailsPage';
 import CourseDetailsPage from './pages/MosquesCoursesPublicPages/CourseDetails/CourseDetailsPage';
 
+import CalendarPage from './pages/Calendar/CalendarPage';
+import MyEnrollmentsPage from './pages/StudentDashboard/MyEnrollments/MyEnrollmentsPage';
+import ViewCoursePage from './pages/StudentDashboard/ViewCourse/ViewCoursePage';
+
+
 function App() {
   return (
 
@@ -244,18 +249,18 @@ function App() {
 
                 {/* Student Routes */}
                 <Route
-                  path="enrolled-courses"
+                  path="/my-enrollments"
                   element={
-                    <RoleProtectedRoute allowedRoles={['student']}>
-                      <div>Enrolled Courses - To be implemented</div>
+                    <RoleProtectedRoute allowedRoles={['student', 'parent']}>
+                      <MyEnrollmentsPage />
                     </RoleProtectedRoute>
                   }
                 />
                 <Route
-                  path="attendance"
+                  path="course/:enrollmentId"
                   element={
-                    <RoleProtectedRoute allowedRoles={['student']}>
-                      <div>Attendance - To be implemented</div>
+                    <RoleProtectedRoute allowedRoles={['student', 'parent']}>
+                      <ViewCoursePage />
                     </RoleProtectedRoute>
                   }
                 />
@@ -275,6 +280,15 @@ function App() {
                     <RoleProtectedRoute allowedRoles={['parent']}>
                       <div>Progress Reports - To be implemented</div>
                     </RoleProtectedRoute>
+                  }
+                />
+                {/* Calendar */}
+                <Route
+                  path="/calendar"
+                  element={
+                    <ProtectedRoute>
+                      <CalendarPage />
+                    </ProtectedRoute>
                   }
                 />
 

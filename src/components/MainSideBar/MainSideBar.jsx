@@ -57,7 +57,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             key: 'calendar',
             icon: <CalendarOutlined />,
             label: t('sidebar.calendar') || 'Calendar',
-            roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent', 'donor'],
+            roles: ['mosque_admin', 'teacher', 'student', 'parent'],
             link: '/calendar'
         },
 
@@ -161,18 +161,11 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
 
         // ==================== STUDENT ONLY ====================
         {
-            key: 'enrolled-courses',
+            key: 'my-enrollments',
             icon: <BookOutlined />,
-            label: 'My Courses',
-            roles: ['student'],
-            link: '/enrolled-courses'
-        },
-        {
-            key: 'attendance',
-            icon: <CheckCircleOutlined />,
-            label: 'Attendance',
-            roles: ['student'],
-            link: '/attendance'
+            label: user.roles.includes('student') ? 'My Enrollments' : 'Children Enrollments',
+            roles: ['student', 'parent'],
+            link: '/my-enrollments'
         },
 
         // ==================== PARENT ONLY ====================
@@ -189,7 +182,8 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             label: 'Progress Reports',
             roles: ['parent'],
             link: '/progress'
-        }
+        },
+
     ];
 
     /**
