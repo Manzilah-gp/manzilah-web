@@ -115,7 +115,7 @@ const TeacherInfoPage = () => {
             title: 'Hourly Rate',
             dataIndex: 'hourly_rate_cents',
             key: 'hourly_rate_cents',
-            render: (cents) => `$${(cents / 100).toFixed(2)}`
+            render: (cents) => `₪${cents}`
         },
         {
             title: 'Memorization',

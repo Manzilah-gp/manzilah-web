@@ -1,0 +1,130 @@
+/* src/pages/MeetingRoom/MeetingRoom.css */
+
+/* Wrapper for the entire meeting room */
+.meeting-room-wrapper {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+}
+
+/* Container where ZEGOCLOUD UIKit renders */
+.meeting-container {
+    width: 100%;
+    height: 100%;
+}
+
+/* Loading Screen */
+.meeting-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.loading-subtext {
+    font-size: 1rem;
+    opacity: 0.8;
+    text-align: center;
+    max-width: 400px;
+}
+
+/* Error Screen */
+.meeting-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.error-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.error-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.error-message {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    max-width: 500px;
+}
+
+.error-btn {
+    padding: 12px 30px;
+    background: white;
+    color: #f5576c;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.error-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .loading-text {
+        font-size: 1.2rem;
+    }
+
+    .loading-subtext {
+        font-size: 0.9rem;
+    }
+
+    .error-title {
+        font-size: 1.5rem;
+    }
+
+    .error-message {
+        font-size: 1rem;
+    }
+}
+
+/* Override ZEGOCLOUD UIKit styles if needed */
+/* Example: Change primary color */
+/*
+.meeting-container [class*="ZegoUIKit"] {
+    --primary-color: #667eea;
+}
+*/

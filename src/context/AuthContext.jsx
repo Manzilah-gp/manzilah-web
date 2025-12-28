@@ -12,23 +12,28 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const initializeAuth = async () => {
+        console.log("AuthContext: Initializing auth...");
         const token = localStorage.getItem("token");
         if (token) {
             try {
                 const res = await getProfile(token);
+                console.log("AuthContext: Profile loaded", res.data.user);
                 setUser(res.data.user);
             } catch (error) {
+                console.error("AuthContext: Profile load failed", error);
                 localStorage.removeItem("token");
             }
+        } else {
+            console.log("AuthContext: No token found");
         }
         setLoading(false);
+        console.log("AuthContext: Loading set to false");
     };
 
     const login = async (email, password) => {
         try {
             const response = await loginUser(email, password);
             const { token, user } = response.data;
-
             localStorage.setItem("token", token);
             setUser(user);
             return { success: true };

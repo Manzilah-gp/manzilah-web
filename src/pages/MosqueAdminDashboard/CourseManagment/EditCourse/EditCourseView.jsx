@@ -1,40 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-    Box,
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Select,
-    Textarea,
-    VStack,
-    HStack,
-    Heading,
     useToast,
-    Card,
-    CardBody,
-    NumberInput,
-    NumberInputField,
-    Switch,
-    Flex,
-    Text,
-    Tag,
-    IconButton,
-    Divider,
-    Radio,
-    RadioGroup,
-    Stack,
-    Spinner,
     Badge
 } from '@chakra-ui/react';
 import {
     ArrowLeftOutlined,
     PlusOutlined,
     DeleteOutlined,
-    CalendarOutlined,
     ClockCircleOutlined,
-    TeamOutlined,
     SaveOutlined,
     CloseOutlined
 } from '@ant-design/icons';
@@ -78,6 +52,16 @@ const EditCourseView = () => {
         });
     }, [id]);
 
+    // Helper function to convert ISO datetime to YYYY-MM-DD format
+    const formatDateForInput = (isoDate) => {
+        if (!isoDate) return '';
+        const date = new Date(isoDate);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
+
     const fetchInitialData = async () => {
         try {
             setLoading(true);
@@ -96,7 +80,12 @@ const EditCourseView = () => {
                     ...course,
                     target_gender: course.target_gender || '',
                     target_age_group: course.target_age_group || 'all',
-                    schedule: course.schedule || []
+                    schedule: course.schedule || [],
+                    is_online_enabled: course.is_online_enabled || false,
+                    // Format dates for date inputs
+                    enrollment_deadline: formatDateForInput(course.enrollment_deadline),
+                    course_start_date: formatDateForInput(course.course_start_date),
+                    course_end_date: formatDateForInput(course.course_end_date)
                 });
             }
 
@@ -443,6 +432,81 @@ const EditCourseView = () => {
                             }}>
                                 Course Details
                             </h2>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '24px' }}>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        fontSize: '14px'
+                                    }}>
+                                        Enrollment Deadline
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={formData.enrollment_deadline || ''}
+                                        onChange={(e) => handleInputChange('enrollment_deadline', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        fontSize: '14px'
+                                    }}>
+                                        Course Start Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={formData.course_start_date || ''}
+                                        onChange={(e) => handleInputChange('course_start_date', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151',
+                                        fontSize: '14px'
+                                    }}>
+                                        Course End Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={formData.course_end_date || ''}
+                                        onChange={(e) => handleInputChange('course_end_date', e.target.value)}
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '12px',
+                                            fontSize: '16px',
+                                            outline: 'none'
+                                        }}
+                                    />
+                                </div>
+                            </div>
 
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '24px' }}>
                                 <div>

@@ -14,6 +14,8 @@ import {
     CheckCircleOutlined
 } from '@ant-design/icons';
 import { getCourseById, deleteCourse } from '../../../../api/course';
+import EnableMeetingToggle from '../../../../components/Course/EnableMeetingToggle';
+
 import './ViewCourseView.css';
 
 const ViewCourseView = () => {
@@ -496,6 +498,9 @@ const ViewCourseView = () => {
                     </div>
                 </div>
 
+                <EnableMeetingToggle courseId={id} />
+
+
                 {/* Students Card */}
                 <div style={{
                     backgroundColor: 'white',
@@ -503,7 +508,8 @@ const ViewCourseView = () => {
                     padding: '24px',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
                     cursor: 'pointer',
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    marginTop: '24px'
                 }}
                     onClick={() => setShowStudentsModal(true)}
                     onMouseEnter={(e) => {
@@ -551,6 +557,7 @@ const ViewCourseView = () => {
                         </div>
                     </div>
                 </div>
+
 
                 {/* Students Modal */}
                 {showStudentsModal && (

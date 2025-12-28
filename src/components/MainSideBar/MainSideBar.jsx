@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Layout } from 'antd';
 import {
@@ -163,7 +163,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         {
             key: 'my-enrollments',
             icon: <BookOutlined />,
-            label: user.roles.includes('student') ? 'My Enrollments' : 'Children Enrollments',
+            label: user?.roles?.includes('student') ? 'My Enrollments' : 'Children Enrollments',
             roles: ['student', 'parent'],
             link: '/my-enrollments'
         },
@@ -192,9 +192,18 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
      */
 
     const getFilteredMenuItems = useMemo(() => {
-        if (!user || !user.roles || user.roles.length === 0) return [];
+        // Normalize user roles:
+        // 1. If user.roles exists, use it.
+        // 2. If user.role exists (singular), wrap in array.
+        // 3. Otherwise empty array.
+        let userRoles = [];
+        if (user?.roles && Array.isArray(user.roles)) {
+            userRoles = user.roles;
+        } else if (user?.role) {
+            userRoles = [user.role];
+        }
 
-        const userRoles = user.roles; // This is an ARRAY of roles
+        if (!user || userRoles.length === 0) return [];
 
         // Helper function to check if user has access to an item
         const hasAccess = (item) => {
@@ -277,14 +286,10 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             collapsed={collapsed}
             onCollapse={onToggleCollapse}
             trigger={null}
+            className={`sidebar ${collapsed ? 'collapsed' : ''}`}
             style={{
                 background: '#151A2D',
-                position: 'fixed',
-                left: 0,
-                top: 64,
-                height: 'calc(100vh - 64px)',
-                zIndex: 100,
-                overflow: 'auto'
+                // Inline positioning styles removed to allow CSS control
             }}
         >
             {/* Mobile Menu Toggle */}
@@ -296,145 +301,143 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 <MenuOutlined />
             </button>
 
-            <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
-                {/* Sidebar Header with Toggle */}
-                <header className="sidebar-header">
-                    <button
-                        className="sidebar-toggler"
-                        onClick={onToggleCollapse}
-                    >
-                        <LeftOutlined style={{
-                            transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
-                            transition: 'transform 0.3s ease'
-                        }} />
-                    </button>
-                </header>
+            {/* Sidebar Header with Toggle */}
+            <header className="sidebar-header">
+                <button
+                    className="sidebar-toggler"
+                    onClick={onToggleCollapse}
+                >
+                    <LeftOutlined style={{
+                        transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.3s ease'
+                    }} />
+                </button>
+            </header>
 
-                {/* User Info Section */}
-                <div className="user-info-section">
-                    <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
-                        <UserOutlined />
-                    </div>
-
-                    {!collapsed && (
-                        <div className="user-details">
-                            <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
-                            <p className="user-role">
-                                {user?.roles && user.roles.length > 0
-                                    ? user.roles[0].replace('_', ' ').toUpperCase()
-                                    : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
-                            </p>
-                        </div>
-                    )}
+            {/* User Info Section */}
+            <div className="user-info-section">
+                <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
+                    <UserOutlined />
                 </div>
 
-                {/* Navigation Menu - FILTERED BY ROLE */}
-                <nav className="sidebar-nav">
-                    <ul className="nav-list primary-nav">
-                        {getFilteredMenuItems.map(item => (
-                            <li
-                                key={item.key}
-                                className={`nav-item ${item.children ? 'dropdown-container' : ''} ${openDropdown === item.key || hasActiveChild(item.children) ? 'open' : ''
-                                    }`}
-                            >
-                                {item.children ? (
-                                    <>
-                                        {/* Dropdown Toggle */}
-                                        <a
-                                            href="#"
-                                            className={`nav-link dropdown-toggle ${hasActiveChild(item.children) ? 'active' : ''
-                                                }`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                toggleDropdown(item.key);
-                                            }}
-                                        >
-                                            <span className="nav-icon">{item.icon}</span>
-                                            {!collapsed && <span className="nav-label">{item.label}</span>}
-                                            {!collapsed && (
-                                                <span className="dropdown-icon">
-                                                    <DownOutlined style={{
-                                                        transform: openDropdown === item.key ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                        transition: 'transform 0.3s ease'
-                                                    }} />
-                                                </span>
-                                            )}
-                                        </a>
+                {!collapsed && (
+                    <div className="user-details">
+                        <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
+                        <p className="user-role">
+                            {user?.roles && user.roles.length > 0
+                                ? user.roles[0].replace('_', ' ').toUpperCase()
+                                : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
+                        </p>
+                    </div>
+                )}
+            </div>
 
-                                        {/* Dropdown Menu */}
-                                        <ul className="dropdown-menu">
-                                            {!collapsed && (
-                                                <li className="nav-item">
-                                                    <a className="nav-link dropdown-title">{item.label}</a>
-                                                </li>
-                                            )}
-                                            {item.children.map(child => (
-                                                <li key={child.key} className="nav-item">
-                                                    <a
-                                                        href={child.link || '#'}
-                                                        className={`nav-link dropdown-link ${isActive(child.link) ? 'active' : ''
-                                                            }`}
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            handleItemClick(child.link);
-                                                        }}
-                                                    >
-                                                        {child.icon && <span className="nav-icon">{child.icon}</span>}
-                                                        {child.label}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </>
-                                ) : (
-                                    // Regular Menu Item
+            {/* Navigation Menu - FILTERED BY ROLE */}
+            <nav className="sidebar-nav">
+                <ul className="nav-list primary-nav">
+                    {getFilteredMenuItems.map(item => (
+                        <li
+                            key={item.key}
+                            className={`nav-item ${item.children ? 'dropdown-container' : ''} ${openDropdown === item.key || hasActiveChild(item.children) ? 'open' : ''
+                                }`}
+                        >
+                            {item.children ? (
+                                <>
+                                    {/* Dropdown Toggle */}
                                     <a
-                                        href={item.link || '#'}
-                                        className={`nav-link ${isActive(item.link) ? 'active' : ''}`}
+                                        href="#"
+                                        className={`nav-link dropdown-toggle ${hasActiveChild(item.children) ? 'active' : ''
+                                            }`}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            handleItemClick(item.link);
+                                            toggleDropdown(item.key);
                                         }}
                                     >
                                         <span className="nav-icon">{item.icon}</span>
                                         {!collapsed && <span className="nav-label">{item.label}</span>}
+                                        {!collapsed && (
+                                            <span className="dropdown-icon">
+                                                <DownOutlined style={{
+                                                    transform: openDropdown === item.key ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                    transition: 'transform 0.3s ease'
+                                                }} />
+                                            </span>
+                                        )}
                                     </a>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
 
-                    {/* Secondary Navigation - Always visible */}
-                    <ul className="nav-list secondary-nav">
-                        <li className="nav-item">
-                            <a
-                                href="/chat"
-                                className="nav-link"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleItemClick('/chat');
-                                }}
-                            >
-                                <span className="nav-icon"><WechatOutlined /></span>
-                                {!collapsed && <span className="nav-label">{t('sidebar.chat') || 'Chat'}</span>}
-                            </a>
+                                    {/* Dropdown Menu */}
+                                    <ul className="dropdown-menu">
+                                        {!collapsed && (
+                                            <li className="nav-item">
+                                                <a className="nav-link dropdown-title">{item.label}</a>
+                                            </li>
+                                        )}
+                                        {item.children.map(child => (
+                                            <li key={child.key} className="nav-item">
+                                                <a
+                                                    href={child.link || '#'}
+                                                    className={`nav-link dropdown-link ${isActive(child.link) ? 'active' : ''
+                                                        }`}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleItemClick(child.link);
+                                                    }}
+                                                >
+                                                    {child.icon && <span className="nav-icon">{child.icon}</span>}
+                                                    {child.label}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </>
+                            ) : (
+                                // Regular Menu Item
+                                <a
+                                    href={item.link || '#'}
+                                    className={`nav-link ${isActive(item.link) ? 'active' : ''}`}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        handleItemClick(item.link);
+                                    }}
+                                >
+                                    <span className="nav-icon">{item.icon}</span>
+                                    {!collapsed && <span className="nav-label">{item.label}</span>}
+                                </a>
+                            )}
                         </li>
-                        <li className="nav-item">
-                            <a
-                                href="/login"
-                                className="nav-link"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    handleLogout();
-                                }}
-                            >
-                                <span className="nav-icon"><LogoutOutlined /></span>
-                                {!collapsed && <span className="nav-label">{t('sidebar.signout') || 'Sign Out'}</span>}
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </aside>
+                    ))}
+                </ul>
+
+                {/* Secondary Navigation - Always visible */}
+                <ul className="nav-list secondary-nav">
+                    <li className="nav-item">
+                        <a
+                            href="/chat"
+                            className="nav-link"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleItemClick('/chat');
+                            }}
+                        >
+                            <span className="nav-icon"><WechatOutlined /></span>
+                            {!collapsed && <span className="nav-label">{t('sidebar.chat') || 'Chat'}</span>}
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a
+                            href="/login"
+                            className="nav-link"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleLogout();
+                            }}
+                        >
+                            <span className="nav-icon"><LogoutOutlined /></span>
+                            {!collapsed && <span className="nav-label">{t('sidebar.signout') || 'Sign Out'}</span>}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </Sider>
     );
 };

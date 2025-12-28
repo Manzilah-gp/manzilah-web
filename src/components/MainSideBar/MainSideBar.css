@@ -7,11 +7,11 @@
 
 .sidebar {
     position: fixed;
-    top: 0;
+    top: 64px;
     left: 0;
     z-index: 1000;
     width: 270px;
-    height: 100vh;
+    height: calc(100vh - 64px);
     background: #151A2D;
     transition: all 0.4s ease;
     display: flex;
@@ -27,7 +27,6 @@
     display: flex;
     position: relative;
     padding: 20px;
-    padding-top: 80px;
     align-items: center;
     justify-content: space-between;
     border-bottom: 1px solid #2D3748;
@@ -141,6 +140,8 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    min-height: 0;
+    /* Crucial: allows children to scroll properly within flex container */
 }
 
 .sidebar-nav .nav-list {
@@ -153,6 +154,7 @@
 
 .sidebar .sidebar-nav .primary-nav {
     flex: 1;
+    /* Expands to fill available space, pushing secondary-nav down */
     overflow-y: auto;
     scrollbar-width: thin;
     padding-bottom: 20px;
@@ -224,6 +226,12 @@
     padding-bottom: 20px;
     border-top: 1px solid #2D3748;
     padding-top: 10px;
+    margin-top: auto;
+    /* Fallback to ensure bottom alignment */
+    flex-shrink: 0;
+    /* Prevents compression */
+    background: #151A2D;
+    z-index: 10;
 }
 
 /* Dropdown Stylings */

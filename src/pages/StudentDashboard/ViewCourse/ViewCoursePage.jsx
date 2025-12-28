@@ -11,6 +11,7 @@ import {
     FileTextOutlined
 } from '@ant-design/icons';
 import { getEnrollmentDetails, withdrawFromCourse } from '../../../api/studentDashboard';
+import JoinMeetingButton from '../../../components/Course/JoinMeetingButton';
 import './ViewCoursePage.css';
 
 const ViewCoursePage = () => {
@@ -289,17 +290,27 @@ const ViewCoursePage = () => {
 
                         {/* Actions */}
                         {enrollment.status === 'active' && (
-                            <div className="sidebar-card">
-                                <button
-                                    onClick={handleWithdraw}
-                                    className="withdraw-button"
-                                >
-                                    Withdraw from Course
-                                </button>
-                                <p className="withdraw-note">
-                                    You can withdraw from this course at any time
-                                </p>
-                            </div>
+                            <>
+                                <div className="sidebar-card">
+                                    <h3 className="sidebar-title">Join Online Meeting</h3>
+                                    <JoinMeetingButton
+                                        courseId={enrollment.course_id}
+                                        variant="primary"
+                                    />
+                                </div>
+
+                                <div className="sidebar-card">
+                                    <button
+                                        onClick={handleWithdraw}
+                                        className="withdraw-button"
+                                    >
+                                        Withdraw from Course
+                                    </button>
+                                    <p className="withdraw-note">
+                                        You can withdraw from this course at any time
+                                    </p>
+                                </div>
+                            </>
                         )}
                     </div>
                 </div>
