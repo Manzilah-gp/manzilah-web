@@ -148,7 +148,7 @@ const DonationList = ({ eventId }) => {
                         backgroundColor: donation.is_anonymous ? '#999' : '#1890ff' 
                       }}
                     >
-                      {!donation.is_anonymous && donation.first_name?.charAt(0)}
+                      {!donation.is_anonymous && donation.full_name?.charAt(0)}
                     </Avatar>
                   }
                   title={
@@ -156,7 +156,7 @@ const DonationList = ({ eventId }) => {
                       <span className="donor-name">
                         {donation.is_anonymous 
                           ? 'Anonymous Donor' 
-                          : `${donation.first_name} ${donation.last_name}`
+                          : `${donation.full_name} `
                         }
                       </span>
                       <Tag color="green" className="amount-tag">
