@@ -10,6 +10,7 @@ import {
     ExclamationCircleOutlined
 } from '@ant-design/icons';
 import { getMyEnrollments, getStudentStats, withdrawFromCourse, getChildren } from '../../../api/studentDashboard';
+import JoinMeetingButton from '../../../components/Course/JoinMeetingButton';
 import './MyEnrollmentsPage.css';
 import useAuth from '../../../hooks/useAuth';
 
@@ -331,12 +332,18 @@ const MyEnrollmentsPage = () => {
                                         View Course
                                     </button>
                                     {enrollment.enrollment_status === 'active' && (
-                                        <button
-                                            onClick={() => handleWithdraw(enrollment.enrollment_id, enrollment.course_name)}
-                                            className="btn-danger"
-                                        >
-                                            Withdraw
-                                        </button>
+                                        <>
+                                            <JoinMeetingButton
+                                                courseId={enrollment.course_id}
+                                                variant="secondary"
+                                            />
+                                            <button
+                                                onClick={() => handleWithdraw(enrollment.enrollment_id, enrollment.course_name)}
+                                                className="btn-danger"
+                                            >
+                                                Withdraw
+                                            </button>
+                                        </>
                                     )}
                                 </div>
                             </div>

@@ -1,0 +1,169 @@
+.kid-container {
+    width: 300px;
+    height: 300px;
+    position: relative;
+}
+
+.kid-avatar {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Head */
+.kid-head {
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at top, #ffddb8, #f3b78a);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, .3);
+}
+
+/* Hair */
+.hair {
+    position: absolute;
+    top: -10px;
+    left: 15px;
+    width: 110px;
+    height: 60px;
+    background: linear-gradient(#6b3f2d, #4a2a1a);
+    border-radius: 60% 60% 40% 40%;
+}
+
+/* Eyes */
+.eye {
+    width: 24px;
+    height: 24px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 55px;
+    overflow: hidden;
+}
+
+.eye.left {
+    left: 30px;
+}
+
+.eye.right {
+    right: 30px;
+}
+
+.eye.blink {
+    height: 4px;
+}
+
+.pupil {
+    width: 12px;
+    height: 12px;
+    background: #1f2937;
+    border-radius: 50%;
+    position: absolute;
+    inset: 6px;
+}
+
+/* Mouth */
+.mouth {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    width: 30px;
+    height: 8px;
+    background: #7c2d12;
+    border-radius: 0 0 20px 20px;
+    transform: translateX(-50%);
+    transition: height .1s;
+}
+
+.mouth.open {
+    height: 18px;
+}
+
+/* Hoodie */
+.hoodie {
+    width: 160px;
+    height: 120px;
+    background: linear-gradient(135deg, #dc2626, #991b1b);
+    border-radius: 40px;
+    margin-top: -20px;
+    position: relative;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .3);
+}
+
+.hoodie-strings::before,
+.hoodie-strings::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    width: 6px;
+    height: 25px;
+    background: #fff;
+    border-radius: 3px;
+}
+
+.hoodie-strings::before {
+    left: 70px;
+}
+
+.hoodie-strings::after {
+    right: 70px;
+}
+
+/* Arms */
+.arm {
+    width: 18px;
+    height: 80px;
+    background: #dc2626;
+    position: absolute;
+    top: 150px;
+    transform-origin: top center;
+    border-radius: 10px;
+}
+
+.arm.left {
+    left: 50px;
+}
+
+.arm.right {
+    right: 50px;
+}
+
+/* Speaking waves */
+.waves {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.waves span {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border: 3px solid rgba(34, 197, 94, .4);
+    border-radius: 50%;
+    animation: wave 1.5s infinite;
+}
+
+.waves span:nth-child(2) {
+    animation-delay: .5s;
+}
+
+.waves span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes wave {
+    from {
+        transform: scale(.6);
+        opacity: .8;
+    }
+
+    to {
+        transform: scale(1.2);
+        opacity: 0;
+    }
+}

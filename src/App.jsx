@@ -48,6 +48,10 @@ import CalendarPage from './pages/Calendar/CalendarPage';
 import MyEnrollmentsPage from './pages/StudentDashboard/MyEnrollments/MyEnrollmentsPage';
 import ViewCoursePage from './pages/StudentDashboard/ViewCourse/ViewCoursePage';
 
+import MeetingRoomUIKit from './pages/MeetingRoom/MeetingRoomUIKit';
+// import QiblaPage from './pages/QiblaPage/QiblaPage';
+// import QuranReaderPage from './pages/QuranReader/QuranReaderPage';
+import IslamicStoryteller from './pages/IslamicStoryteller/IslamicStoryteller';
 
 function App() {
   return (
@@ -73,6 +77,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
+              {/* <Route path="/qibla" element={<QiblaPage />} />
+              <Route path="/quran" element={<QuranReaderPage />} /> */}
 
 
               {/* ============================================ */}
@@ -291,7 +297,14 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
+                <Route
+                  path="/storyteller"
+                  element={
+                    <ProtectedRoute>
+                      <IslamicStoryteller />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
 
               {/* Edit Mosque - Separate route outside dashboard layout */}
@@ -315,6 +328,13 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
+
+              <Route path="/meeting/:roomId" element={
+                <ProtectedRoute>
+                  <MeetingRoomUIKit />
+                </ProtectedRoute>
+              } />
 
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />

@@ -261,6 +261,36 @@ const resources = {
             'cta.description': 'Join thousands of students, parents, and donors who are benefiting from Manzilah\'s unified platform.',
             'cta.getStarted': 'Get Started',
             'cta.learnMore': 'Learn More',
+            'sidebar.storyteller': 'Story Teller',
+
+            // Islamic Storyteller
+            'storyteller.title': 'Islamic Storyteller',
+            'storyteller.subtitle.premium': 'Premium AI Narrator',
+            'storyteller.subtitle.free': 'Free Text-to-Speech',
+
+            'storyteller.readyStories': 'Ready Stories',
+            'storyteller.freeText': 'Free Text',
+
+            'storyteller.writeText': 'Write the text you want to hear:',
+            'storyteller.placeholder':
+                'Write any text here... story, verse, hadith, or educational content',
+
+            'storyteller.stories': 'Stories',
+            'storyteller.start': 'Start Reading',
+            'storyteller.speaking': 'Speaking...',
+            'storyteller.loading': 'Loading...',
+
+            'storyteller.howTo': 'How to use',
+            'storyteller.step1': 'Choose a ready story or write your own text',
+            'storyteller.step2': 'Press "Start Reading" to listen',
+            'storyteller.step3': 'You can stop narration at any time',
+            'storyteller.customText': 'Custom Text',
+            'storyteller.writeTextPlaceholder': 'Write any text here... story, verse, hadith, or educational content',
+            'storyteller.vipMember': 'VIP Member',
+            'storyteller.letter': 'Letter',
+            'storyteller.minutes': 'Minutes approx.',
+            'storyteller.tellingStory': 'Telling a story...',
+
         }
     },
     ar: {
@@ -520,6 +550,37 @@ const resources = {
             'cta.description': 'انضم إلى آلاف الطلاب وأولياء الأمور والمانحين الذين يستفيدون من منصة منزلة الموحدة.',
             'cta.getStarted': 'ابدأ الآن',
             'cta.learnMore': 'تعلم المزيد',
+
+            // Sidebar
+            'sidebar.storyteller': 'راوي القصص',
+
+            // Islamic Storyteller
+            'storyteller.title': 'راوي القصص الإسلامية',
+            'storyteller.subtitle.premium': 'راوي ذكي مميز',
+            'storyteller.subtitle.free': 'تحويل النص إلى كلام',
+
+            'storyteller.readyStories': 'قصص جاهزة',
+            'storyteller.freeText': 'نص حر',
+
+            'storyteller.writeText': 'اكتب النص الذي تريد سماعه:',
+            'storyteller.placeholder':
+                'اكتب أي نص هنا... قصة، آية، حديث، أو أي محتوى تربوي',
+
+            'storyteller.stories': 'القصص',
+            'storyteller.start': 'ابدأ القراءة',
+            'storyteller.speaking': 'يتحدث...',
+            'storyteller.loading': 'جاري التحميل...',
+
+            'storyteller.howTo': 'كيفية الاستخدام',
+            'storyteller.step1': 'اختر من القصص الجاهزة أو اكتب نصك الخاص',
+            'storyteller.step2': 'اضغط "ابدأ القراءة" لسماع القصة',
+            'storyteller.step3': 'يمكنك إيقاف القراءة في أي وقت',
+            'storyteller.customText': 'نص حر',
+            'storyteller.writeTextPlaceholder': 'اكتب أي نص هنا... قصة، آية، حديث، أو أي محتوى تربوي',
+            'storyteller.vipMember': 'عضو VIP',
+            'storyteller.letter': 'حرف',
+            'storyteller.minutes': ' دقيقة تقريباً',
+            'storyteller.tellingStory': 'يروي القصة..',
         }
     }
 };

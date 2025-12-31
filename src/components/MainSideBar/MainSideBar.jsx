@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Layout } from 'antd';
 import {
@@ -19,7 +19,8 @@ import {
     BookOutlined,
     DollarOutlined,
     CalendarOutlined,
-    ScheduleOutlined
+    ScheduleOutlined,
+    YuqueOutlined
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
@@ -163,7 +164,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         {
             key: 'my-enrollments',
             icon: <BookOutlined />,
-            label: user.roles.includes('student') ? 'My Enrollments' : 'Children Enrollments',
+            label: user?.roles?.includes('student') ? 'My Enrollments' : 'Children Enrollments',
             roles: ['student', 'parent'],
             link: '/my-enrollments'
         },
@@ -192,9 +193,18 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
      */
 
     const getFilteredMenuItems = useMemo(() => {
-        if (!user || !user.roles || user.roles.length === 0) return [];
+        // Normalize user roles:
+        // 1. If user.roles exists, use it.
+        // 2. If user.role exists (singular), wrap in array.
+        // 3. Otherwise empty array.
+        let userRoles = [];
+        if (user?.roles && Array.isArray(user.roles)) {
+            userRoles = user.roles;
+        } else if (user?.role) {
+            userRoles = [user.role];
+        }
 
-        const userRoles = user.roles; // This is an ARRAY of roles
+        if (!user || userRoles.length === 0) return [];
 
         // Helper function to check if user has access to an item
         const hasAccess = (item) => {
@@ -277,28 +287,28 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             collapsed={collapsed}
             onCollapse={onToggleCollapse}
             trigger={null}
+            className={`sidebar ${collapsed ? 'collapsed' : ''}`}
             style={{
                 background: '#151A2D',
-                position: 'fixed',
-                left: 0,
-                top: 64,
-                height: 'calc(100vh - 64px)',
-                zIndex: 100,
-                overflow: 'auto'
+                // Inline positioning styles removed to allow CSS control
             }}
         >
-            {/* Mobile Menu Toggle */}
-            <button
-                className="sidebar-menu-button"
-                onClick={onToggleCollapse}
-                style={{ display: window.innerWidth <= 768 ? 'flex' : 'none' }}
-            >
-                <MenuOutlined />
-            </button>
 
             <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+                {/* Mobile Menu Toggle */}
+                <button
+                    className="sidebar-menu-button"
+                    onClick={onToggleCollapse}
+                    style={{
+                        display: window.innerWidth <= 768 ? 'flex' : 'none',
+                        marginTop: '4rem'
+                    }}
+                >
+                    <MenuOutlined />
+                </button>
+
                 {/* Sidebar Header with Toggle */}
-                <header className="sidebar-header">
+                {/* <header className="sidebar-header">
                     <button
                         className="sidebar-toggler"
                         onClick={onToggleCollapse}
@@ -308,10 +318,21 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                             transition: 'transform 0.3s ease'
                         }} />
                     </button>
-                </header>
+                </header> */}
 
                 {/* User Info Section */}
                 <div className="user-info-section">
+
+                    <button
+                        className="sidebar-toggler"
+                        onClick={onToggleCollapse}
+                    >
+                        <LeftOutlined style={{
+                            transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.3s ease'
+                        }} />
+                    </button>
+
                     <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
                         <UserOutlined />
                     </div>
@@ -417,6 +438,19 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                             >
                                 <span className="nav-icon"><WechatOutlined /></span>
                                 {!collapsed && <span className="nav-label">{t('sidebar.chat') || 'Chat'}</span>}
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a
+                                href="/storyteller"
+                                className="nav-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleItemClick('/storyteller');
+                                }}
+                            >
+                                <span className="nav-icon"><YuqueOutlined /></span>
+                                {!collapsed && <span className="nav-label">{t('sidebar.storyteller') || 'Storyteller'}</span>}
                             </a>
                         </li>
                         <li className="nav-item">

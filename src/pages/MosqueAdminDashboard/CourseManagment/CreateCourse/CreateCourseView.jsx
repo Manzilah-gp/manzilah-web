@@ -39,6 +39,10 @@ const CreateCourseView = () => {
         duration_weeks: null,
         total_sessions: null,
         max_students: null,
+        enrollment_deadline: '',
+        course_start_date: '',
+        course_end_date: '',
+        is_online_enabled: false,
         schedule_type: 'onsite',
         target_age_group: 'all',
         target_gender: '',
@@ -57,6 +61,11 @@ const CreateCourseView = () => {
     useEffect(() => {
         fetchInitialData();
     }, []);
+
+    // Calculate weeks and sessions when dates or schedule changes
+    useEffect(() => {
+        calculateWeeksAndSessions();
+    }, [formData.course_start_date, formData.course_end_date, formData.schedule]);
 
     const fetchInitialData = async () => {
         try {
@@ -77,6 +86,73 @@ const CreateCourseView = () => {
         } catch (error) {
             alert('Failed to load initial data');
         }
+    };
+
+    // Helper function to get day number (0 = Sunday, 1 = Monday, etc.)
+    const getDayNumber = (dayName) => {
+        const days = {
+            'sunday': 0,
+            'monday': 1,
+            'tuesday': 2,
+            'wednesday': 3,
+            'thursday': 4,
+            'friday': 5,
+            'saturday': 6
+        };
+        return days[dayName.toLowerCase()] || 0;
+    };
+
+    // Calculate number of weeks and sessions
+    const calculateWeeksAndSessions = () => {
+        const { course_start_date, course_end_date, schedule } = formData;
+
+        if (!course_start_date || !course_end_date || schedule.length === 0) {
+            setFormData(prev => ({
+                ...prev,
+                duration_weeks: null,
+                total_sessions: null
+            }));
+            return;
+        }
+
+        const startDate = new Date(course_start_date);
+        const endDate = new Date(course_end_date);
+
+        // Calculate total weeks (rounded up)
+        const timeDiff = endDate.getTime() - startDate.getTime();
+        const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        const totalWeeks = Math.ceil(dayDiff / 7);
+
+        // Get unique days of week from schedule
+        const uniqueDays = [...new Set(schedule.map(item => item.day_of_week))];
+
+        // Calculate total sessions
+        let totalSessions = 0;
+
+        // For each day of the week, count how many occurrences between start and end dates
+        uniqueDays.forEach(dayName => {
+            const targetDay = getDayNumber(dayName);
+
+            // Create a copy of start date
+            const currentDate = new Date(startDate);
+
+            // Find the first occurrence of this day on or after start date
+            while (currentDate.getDay() !== targetDay && currentDate <= endDate) {
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            // Count occurrences of this day
+            while (currentDate <= endDate) {
+                totalSessions++;
+                currentDate.setDate(currentDate.getDate() + 7); // Move to next week same day
+            }
+        });
+
+        setFormData(prev => ({
+            ...prev,
+            duration_weeks: totalWeeks,
+            total_sessions: totalSessions
+        }));
     };
 
     const handleInputChange = (field, value) => {
@@ -445,58 +521,6 @@ const CreateCourseView = () => {
                                             fontWeight: '600',
                                             color: '#374151'
                                         }}>
-                                            Duration (weeks)
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.duration_weeks || ''}
-                                            onChange={(e) => handleInputChange('duration_weeks', e.target.value)}
-                                            placeholder="e.g., 12"
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '1px solid #d1d5db',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                outline: 'none'
-                                            }}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label style={{
-                                            display: 'block',
-                                            marginBottom: '8px',
-                                            fontWeight: '600',
-                                            color: '#374151'
-                                        }}>
-                                            Total Sessions
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={formData.total_sessions || ''}
-                                            onChange={(e) => handleInputChange('total_sessions', e.target.value)}
-                                            placeholder="e.g., 24"
-                                            style={{
-                                                width: '100%',
-                                                padding: '12px 16px',
-                                                border: '1px solid #d1d5db',
-                                                borderRadius: '8px',
-                                                fontSize: '16px',
-                                                outline: 'none'
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                                    <div>
-                                        <label style={{
-                                            display: 'block',
-                                            marginBottom: '8px',
-                                            fontWeight: '600',
-                                            color: '#374151'
-                                        }}>
                                             Max Students
                                         </label>
                                         <input
@@ -541,6 +565,61 @@ const CreateCourseView = () => {
                                         />
                                     </div>
                                 </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Enrollment Deadline
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={formData.enrollment_deadline}
+                                            onChange={(e) => handleInputChange('enrollment_deadline', e.target.value)}
+                                            style={{ width: '100%', padding: '12px 16px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '16px' }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Course Start Date
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={formData.course_start_date}
+                                            onChange={(e) => handleInputChange('course_start_date', e.target.value)}
+                                            style={{ width: '100%', padding: '12px 16px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '16px' }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label style={{
+                                            display: 'block',
+                                            marginBottom: '8px',
+                                            fontWeight: '600',
+                                            color: '#374151'
+                                        }}>
+                                            Course End Date
+                                        </label>
+                                        <input
+                                            type="date"
+                                            value={formData.course_end_date}
+                                            onChange={(e) => handleInputChange('course_end_date', e.target.value)}
+                                            style={{ width: '100%', padding: '12px 16px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '16px' }}
+                                        />
+                                    </div>
+                                </div>
+
                                 <div>
                                     <label style={{
                                         display: 'block',
@@ -644,6 +723,21 @@ const CreateCourseView = () => {
                                     <p style={{ fontSize: '14px', color: '#6b7280' }}>
                                         This affects teacher suggestions based on gender matching
                                     </p>
+                                </div>
+
+                                <div style={{ borderTop: '1px solid #e5e7eb', marginTop: '20px', paddingTop: '20px' }}>
+                                    <h3 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '16px' }}>Online Settings</h3>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                        <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.is_online_enabled}
+                                                onChange={(e) => handleInputChange('is_online_enabled', e.target.checked)}
+                                                style={{ width: '20px', height: '20px' }}
+                                            />
+                                            <span style={{ fontSize: '16px', fontWeight: '500' }}>Enable Online Sessions</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -825,6 +919,74 @@ const CreateCourseView = () => {
                                         </div>
                                     </>
                                 )}
+                            </div>
+                        </div>
+
+                        {/* Duration and Sessions Card - Now calculated automatically */}
+                        <div style={{
+                            backgroundColor: 'white',
+                            borderRadius: '16px',
+                            padding: '24px',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Duration (weeks)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={formData.duration_weeks || ''}
+                                        readOnly
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            backgroundColor: '#f9fafb',
+                                            color: '#374151'
+                                        }}
+                                        placeholder="Auto-calculated"
+                                    />
+                                    <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                                        Calculated automatically from start and end dates
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <label style={{
+                                        display: 'block',
+                                        marginBottom: '8px',
+                                        fontWeight: '600',
+                                        color: '#374151'
+                                    }}>
+                                        Total Sessions
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={formData.total_sessions || ''}
+                                        readOnly
+                                        style={{
+                                            width: '100%',
+                                            padding: '12px 16px',
+                                            border: '1px solid #d1d5db',
+                                            borderRadius: '8px',
+                                            fontSize: '16px',
+                                            backgroundColor: '#f9fafb',
+                                            color: '#374151'
+                                        }}
+                                        placeholder="Auto-calculated"
+                                    />
+                                    <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+                                        Calculated automatically from schedule and dates
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
