@@ -6,16 +6,11 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { Spin, Alert, Select, Card, Tag, Space, Typography } from 'antd';
-import {
-    ClockCircleOutlined,
-    EnvironmentOutlined,
-    UserOutlined,
-    TeamOutlined
-} from '@ant-design/icons';
 import { getMySchedule } from '../../api/calendar';
 import useAuth from '../../hooks/useAuth';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './CalendarPage.css';
+import { getMeetingDetails } from '../../api/videoCalls';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -194,11 +189,38 @@ const CalendarPage = () => {
     /**
      * Navigate to course details on event click
      */
-    const handleEventClick = (event) => {
-        const { resource } = event;
 
-        if (resource.type === 'course') {
-            navigate(`/mosque-admin/courses/${resource.course_id}`);
+    const handleEventClick = async (event) => {
+        const { resource } = event;
+        const canManageContent = user?.roles?.some(role =>
+            ['admin', 'teacher', 'student'].includes(role)
+        );
+
+
+        if (resource.type === 'course' && canManageContent) {
+            try {
+
+                setLoading(true);
+                setError(null);
+                console.log("enside calender habdleEventClick");
+                // Check if meeting is enabled
+                const response = await getMeetingDetails(resource.course_id);
+                const { isOnlineEnabled, meetingUrl, roomId } = response.data.data;
+
+                if (!isOnlineEnabled) {
+                    alert('Online meetings are not enabled for this course');
+                    setLoading(false);
+                    return;
+                }
+
+                // Navigate to meeting room
+                navigate(`/meeting/${roomId}`);
+            } catch (err) {
+                console.error('Error joining meeting:', err);
+                setError(err.response?.data?.message || 'Failed to join meeting');
+                setLoading(false);
+            }
+
         }
         // For events, you can add event details page later
     };
@@ -364,7 +386,7 @@ const CalendarPage = () => {
                             <Title level={5} style={{ marginTop: '15px' }}>Event Types</Title>
                             <Space wrap>
                                 <Tag color="#e67e22">Religious</Tag>
-                                <Tag color="#3498db">Educational</Tag>
+                                <Tag color="#db34b7ff">Educational</Tag>
                                 <Tag color="#1abc9c">Social</Tag>
                                 <Tag color="#e74c3c">Fundraising</Tag>
                             </Space>

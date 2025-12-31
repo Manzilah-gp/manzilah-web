@@ -51,7 +51,7 @@ import ViewCoursePage from './pages/StudentDashboard/ViewCourse/ViewCoursePage';
 import MeetingRoomUIKit from './pages/MeetingRoom/MeetingRoomUIKit';
 // import QiblaPage from './pages/QiblaPage/QiblaPage';
 // import QuranReaderPage from './pages/QuranReader/QuranReaderPage';
-import IslamicStoryteller from './pages/test';
+import IslamicStoryteller from './pages/IslamicStoryteller/IslamicStoryteller';
 
 function App() {
   return (
@@ -79,7 +79,7 @@ function App() {
               <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
               {/* <Route path="/qibla" element={<QiblaPage />} />
               <Route path="/quran" element={<QuranReaderPage />} /> */}
-              <Route path="/islamic-storyteller" element={<IslamicStoryteller />} />
+
 
               {/* ============================================ */}
               {/* PUBLIC BROWSING PAGES */}
@@ -294,6 +294,14 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <CalendarPage />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/storyteller"
+                  element={
+                    <ProtectedRoute>
+                      <IslamicStoryteller />
                     </ProtectedRoute>
                   }
                 />

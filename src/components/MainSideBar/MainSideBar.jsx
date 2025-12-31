@@ -19,7 +19,8 @@ import {
     BookOutlined,
     DollarOutlined,
     CalendarOutlined,
-    ScheduleOutlined
+    ScheduleOutlined,
+    YuqueOutlined
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/useAuth';
@@ -292,152 +293,182 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
                 // Inline positioning styles removed to allow CSS control
             }}
         >
-            {/* Mobile Menu Toggle */}
-            <button
-                className="sidebar-menu-button"
-                onClick={onToggleCollapse}
-                style={{ display: window.innerWidth <= 768 ? 'flex' : 'none' }}
-            >
-                <MenuOutlined />
-            </button>
 
-            {/* Sidebar Header with Toggle */}
-            <header className="sidebar-header">
+            <aside className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+                {/* Mobile Menu Toggle */}
                 <button
-                    className="sidebar-toggler"
+                    className="sidebar-menu-button"
                     onClick={onToggleCollapse}
+                    style={{
+                        display: window.innerWidth <= 768 ? 'flex' : 'none',
+                        marginTop: '4rem'
+                    }}
                 >
-                    <LeftOutlined style={{
-                        transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
-                        transition: 'transform 0.3s ease'
-                    }} />
+                    <MenuOutlined />
                 </button>
-            </header>
 
-            {/* User Info Section */}
-            <div className="user-info-section">
-                <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
-                    <UserOutlined />
+                {/* Sidebar Header with Toggle */}
+                {/* <header className="sidebar-header">
+                    <button
+                        className="sidebar-toggler"
+                        onClick={onToggleCollapse}
+                    >
+                        <LeftOutlined style={{
+                            transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.3s ease'
+                        }} />
+                    </button>
+                </header> */}
+
+                {/* User Info Section */}
+                <div className="user-info-section">
+
+                    <button
+                        className="sidebar-toggler"
+                        onClick={onToggleCollapse}
+                    >
+                        <LeftOutlined style={{
+                            transform: collapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.3s ease'
+                        }} />
+                    </button>
+
+                    <div className={`user-avatar ${collapsed ? 'collapsed' : ''}`}>
+                        <UserOutlined />
+                    </div>
+
+                    {!collapsed && (
+                        <div className="user-details">
+                            <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
+                            <p className="user-role">
+                                {user?.roles && user.roles.length > 0
+                                    ? user.roles[0].replace('_', ' ').toUpperCase()
+                                    : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
-                {!collapsed && (
-                    <div className="user-details">
-                        <h4 className="user-name">{user?.full_name || user?.name || 'User'}</h4>
-                        <p className="user-role">
-                            {user?.roles && user.roles.length > 0
-                                ? user.roles[0].replace('_', ' ').toUpperCase()
-                                : user?.role?.replace('_', ' ').toUpperCase() || 'N/A'}
-                        </p>
-                    </div>
-                )}
-            </div>
+                {/* Navigation Menu - FILTERED BY ROLE */}
+                <nav className="sidebar-nav">
+                    <ul className="nav-list primary-nav">
+                        {getFilteredMenuItems.map(item => (
+                            <li
+                                key={item.key}
+                                className={`nav-item ${item.children ? 'dropdown-container' : ''} ${openDropdown === item.key || hasActiveChild(item.children) ? 'open' : ''
+                                    }`}
+                            >
+                                {item.children ? (
+                                    <>
+                                        {/* Dropdown Toggle */}
+                                        <a
+                                            href="#"
+                                            className={`nav-link dropdown-toggle ${hasActiveChild(item.children) ? 'active' : ''
+                                                }`}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                toggleDropdown(item.key);
+                                            }}
+                                        >
+                                            <span className="nav-icon">{item.icon}</span>
+                                            {!collapsed && <span className="nav-label">{item.label}</span>}
+                                            {!collapsed && (
+                                                <span className="dropdown-icon">
+                                                    <DownOutlined style={{
+                                                        transform: openDropdown === item.key ? 'rotate(180deg)' : 'rotate(0deg)',
+                                                        transition: 'transform 0.3s ease'
+                                                    }} />
+                                                </span>
+                                            )}
+                                        </a>
 
-            {/* Navigation Menu - FILTERED BY ROLE */}
-            <nav className="sidebar-nav">
-                <ul className="nav-list primary-nav">
-                    {getFilteredMenuItems.map(item => (
-                        <li
-                            key={item.key}
-                            className={`nav-item ${item.children ? 'dropdown-container' : ''} ${openDropdown === item.key || hasActiveChild(item.children) ? 'open' : ''
-                                }`}
-                        >
-                            {item.children ? (
-                                <>
-                                    {/* Dropdown Toggle */}
+                                        {/* Dropdown Menu */}
+                                        <ul className="dropdown-menu">
+                                            {!collapsed && (
+                                                <li className="nav-item">
+                                                    <a className="nav-link dropdown-title">{item.label}</a>
+                                                </li>
+                                            )}
+                                            {item.children.map(child => (
+                                                <li key={child.key} className="nav-item">
+                                                    <a
+                                                        href={child.link || '#'}
+                                                        className={`nav-link dropdown-link ${isActive(child.link) ? 'active' : ''
+                                                            }`}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleItemClick(child.link);
+                                                        }}
+                                                    >
+                                                        {child.icon && <span className="nav-icon">{child.icon}</span>}
+                                                        {child.label}
+                                                    </a>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </>
+                                ) : (
+                                    // Regular Menu Item
                                     <a
-                                        href="#"
-                                        className={`nav-link dropdown-toggle ${hasActiveChild(item.children) ? 'active' : ''
-                                            }`}
+                                        href={item.link || '#'}
+                                        className={`nav-link ${isActive(item.link) ? 'active' : ''}`}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            toggleDropdown(item.key);
+                                            handleItemClick(item.link);
                                         }}
                                     >
                                         <span className="nav-icon">{item.icon}</span>
                                         {!collapsed && <span className="nav-label">{item.label}</span>}
-                                        {!collapsed && (
-                                            <span className="dropdown-icon">
-                                                <DownOutlined style={{
-                                                    transform: openDropdown === item.key ? 'rotate(180deg)' : 'rotate(0deg)',
-                                                    transition: 'transform 0.3s ease'
-                                                }} />
-                                            </span>
-                                        )}
                                     </a>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
 
-                                    {/* Dropdown Menu */}
-                                    <ul className="dropdown-menu">
-                                        {!collapsed && (
-                                            <li className="nav-item">
-                                                <a className="nav-link dropdown-title">{item.label}</a>
-                                            </li>
-                                        )}
-                                        {item.children.map(child => (
-                                            <li key={child.key} className="nav-item">
-                                                <a
-                                                    href={child.link || '#'}
-                                                    className={`nav-link dropdown-link ${isActive(child.link) ? 'active' : ''
-                                                        }`}
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        handleItemClick(child.link);
-                                                    }}
-                                                >
-                                                    {child.icon && <span className="nav-icon">{child.icon}</span>}
-                                                    {child.label}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </>
-                            ) : (
-                                // Regular Menu Item
-                                <a
-                                    href={item.link || '#'}
-                                    className={`nav-link ${isActive(item.link) ? 'active' : ''}`}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleItemClick(item.link);
-                                    }}
-                                >
-                                    <span className="nav-icon">{item.icon}</span>
-                                    {!collapsed && <span className="nav-label">{item.label}</span>}
-                                </a>
-                            )}
+                    {/* Secondary Navigation - Always visible */}
+                    <ul className="nav-list secondary-nav">
+                        <li className="nav-item">
+                            <a
+                                href="/chat"
+                                className="nav-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleItemClick('/chat');
+                                }}
+                            >
+                                <span className="nav-icon"><WechatOutlined /></span>
+                                {!collapsed && <span className="nav-label">{t('sidebar.chat') || 'Chat'}</span>}
+                            </a>
                         </li>
-                    ))}
-                </ul>
-
-                {/* Secondary Navigation - Always visible */}
-                <ul className="nav-list secondary-nav">
-                    <li className="nav-item">
-                        <a
-                            href="/chat"
-                            className="nav-link"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                handleItemClick('/chat');
-                            }}
-                        >
-                            <span className="nav-icon"><WechatOutlined /></span>
-                            {!collapsed && <span className="nav-label">{t('sidebar.chat') || 'Chat'}</span>}
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a
-                            href="/login"
-                            className="nav-link"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                handleLogout();
-                            }}
-                        >
-                            <span className="nav-icon"><LogoutOutlined /></span>
-                            {!collapsed && <span className="nav-label">{t('sidebar.signout') || 'Sign Out'}</span>}
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+                        <li className="nav-item">
+                            <a
+                                href="/storyteller"
+                                className="nav-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleItemClick('/storyteller');
+                                }}
+                            >
+                                <span className="nav-icon"><YuqueOutlined /></span>
+                                {!collapsed && <span className="nav-label">{t('sidebar.storyteller') || 'Storyteller'}</span>}
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            <a
+                                href="/login"
+                                className="nav-link"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    handleLogout();
+                                }}
+                            >
+                                <span className="nav-icon"><LogoutOutlined /></span>
+                                {!collapsed && <span className="nav-label">{t('sidebar.signout') || 'Sign Out'}</span>}
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
         </Sider>
     );
 };

@@ -72,7 +72,7 @@ const ViewCourseView = () => {
     };
 
     const formatPrice = (cents) => {
-        return cents > 0 ? `₪${(cents / 100).toFixed(2)}` : 'Free';
+        return cents > 0 ? `₪${cents}` : 'Free';
     };
 
     const getCourseTypeColor = (type) => {

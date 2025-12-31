@@ -39,50 +39,27 @@
     text-decoration: none;
 }
 
-/* 
-.logo-placeholder {
-    width: 46px;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    border-radius: 50%;
-} */
-
-/* .app-name {
-    color: #EEF2FF;
-    font-weight: 600;
-    font-size: 16px;
-    transition: opacity 0.3s ease;
-}
-
-.sidebar.collapsed .app-name {
-    opacity: 0;
-    pointer-events: none;
-} */
-
-.sidebar-header .sidebar-toggler {
+.user-info-section .sidebar-toggler {
     position: absolute;
     right: 20px;
     height: 35px;
     width: 35px;
-    color: #151A2D;
+    color: #e2e5f1;
     border: none;
     cursor: pointer;
     display: flex;
-    background: #EEF2FF;
+    background: #151928;
     align-items: center;
     justify-content: center;
     border-radius: 8px;
     transition: 0.4s ease;
 }
 
-.sidebar.collapsed .sidebar-header .sidebar-toggler {
-    transform: translate(-4px, 65px);
+.sidebar.collapsed .user-info-section .sidebar-toggler {
+    transform: translate(-4px, 0px);
 }
 
-.sidebar-header .sidebar-toggler:hover {
+.sidebar-toggler:hover {
     background: #d9e1fd;
 }
 
@@ -92,13 +69,15 @@
     align-items: center;
     gap: 12px;
     border-bottom: 1px solid #2D3748;
+    flex-shrink: 0;
+    /* Prevent shrinking */
 }
 
 .user-avatar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    background: linear-gradient(135deg, #1e3c72 0%, #425b85 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -110,7 +89,6 @@
 .user-avatar.collapsed {
     visibility: hidden;
 }
-
 
 .user-details {
     flex: 1;
@@ -135,44 +113,88 @@
     margin: 0;
 }
 
+/* MAIN NAVIGATION CONTAINER - Fixed layout */
 .sidebar-nav {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     min-height: 0;
-    /* Crucial: allows children to scroll properly within flex container */
+    /* Crucial for proper scrolling in flex container */
+    overflow: hidden;
+    /* Contain all children */
+}
+
+/* PRIMARY NAV - Scrollable area */
+.sidebar-nav .primary-nav {
+    flex: 1;
+    /* Takes all available space */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    padding: 0 15px 20px 15px;
+    margin-bottom: 0;
+
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.sidebar-nav .primary-nav:hover {
+    scrollbar-color: #EEF2FF transparent;
+}
+
+/* Webkit scrollbar styling */
+.sidebar-nav .primary-nav::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-nav .primary-nav::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 3px;
+}
+
+.sidebar-nav .primary-nav::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.sidebar-nav .primary-nav:hover::-webkit-scrollbar-thumb {
+    background: #EEF2FF;
+}
+
+.sidebar-nav .primary-nav::-webkit-scrollbar-thumb:hover {
+    background: #d9e1fd;
+}
+
+.sidebar.collapsed .sidebar-nav .primary-nav {
+    overflow-y: auto;
+    /* Keep scrollable even when collapsed */
+}
+
+/* SECONDARY NAV - Fixed at bottom */
+.sidebar-nav .secondary-nav {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 15px 20px 15px;
+    border-top: 1px solid #2D3748;
+    background: #151A2D;
+    z-index: 10;
+    flex-shrink: 0;
+    /* Prevent shrinking */
+    margin-top: auto;
+    /* Push to bottom */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+    /* Optional: subtle shadow */
 }
 
 .sidebar-nav .nav-list {
     list-style: none;
     display: flex;
     gap: 4px;
-    padding: 0 15px;
     flex-direction: column;
 }
-
-.sidebar .sidebar-nav .primary-nav {
-    flex: 1;
-    /* Expands to fill available space, pushing secondary-nav down */
-    overflow-y: auto;
-    scrollbar-width: thin;
-    padding-bottom: 20px;
-    scrollbar-color: transparent transparent;
-}
-
-.sidebar .sidebar-nav .primary-nav:hover {
-    scrollbar-color: #EEF2FF transparent;
-}
-
-.sidebar.collapsed .sidebar-nav .primary-nav {
-    overflow: unset;
-}
-
-.sidebar {
-    overflow: visible !important;
-}
-
 
 .dropdown-container {
     position: relative;
@@ -222,18 +244,6 @@
     pointer-events: none;
 }
 
-.sidebar-nav .secondary-nav {
-    padding-bottom: 20px;
-    border-top: 1px solid #2D3748;
-    padding-top: 10px;
-    margin-top: auto;
-    /* Fallback to ensure bottom alignment */
-    flex-shrink: 0;
-    /* Prevents compression */
-    background: #151A2D;
-    z-index: 10;
-}
-
 /* Dropdown Stylings */
 .sidebar-nav .dropdown-container .dropdown-icon {
     margin-left: auto;
@@ -258,9 +268,6 @@
     height: auto;
 }
 
-
-
-
 .sidebar.collapsed .dropdown-menu {
     position: absolute;
     top: -10px;
@@ -277,7 +284,6 @@
     width: 200px;
     z-index: 2000;
     padding: 10px 0;
-
 }
 
 .sidebar.collapsed .dropdown-menu:has(.dropdown-link) {

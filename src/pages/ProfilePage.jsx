@@ -27,10 +27,10 @@ function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user: authUser, logout } = useAuth();
-  
+
   // ✅ Sidebar state management
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
-  
+
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [userData, setUserData] = useState(null);
@@ -64,9 +64,9 @@ function ProfilePage() {
   const fetchUserProfile = async () => {
     try {
       const token = localStorage.getItem('token');
-      
+
       console.log('🔑 Token:', token ? 'Exists' : 'Missing');
-      
+
       if (!token) {
         console.error('❌ No token found');
         navigate('/login');
@@ -92,13 +92,13 @@ function ProfilePage() {
 
       const data = await response.json();
       console.log('✅ Data received:', data);
-      
+
       if (data.success) {
         setUserData(data.user);
         setRoleData(data.roleSpecificData);
         console.log('✅ Active Roles:', data.user.activeRoles);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('❌ Error fetching profile:', error);
@@ -124,7 +124,7 @@ function ProfilePage() {
   };
 
   const formatCurrency = (cents) => {
-    return `$${(cents / 100).toFixed(2)}`;
+    return `$${(cents)}`;
   };
 
   const getRoleNameInArabic = (role) => {
@@ -198,7 +198,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">معلومات الطالب</h3>
-        
+
         <div className="stats-row">
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
@@ -237,9 +237,9 @@ function ProfilePage() {
                 <p className="enrollment-teacher">المعلم: {enrollment.teacher_name}</p>
                 <p className="enrollment-level">المستوى: {enrollment.current_level}</p>
                 <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{width: `${enrollment.progress}%`}}
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${enrollment.progress}%` }}
                   ></div>
                 </div>
                 <span className="progress-text">{Math.round(enrollment.progress)}% مكتمل</span>
@@ -258,7 +258,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">معلومات المعلم</h3>
-        
+
         <div className="stats-row">
           <div className="stat-card">
             <TeamOutlined className="stat-icon" />
@@ -287,11 +287,11 @@ function ProfilePage() {
           <h4>الشهادات والخبرة</h4>
           <div className="cert-grid">
             <div className="cert-item">
-              <CheckCircleOutlined style={{color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999'}} />
+              <CheckCircleOutlined style={{ color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999' }} />
               <span>شهادة التجويد</span>
             </div>
             <div className="cert-item">
-              <CheckCircleOutlined style={{color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999'}} />
+              <CheckCircleOutlined style={{ color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999' }} />
               <span>شهادة الشريعة</span>
             </div>
             <div className="cert-item">
@@ -338,7 +338,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">معلومات ولي الأمر</h3>
-        
+
         {parentData.children && parentData.children.length > 0 ? (
           <div className="children-list">
             <h4>الأبناء المسجلون</h4>
@@ -356,9 +356,9 @@ function ProfilePage() {
                   <span>التقدم: {child.progress}%</span>
                 </div>
                 <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{width: `${child.progress}%`}}
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${child.progress}%` }}
                   ></div>
                 </div>
               </div>
@@ -378,7 +378,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">معلومات المتبرع</h3>
-        
+
         <div className="stats-row">
           <div className="stat-card">
             <DollarOutlined className="stat-icon" />
@@ -420,9 +420,9 @@ function ProfilePage() {
     return (
       <>
         <Header />
-        <MainSideBar 
-          collapsed={sidebarCollapsed} 
-          onToggleCollapse={handleToggleSidebar} 
+        <MainSideBar
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={handleToggleSidebar}
         />
         <div className="main-content-wrapper">
           <div className="loading">جاري التحميل...</div>
@@ -436,9 +436,9 @@ function ProfilePage() {
     return (
       <>
         <Header />
-        <MainSideBar 
-          collapsed={sidebarCollapsed} 
-          onToggleCollapse={handleToggleSidebar} 
+        <MainSideBar
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={handleToggleSidebar}
         />
         <div className="main-content-wrapper">
           <div className="loading">خطأ في تحميل البيانات</div>
@@ -451,11 +451,11 @@ function ProfilePage() {
   return (
     <div className="profile-page">
       <Header />
-      
+
       {/* ✅ Pass collapsed state and toggle function */}
-      <MainSideBar 
-        collapsed={sidebarCollapsed} 
-        onToggleCollapse={handleToggleSidebar} 
+      <MainSideBar
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={handleToggleSidebar}
       />
 
       <div className="main-content-wrapper">
@@ -482,7 +482,7 @@ function ProfilePage() {
                 )}
               </div>
             </div>
-            <button 
+            <button
               className="edit-profile-btn"
               onClick={() => navigate('/profile-details')}
             >
@@ -492,14 +492,14 @@ function ProfilePage() {
 
           {/* Tabs Navigation */}
           <div className="profile-tabs">
-            <button 
+            <button
               className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
               onClick={() => setActiveTab('overview')}
             >
               نظرة عامة
             </button>
             {userData.activeRoles?.includes('student') && (
-              <button 
+              <button
                 className={`tab ${activeTab === 'student' ? 'active' : ''}`}
                 onClick={() => setActiveTab('student')}
               >
@@ -507,7 +507,7 @@ function ProfilePage() {
               </button>
             )}
             {userData.activeRoles?.includes('teacher') && (
-              <button 
+              <button
                 className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
                 onClick={() => setActiveTab('teacher')}
               >
@@ -515,7 +515,7 @@ function ProfilePage() {
               </button>
             )}
             {userData.activeRoles?.includes('parent') && (
-              <button 
+              <button
                 className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
                 onClick={() => setActiveTab('parent')}
               >
@@ -523,14 +523,14 @@ function ProfilePage() {
               </button>
             )}
             {userData.activeRoles?.includes('donor') && (
-              <button 
+              <button
                 className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
                 onClick={() => setActiveTab('donor')}
               >
                 معلومات المتبرع
               </button>
             )}
-            <button 
+            <button
               className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
               onClick={() => setActiveTab('calendar')}
             >
@@ -550,13 +550,13 @@ function ProfilePage() {
 
           {/* Action Buttons */}
           <div className="profile-actions">
-            <button 
+            <button
               className="profile-btn settings-btn"
               onClick={() => navigate('/profile-details')}
             >
               <SettingOutlined /> إعدادات الحساب
             </button>
-            <button 
+            <button
               className="profile-btn logout-btn"
               onClick={handleLogout}
             >

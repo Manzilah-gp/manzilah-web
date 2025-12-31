@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ZegoUIKitPrebuilt } from '@zegocloud/zego-uikit-prebuilt';
 import { getMeetingToken } from '../../api/videoCalls';
 import './MeetingRoomUIKit.css';
+import { Timer } from 'three';
 
 const MeetingRoom = () => {
     const { roomId } = useParams();
@@ -127,11 +128,13 @@ const MeetingRoom = () => {
             showOnlyAudioUser: true,
 
             // Callback when user leaves
-            // Callback when user leaves
             onLeaveRoom: () => {
                 console.log('User left the room');
+                alert('return to calendar after 5 seconds');
                 // Force full reload to ensure Zego cleanup
-                window.location.href = '/calendar';
+                setTimeout(() => {
+                    window.location.href = '/calendar';
+                }, 5000);
             },
 
             // Callback when user joins

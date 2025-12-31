@@ -27,7 +27,7 @@ const JoinMeetingButton = ({ courseId, variant = 'primary', className = '' }) =>
             const { isOnlineEnabled, meetingUrl, roomId } = response.data.data;
 
             if (!isOnlineEnabled) {
-                setError('Online meetings are not enabled for this course');
+                alert('Online meetings are not enabled for this course');
                 setLoading(false);
                 return;
             }
