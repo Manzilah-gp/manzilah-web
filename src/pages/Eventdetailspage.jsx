@@ -20,7 +20,8 @@ import {
 } from '@ant-design/icons';
 import { Tag, Button, Spin, message, Input, Avatar, Card } from 'antd';
 import '../Styles/EventDetails.css';
-
+import DonationForm from '../components/Donation/DonationForm';
+import DonationList from '../components/Donation/DonationList';
 const { TextArea } = Input;
 
 function EventDetailsPage() {
@@ -28,7 +29,7 @@ function EventDetailsPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
-  
+  const [showDonationModal, setShowDonationModal] = useState(false);
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState('');
@@ -101,6 +102,20 @@ function EventDetailsPage() {
     } catch (error) {
       console.error('Error updating RSVP:', error);
     }
+  };
+
+  // Handle successful donations
+  const handleDonationSuccess = (donationData) => {
+    console.log('Donation successful:', donationData);
+    
+    // Close the modal
+    setShowDonationModal(false);
+    
+    // Refresh event data to show updated totals
+    fetchEventDetails();
+    
+    // Show success message
+    message.success(`Thank you for your donation! Receipt #${donationData.receipt_number}`);
   };
 
   const handleSubmitComment = async () => {
@@ -210,6 +225,7 @@ function EventDetailsPage() {
                 </div>
               </div>
             </div>
+            
 
             {/* Event Info */}
             <div className="event-info">
@@ -299,8 +315,83 @@ function EventDetailsPage() {
             </div>
           </Card>
 
+          {/* ===================================================== */}
+          {/* Fundraising Section (ONLY for fundraising events) */}
+          {/* ===================================================== */}
+          {event.event_type === 'fundraising' && (
+            <Card className="fundraising-section" style={{ marginTop: 20 }}>
+              {/* Fundraising Progress Card */}
+              <div className="fundraising-card">
+                <h2>Fundraising Goal</h2>
+                
+                {/* Progress Bar */}
+                <div className="progress-container">
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ 
+//  OLD - Divides by 100
+width: `${Math.min(((event.current_donations_cents || 0 /100) / (event.fundraising_goal_cents || 1)) * 100, 100)}%`                      }}
+                    />
+                  </div>
+                  
+                  {/* Progress Text */}
+                  <div className="progress-info">
+                    <span className="raised">
+${((event.current_donations_cents || 0) / 100).toLocaleString('en-US', { minimumFractionDigits: 2 })} raised                    </span>
+                    <span className="goal">
+                      of ${((event.fundraising_goal_cents || 0) /100).toLocaleString('en-US', { minimumFractionDigits: 2 })} goal
+                    </span>
+                  </div>
+                </div>
+
+                {/* Donate Button */}
+                <Button
+                  type="primary"
+                  size="large"
+                  className="donate-button"
+                  onClick={() => setShowDonationModal(true)}
+                  disabled={event.status === 'completed'}
+                  block
+                  style={{ 
+                    marginTop: 20,
+                    height: 50,
+                    fontSize: 18,
+                    fontWeight: 600,
+                    background: event.status === 'completed' 
+                      ? 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)'
+                      : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    border: 'none'
+                  }}
+                >
+                  {event.status === 'completed' ? '🎉 Goal Reached!' : '💝 Donate Now'}
+                </Button>
+              </div>
+
+              {/* Donations List Component */}
+              <div style={{ marginTop: 30 }}>
+                <DonationList 
+                  eventId={event.id}
+                  key={event.id}
+                />
+              </div>
+            </Card>
+          )}
+
+          {/* ===================================================== */}
+          {/* Donation Modal (ONLY for fundraising events) */}
+          {/* ===================================================== */}
+          {event.event_type === 'fundraising' && (
+            <DonationForm
+              visible={showDonationModal}
+              event={event}
+              onSuccess={handleDonationSuccess}
+              onCancel={() => setShowDonationModal(false)}
+            />
+          )}
+
           {/* Comments Section */}
-          <Card className="comments-section" title={`Comments (${event.comments_count || 0})`}>
+          <Card className="comments-section" title={`Comments (${event.comments_count || 0})`} style={{ marginTop: 20 }}>
             {/* Add Comment */}
             <div className="add-comment">
               <Avatar icon={<UserOutlined />} />

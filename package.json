@@ -17,6 +17,8 @@
     "@fullcalendar/interaction": "^6.1.19",
     "@fullcalendar/react": "^6.1.19",
     "@fullcalendar/timegrid": "^6.1.19",
+    "@stripe/react-stripe-js": "^5.4.1",
+    "@stripe/stripe-js": "^8.6.0",
     "ag-grid-community": "^34.3.1",
     "ag-grid-react": "^34.3.1",
     "antd": "^5.27.6",

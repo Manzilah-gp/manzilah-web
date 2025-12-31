@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Modal, Form, Input, Select, DatePicker, TimePicker, Button, message } from 'antd';
+import { Modal, Form, Input, Select, DatePicker, TimePicker, Button, message, InputNumber, Checkbox } from 'antd';
 import dayjs from 'dayjs';
 
 const { TextArea } = Input;
 const { Option } = Select;
 
-// Create Event Modal - All in English
+// Create Event Modal - Updated with Fundraising Settings
 const CreateEventModal = ({ visible, onClose, onSuccess }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -18,6 +18,7 @@ const CreateEventModal = ({ visible, onClose, onSuccess }) => {
     try {
       const token = localStorage.getItem('token');
       
+      // Base event data
       const eventData = {
         title: values.title,
         description: values.description,
@@ -26,6 +27,23 @@ const CreateEventModal = ({ visible, onClose, onSuccess }) => {
         location: values.location,
         event_type: values.event_type,
       };
+
+      // Add fundraising fields if event type is fundraising
+      if (values.event_type === 'fundraising') {
+        // Validate fundraising goal
+        if (!values.fundraising_goal || values.fundraising_goal < 1) {
+          message.error('Fundraising goal must be at least $1.00');
+          setLoading(false);
+          return;
+        }
+
+        // Convert dollars to cents
+// ✅ NEW - Send dollars, backend will convert
+eventData.fundraising_goal = values.fundraising_goal;  // Send as dollars
+eventData.min_donation = values.min_donation || 10;    // Send as dollars
+        eventData.show_donors = values.show_donors !== false; // Default true
+        eventData.allow_anonymous = values.allow_anonymous !== false; // Default true
+      }
 
       const response = await fetch('http://localhost:5000/api/events', {
         method: 'POST',
@@ -45,6 +63,7 @@ const CreateEventModal = ({ visible, onClose, onSuccess }) => {
           message.success('Event created and published successfully!');
         }
         form.resetFields();
+        setEventType(''); // Reset event type
         onSuccess();
       } else {
         message.error(data.message || 'Failed to create event');
@@ -57,19 +76,38 @@ const CreateEventModal = ({ visible, onClose, onSuccess }) => {
     }
   };
 
+  // Handle event type change
+  const handleEventTypeChange = (value) => {
+    setEventType(value);
+    
+    // Set default values for fundraising fields when switching to fundraising
+    if (value === 'fundraising') {
+      form.setFieldsValue({
+        min_donation: 10,
+        show_donors: true,
+        allow_anonymous: true
+      });
+    }
+  };
+
   return (
     <Modal
       title="Create New Event"
       open={visible}
       onCancel={onClose}
       footer={null}
-      width={600}
+      width={700}
       destroyOnClose
     >
       <Form
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
+        initialValues={{
+          show_donors: true,
+          allow_anonymous: true,
+          min_donation: 10
+        }}
       >
         {/* Event Title */}
         <Form.Item
@@ -100,7 +138,7 @@ const CreateEventModal = ({ visible, onClose, onSuccess }) => {
         >
           <Select 
             placeholder="Select event type"
-            onChange={setEventType}
+            onChange={handleEventTypeChange}
           >
             <Option value="religious">Religious</Option>
             <Option value="educational">Educational</Option>
@@ -121,6 +159,106 @@ const CreateEventModal = ({ visible, onClose, onSuccess }) => {
             <p style={{ margin: 0, color: '#fa8c16', fontSize: '13px' }}>
               ⚠️ Note: Fundraising events require ministry approval before publication
             </p>
+          </div>
+        )}
+
+        {/* ===================================================== */}
+        {/* FUNDRAISING SETTINGS (Only show for fundraising events) */}
+        {/* ===================================================== */}
+        {eventType === 'fundraising' && (
+          <div style={{
+            background: '#f0f9ff',
+            padding: '16px',
+            borderRadius: '8px',
+            marginBottom: '16px',
+            border: '1px solid #91d5ff'
+          }}>
+            <h4 style={{ 
+              margin: '0 0 16px 0', 
+              color: '#0958d9', 
+              fontSize: '16px',
+              fontWeight: 600 
+            }}>
+              Fundraising Settings
+            </h4>
+
+            {/* Fundraising Goal */}
+            <Form.Item
+              name="fundraising_goal"
+              label="Fundraising Goal ($)"
+              rules={[
+                { required: true, message: 'Please enter fundraising goal' },
+                { 
+                  type: 'number', 
+                  min: 1, 
+                  message: 'Goal must be at least $1.00' 
+                }
+              ]}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+                min={1}
+                precision={2}
+                placeholder="5000.00"
+                prefix="$"
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              />
+            </Form.Item>
+            <div style={{ marginTop: -16, marginBottom: 12, fontSize: 12, color: '#8c8c8c' }}>
+              The total amount you want to raise for this campaign
+            </div>
+
+            {/* Minimum Donation */}
+            <Form.Item
+              name="min_donation"
+              label="Minimum Donation ($)"
+              rules={[
+                { 
+                  type: 'number', 
+                  min: 1, 
+                  message: 'Minimum must be at least $1.00' 
+                }
+              ]}
+            >
+              <InputNumber
+                style={{ width: '100%' }}
+                min={1}
+                precision={2}
+                placeholder="10.00"
+                prefix="$"
+                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+              />
+            </Form.Item>
+            <div style={{ marginTop: -16, marginBottom: 12, fontSize: 12, color: '#8c8c8c' }}>
+              The minimum amount a donor can contribute (default: $10)
+            </div>
+
+            {/* Privacy Settings */}
+            <Form.Item
+              name="show_donors"
+              valuePropName="checked"
+            >
+              <Checkbox>
+                Show donor names publicly
+              </Checkbox>
+            </Form.Item>
+            <div style={{ marginTop: -16, marginBottom: 12, marginLeft: 24, fontSize: 12, color: '#8c8c8c' }}>
+              If unchecked, all donations will appear as "Anonymous"
+            </div>
+
+            <Form.Item
+              name="allow_anonymous"
+              valuePropName="checked"
+            >
+              <Checkbox>
+                Allow anonymous donations
+              </Checkbox>
+            </Form.Item>
+            <div style={{ marginTop: -16, marginBottom: 0, marginLeft: 24, fontSize: 12, color: '#8c8c8c' }}>
+              Let donors choose to hide their names
+            </div>
           </div>
         )}
 

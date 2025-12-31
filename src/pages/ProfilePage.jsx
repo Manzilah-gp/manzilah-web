@@ -4,6 +4,7 @@ import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserCalendar from "../components/Calender";
+import AdminEventManagement from "../components/Admin/AdminEventManagement";
 import {
   UserOutlined,
   MailOutlined,
@@ -19,6 +20,7 @@ import {
   TeamOutlined,
   ClockCircleOutlined,
   CheckCircleOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
@@ -29,7 +31,7 @@ function ProfilePage() {
   const location = useLocation();
   const { user: authUser, logout } = useAuth();
   
-  //  Sidebar state management
+  // Sidebar state management
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
   
   const [loading, setLoading] = useState(true);
@@ -37,21 +39,25 @@ function ProfilePage() {
   const [userData, setUserData] = useState(null);
   const [roleData, setRoleData] = useState({});
 
-  //  Calendar hook
+  // Calendar hook
   const { events, loading: calendarLoading, error } = useUserEvents();
+
+  // Check if user is a mosque admin
+  const isMosqueAdmin = userData?.activeRoles?.includes('mosque_admin');
 
   console.log('Calendar events:', events);
   console.log('Calendar Loading:', calendarLoading);
   console.log('Calendar Error:', error);
+  console.log('Is Mosque Admin:', isMosqueAdmin);
 
-  //  Auto-collapse sidebar on mobile when route changes
+  // Auto-collapse sidebar on mobile when route changes
   useEffect(() => {
     if (window.innerWidth < 768) {
       setSidebarCollapsed(true);
     }
   }, [location.pathname]);
 
-  //  Handle window resize
+  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -65,17 +71,16 @@ function ProfilePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
- 
   useEffect(() => {
     // Check if navigation included a tab state from sidebar
     if (location.state?.tab) {
       const targetTab = location.state.tab;
       
-      // Validate tab exists
-      const validTabs = ['overview', 'student', 'teacher', 'parent', 'donor', 'calendar'];
+      // Validate tab exists (including new admin tab)
+      const validTabs = ['overview', 'student', 'teacher', 'parent', 'donor', 'calendar', 'admin'];
       
       if (validTabs.includes(targetTab)) {
-        console.log(' Opening tab from sidebar:', targetTab);
+        console.log('Opening tab from sidebar:', targetTab);
         setActiveTab(targetTab);
         
         // Clear the state so back button works normally
@@ -92,15 +97,15 @@ function ProfilePage() {
     try {
       const token = localStorage.getItem('token');
       
-      console.log(' Token:', token ? 'Exists' : 'Missing');
+      console.log('Token:', token ? 'Exists' : 'Missing');
       
       if (!token) {
-        console.error(' No token found');
+        console.error('No token found');
         navigate('/login');
         return;
       }
 
-      console.log(' Fetching from: http://localhost:5000/api/profile');
+      console.log('Fetching from: http://localhost:5000/api/profile');
 
       const response = await fetch('http://localhost:5000/api/profile', {
         headers: {
@@ -109,26 +114,26 @@ function ProfilePage() {
         }
       });
 
-      console.log(' Response status:', response.status);
+      console.log('Response status:', response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error(' Response error:', errorText);
+        console.error('Response error:', errorText);
         throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log(' Data received:', data);
+      console.log('Data received:', data);
       
       if (data.success) {
         setUserData(data.user);
         setRoleData(data.roleSpecificData);
-        console.log(' Active Roles:', data.user.activeRoles);
+        console.log('Active Roles:', data.user.activeRoles);
       }
       
       setLoading(false);
     } catch (error) {
-      console.error(' Error fetching profile:', error);
+      console.error('Error fetching profile:', error);
       setLoading(false);
     }
   };
@@ -146,7 +151,7 @@ function ProfilePage() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return " Not Available";
+    if (!dateString) return "Not Available";
     return new Date(dateString).toLocaleDateString('ar-SA');
   };
 
@@ -158,37 +163,37 @@ function ProfilePage() {
     const roleMap = {
       'student': 'student',
       'teacher': 'teacher',
-      'parent': ' parent',
+      'parent': 'parent',
       'donor': 'donor',
       'mosque_admin': 'mosque admin',
-      'ministry_admin': ' ministry admin'
+      'ministry_admin': 'ministry admin'
     };
     return roleMap[role] || role;
   };
 
   const renderGeneralInfo = () => (
     <div className="profile-section">
-      <h3 className="section-title"> Personal Information</h3>
+      <h3 className="section-title">Personal Information</h3>
       <div className="info-grid">
         <div className="info-item">
           <UserOutlined className="info-icon" />
           <div>
-            <span className="info-label"> Full Name</span>
+            <span className="info-label">Full Name</span>
             <span className="info-value">{userData.full_name}</span>
           </div>
         </div>
         <div className="info-item">
           <MailOutlined className="info-icon" />
           <div>
-            <span className="info-label"> Email</span>
+            <span className="info-label">Email</span>
             <span className="info-value">{userData.email}</span>
           </div>
         </div>
         <div className="info-item">
           <PhoneOutlined className="info-icon" />
           <div>
-            <span className="info-label"> Phone Number</span>
-            <span className="info-value">{userData.phone || "Not Available "}</span>
+            <span className="info-label">Phone Number</span>
+            <span className="info-value">{userData.phone || "Not Available"}</span>
           </div>
         </div>
         <div className="info-item">
@@ -202,15 +207,15 @@ function ProfilePage() {
           <HomeOutlined className="info-icon" />
           <div>
             <span className="info-label">City</span>
-            <span className="info-value">{userData.location?.governorate || " undefined"}</span>
+            <span className="info-value">{userData.location?.governorate || "undefined"}</span>
           </div>
         </div>
         <div className="info-item">
           <CheckCircleOutlined className="info-icon" />
           <div>
-            <span className="info-label"> Status</span>
+            <span className="info-label">Status</span>
             <span className={`status-badge ${userData.approved ? 'approved' : 'pending'}`}>
-              {userData.approved ? "Activated" : "Under review "}
+              {userData.approved ? "Activated" : "Under review"}
             </span>
           </div>
         </div>
@@ -224,35 +229,35 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title"> Student Information</h3>
+        <h3 className="section-title">Student Information</h3>
         
         <div className="stats-row">
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{studentData.enrollments?.length || 0}</h4>
-              <p> Courses Rigestred  </p>
+              <p>Courses Registered</p>
             </div>
           </div>
           <div className="stat-card">
             <TrophyOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{studentData.attendance_rate}%</h4>
-              <p> Attendance percentage</p>
+              <p>Attendance percentage</p>
             </div>
           </div>
           <div className="stat-card">
             <ClockCircleOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{studentData.sessions_attended}/{studentData.total_sessions}</h4>
-              <p> Sessions attended</p>
+              <p>Sessions attended</p>
             </div>
           </div>
         </div>
 
         {studentData.enrollments && studentData.enrollments.length > 0 && (
           <div className="enrollments-list">
-            <h4> Current Courses</h4>
+            <h4>Current Courses</h4>
             {studentData.enrollments.map((enrollment, idx) => (
               <div key={idx} className="enrollment-card">
                 <div className="enrollment-header">
@@ -284,21 +289,21 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title"> Teacher Information</h3>
+        <h3 className="section-title">Teacher Information</h3>
         
         <div className="stats-row">
           <div className="stat-card">
             <TeamOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{teacherData.current_students}</h4>
-              <p> Current Students</p>
+              <p>Current Students</p>
             </div>
           </div>
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{teacherData.completed_courses}</h4>
-              <p> Completed sessions</p>
+              <p>Completed sessions</p>
             </div>
           </div>
           <div className="stat-card">
@@ -311,31 +316,31 @@ function ProfilePage() {
         </div>
 
         <div className="certification-info">
-          <h4> Certificates and Experience</h4>
+          <h4>Certificates and Experience</h4>
           <div className="cert-grid">
             <div className="cert-item">
               <CheckCircleOutlined style={{color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999'}} />
-              <span>Tajweed Certificate </span>
+              <span>Tajweed Certificate</span>
             </div>
             <div className="cert-item">
               <CheckCircleOutlined style={{color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999'}} />
-              <span>Sharia Certificate </span>
+              <span>Sharia Certificate</span>
             </div>
             <div className="cert-item">
               <ClockCircleOutlined />
-              <span>{teacherData.certifications?.experience_years || 0} Years of experience </span>
+              <span>{teacherData.certifications?.experience_years || 0} Years of experience</span>
             </div>
           </div>
         </div>
 
         {teacherData.expertise && teacherData.expertise.length > 0 && (
           <div className="expertise-info">
-            <h4>Areas of specialization </h4>
+            <h4>Areas of specialization</h4>
             {teacherData.expertise.map((exp, idx) => (
               <div key={idx} className="expertise-card">
                 <p><strong>{exp.course_type === 'memorization' ? 'Memorization' : exp.course_type}</strong></p>
                 {exp.max_level && <p>Level: {exp.max_level}</p>}
-                <p>Hourly Rate cents: {formatCurrency(exp.hourly_rate_cents)}/Hour</p>
+                <p>Hourly Rate: {formatCurrency(exp.hourly_rate_cents)}/Hour</p>
               </div>
             ))}
           </div>
@@ -343,7 +348,7 @@ function ProfilePage() {
 
         {teacherData.availability && teacherData.availability.length > 0 && (
           <div className="availability-info">
-            <h4> Availability times</h4>
+            <h4>Availability times</h4>
             <div className="availability-list">
               {teacherData.availability.map((slot, idx) => (
                 <div key={idx} className="availability-slot">
@@ -364,11 +369,11 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title">  Parents Information</h3>
+        <h3 className="section-title">Parents Information</h3>
         
         {parentData.children && parentData.children.length > 0 ? (
           <div className="children-list">
-            <h4> Registered Children</h4>
+            <h4>Registered Children</h4>
             {parentData.children.map((child, idx) => (
               <div key={idx} className="child-card">
                 <div className="child-header">
@@ -392,7 +397,7 @@ function ProfilePage() {
             ))}
           </div>
         ) : (
-          <p>No Registered Children    </p>
+          <p>No Registered Children</p>
         )}
       </div>
     );
@@ -404,28 +409,28 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title"> Donor Informations</h3>
+        <h3 className="section-title">Donor Information</h3>
         
         <div className="stats-row">
           <div className="stat-card">
             <DollarOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{formatCurrency(donorData.total_donated_cents)}</h4>
-              <p>Total donations </p>
+              <p>Total donations</p>
             </div>
           </div>
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{donorData.campaigns_supported}</h4>
-              <p>Sponsored campaigns </p>
+              <p>Sponsored campaigns</p>
             </div>
           </div>
           <div className="stat-card">
             <CalendarOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{formatDate(donorData.last_donation_date)}</h4>
-              <p>Last Donation </p>
+              <p>Last Donation</p>
             </div>
           </div>
         </div>
@@ -438,7 +443,7 @@ function ProfilePage() {
     navigate('/login');
   };
 
-  //  Toggle sidebar function
+  // Toggle sidebar function
   const handleToggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
@@ -452,7 +457,7 @@ function ProfilePage() {
           onToggleCollapse={handleToggleSidebar} 
         />
         <div className="main-content-wrapper">
-          <div className="loading"> Loading...</div>
+          <div className="loading">Loading...</div>
         </div>
         <Footer />
       </>
@@ -468,7 +473,7 @@ function ProfilePage() {
           onToggleCollapse={handleToggleSidebar} 
         />
         <div className="main-content-wrapper">
-          <div className="loading"> Data loading error  </div>
+          <div className="loading">Data loading error</div>
         </div>
         <Footer />
       </>
@@ -479,7 +484,6 @@ function ProfilePage() {
     <div className="profile-page">
       <Header />
       
-      {/*  Pass collapsed state and toggle function */}
       <MainSideBar 
         collapsed={sidebarCollapsed} 
         onToggleCollapse={handleToggleSidebar} 
@@ -505,7 +509,7 @@ function ProfilePage() {
                     </span>
                   ))
                 ) : (
-                  <span className="role-badge">  No active roles </span>
+                  <span className="role-badge">No active roles</span>
                 )}
               </div>
             </div>
@@ -513,7 +517,7 @@ function ProfilePage() {
               className="edit-profile-btn"
               onClick={() => navigate('/profile-details')}
             >
-              <EditOutlined />   Edit profile
+              <EditOutlined /> Edit profile
             </button>
           </div>
 
@@ -530,7 +534,7 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'student' ? 'active' : ''}`}
                 onClick={() => setActiveTab('student')}
               >
-                Student Informations
+                Student Information
               </button>
             )}
             {userData.activeRoles?.includes('teacher') && (
@@ -538,7 +542,7 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
                 onClick={() => setActiveTab('teacher')}
               >
-               Teacher Informations
+                Teacher Information
               </button>
             )}
             {userData.activeRoles?.includes('parent') && (
@@ -546,7 +550,7 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
                 onClick={() => setActiveTab('parent')}
               >
-                Parent Informations
+                Parent Information
               </button>
             )}
             {userData.activeRoles?.includes('donor') && (
@@ -554,14 +558,25 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
                 onClick={() => setActiveTab('donor')}
               >
-                Donor Informations
+                Donor Information
+              </button>
+            )}
+            {/* ===================================================== */}
+            {/* ADMIN TAB (ONLY for mosque admins) */}
+            {/* ===================================================== */}
+            {isMosqueAdmin && (
+              <button 
+                className={`tab admin-tab ${activeTab === 'admin' ? 'active' : ''}`}
+                onClick={() => setActiveTab('admin')}
+              >
+                <DashboardOutlined /> Manage Events
               </button>
             )}
             <button 
               className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
               onClick={() => setActiveTab('calendar')}
             >
-              Calender
+              Calendar
             </button>
           </div>
 
@@ -573,14 +588,20 @@ function ProfilePage() {
             {activeTab === 'parent' && renderParentInfo()}
             {activeTab === 'donor' && renderDonorInfo()}
             
+            {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}
+            {activeTab === 'admin' && isMosqueAdmin && (
+              <div className="admin-tab-content">
+                <AdminEventManagement />
+              </div>
+            )}
+            
             {activeTab === 'calendar' && (
               <div>
-                {/* Calendar Component */}
                 <UserCalendar 
                   events={events || []}
                   loading={calendarLoading}
                   title="Your Event Schedule"
-                  subtitle="Events you're attending "
+                  subtitle="Events you're attending"
                   showAttendingBadge={true}
                 />
               </div>
@@ -593,13 +614,13 @@ function ProfilePage() {
               className="profile-btn settings-btn"
               onClick={() => navigate('/profile-details')}
             >
-              <SettingOutlined />  Profile Settings
+              <SettingOutlined /> Profile Settings
             </button>
             <button 
               className="profile-btn logout-btn"
               onClick={handleLogout}
             >
-              <LogoutOutlined /> Log out 
+              <LogoutOutlined /> Log out
             </button>
           </div>
         </div>
