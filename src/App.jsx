@@ -39,6 +39,9 @@ import EventsPage from './pages/EventsPage';
 import EventDetailsPage from './pages/Eventdetailspage';
 import FundraisingApprovalsPage from './pages/Fundraisingapprovalspage';
 
+//chatting
+import ChatPage from './pages/Chatting/ChatPage';
+
 
 import './App.css';
 
@@ -280,7 +283,7 @@ function App() {
                 }
               />
 
-              {/* Chat - accessible to all authenticated users */}
+              {/* Chat - accessible to all authenticated users
               <Route
                 path="/chat"
                 element={
@@ -288,7 +291,7 @@ function App() {
                     <div>Chat - To be implemented</div>
                   </ProtectedRoute>
                 }
-              />
+              /> */}
 
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
@@ -300,6 +303,8 @@ function App() {
 <Route path="/events/:id" element={<EventDetailsPage />} />
 <Route path="/fundraising-approvals" element={<FundraisingApprovalsPage />} />
 
+{/*Chatting Route */}
+<Route path="/chat" element={<ChatPage />} />
 
 
 
