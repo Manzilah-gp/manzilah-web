@@ -82,9 +82,23 @@ const ConversationList = ({
                 }
                 title={
                   <div className="conversation-title">
-                    <span>{conv.display_name}</span>
+                    <span style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {conv.display_name}
+                    </span>
+                    {/* LARGE VISIBLE UNREAD BADGE */}
                     {conv.unread_count > 0 && (
-                      <Badge count={conv.unread_count} />
+                      <Badge 
+                        count={conv.unread_count} 
+                        style={{ 
+                          backgroundColor: '#ff4d4f',
+                          fontWeight: 'bold',
+                          fontSize: '12px',
+                          minWidth: '22px',
+                          height: '22px',
+                          lineHeight: '22px',
+                          boxShadow: '0 2px 8px rgba(255, 77, 79, 0.5)'
+                        }}
+                      />
                     )}
                   </div>
                 }
