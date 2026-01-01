@@ -142,7 +142,7 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="profile" element={<div>Profile Page</div>} />
+                {/* <Route path="profile" element={<div>Profile Page</div>} /> */}
                 <Route path="donations" element={<div>Donations</div>} />
 
                 {/* Settings Routes - Ministry Admin only */}
