@@ -1,0 +1,99 @@
+/* EventInteractionsModal.css */
+
+.event-interactions-modal .interactions-tabs .ant-tabs-nav {
+  margin-bottom: 16px;
+}
+
+.event-interactions-modal .rsvp-subtabs {
+  margin-top: 8px;
+}
+
+.event-interactions-modal .user-item {
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.event-interactions-modal .user-item:hover {
+  background: #f0f0f0;
+  transform: translateX(-4px);
+}
+
+.event-interactions-modal .user-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.event-interactions-modal .user-contact span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.event-interactions-modal .interaction-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.event-interactions-modal .comment-item {
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.event-interactions-modal .comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.event-interactions-modal .commenter-name {
+  font-weight: 600;
+  color: #262626;
+}
+
+.event-interactions-modal .comment-date {
+  font-size: 12px;
+  color: #999;
+}
+
+.event-interactions-modal .comment-text {
+  color: #595959;
+  line-height: 1.6;
+  margin: 8px 0;
+  padding: 10px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+/* Empty state styling */
+.event-interactions-modal .ant-empty {
+  margin: 40px 0;
+}
+
+/* Tab styling */
+.event-interactions-modal .ant-tabs-tab {
+  padding: 8px 16px;
+}
+
+.event-interactions-modal .ant-tabs-tab-active {
+  font-weight: 600;
+}
+
+/* Card tabs for RSVP subtabs */
+.event-interactions-modal .rsvp-subtabs.ant-tabs-card .ant-tabs-tab {
+  border-radius: 8px 8px 0 0;
+}
+
+.event-interactions-modal .rsvp-subtabs.ant-tabs-card .ant-tabs-tab-active {
+  background: #fff;
+}

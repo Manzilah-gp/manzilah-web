@@ -80,7 +80,7 @@ const Header = () => {
             key: 'logout',
             icon: <LogoutOutlined />,
             label: t('header.logout'),
-            onClick: logout,
+             onClick: logout,
             danger: true,
         },
     ];

@@ -1,15 +1,386 @@
 
 
 .calendar-section {
-  background: var(--white);
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: var(--shadow-medium);
-  margin-bottom: 30px;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+/* Calendar Header Section */
+.calendar-header {
+  margin-bottom: 20px;
 }
 
 .calendar-title {
-  font-size: 22px;
-  color: var(--primary-dark);
-  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #262626;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calendar-subtitle {
+  font-size: 14px;
+  color: #8c8c8c;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==================== FullCalendar Custom Styling ==================== */
+
+.fc {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Calendar Title (Month/Week/Day label) */
+.fc .fc-toolbar-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #262626;
+}
+
+/* Calendar Buttons (Prev, Next, Today, View Switchers) */
+.fc .fc-button {
+  background-color: #1890ff;
+  border-color: #1890ff;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.fc .fc-button:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.fc .fc-button:disabled {
+  background-color: #d9d9d9;
+  border-color: #d9d9d9;
+  opacity: 0.6;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background-color: #096dd9;
+  border-color: #096dd9;
+}
+
+/* Day Numbers in Month View */
+.fc .fc-daygrid-day-number {
+  color: #262626;
+  font-weight: 500;
+  padding: 8px;
+}
+
+/* Today's Date Highlighting */
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: #e6f7ff !important;
+}
+
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background-color: #1890ff;
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==================== Event Styling ==================== */
+
+/* Base Event Style */
+.fc-event {
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left-width: 4px !important; /* Colored indicator on left */
+}
+
+/* Event Hover Effect */
+.fc-event:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Event Content Layout */
+.calendar-event-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.event-time {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.event-title {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==================== Event Details Modal ==================== */
+
+.event-details-content {
+  padding: 8px 0;
+}
+
+/* Detail Row Layout */
+.event-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.event-detail-row:last-child {
+  border-bottom: none;
+}
+
+.event-detail-row strong {
+  min-width: 100px;
+  color: #262626;
+  font-size: 14px;
+}
+
+.event-detail-row span {
+  color: #595959;
+  font-size: 14px;
+  flex: 1;
+}
+
+.event-detail-row svg {
+  font-size: 18px;
+}
+
+/* ==================== Modal Buttons ==================== */
+
+.btn-primary {
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #40a9ff;
+}
+
+.btn-secondary {
+  background-color: white;
+  color: #595959;
+  border: 1px solid #d9d9d9;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+  margin-right: 8px;
+}
+
+.btn-secondary:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+/* ==================== Time Grid View Styles ==================== */
+
+/* Time slots in week/day view */
+.fc .fc-timegrid-slot {
+  height: 3em;
+}
+
+/* Events in time grid */
+.fc .fc-timegrid-event {
+  border-radius: 6px;
+  border-left-width: 4px !important;
+}
+
+/* ==================== Loading & Empty States ==================== */
+
+/* Loading State */
+.fc .fc-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Empty State Container */
+.calendar-empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: #8c8c8c;
+}
+
+.calendar-empty-state svg {
+  font-size: 64px;
+  color: #d9d9d9;
+  margin-bottom: 16px;
+}
+
+.calendar-empty-state p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* ==================== Mobile Responsive Design ==================== */
+
+/* Tablets and smaller (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Reduce padding on mobile */
+  .calendar-section {
+    padding: 16px;
+  }
+
+  /* Smaller title font */
+  .calendar-title {
+    font-size: 20px;
+  }
+
+  /* Stack toolbar buttons vertically */
+  .fc .fc-toolbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .fc .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Smaller buttons on mobile */
+  .fc .fc-button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  /* Smaller toolbar title */
+  .fc .fc-toolbar-title {
+    font-size: 16px;
+  }
+
+  /* Stack event detail rows vertically */
+  .event-detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .event-detail-row strong {
+    min-width: auto;
+  }
+}
+
+/* Small phones (max-width: 480px) */
+@media (max-width: 480px) {
+  /* Even smaller padding */
+  .calendar-section {
+    padding: 12px;
+  }
+
+  /* Smaller title */
+  .calendar-title {
+    font-size: 18px;
+  }
+
+  /* Hide week/day view buttons on very small screens */
+  .fc .fc-button-group button:nth-child(2),
+  .fc .fc-button-group button:nth-child(3) {
+    display: none;
+  }
+
+  /* Smaller event text */
+  .event-time {
+    font-size: 10px;
+  }
+
+  .event-title {
+    font-size: 11px;
+  }
+
+  /* Smaller modal */
+  .event-details-content h3 {
+    font-size: 18px;
+  }
+
+  .event-detail-row strong,
+  .event-detail-row span {
+    font-size: 13px;
+  }
+}
+
+/* ==================== Landscape Mobile Optimization ==================== */
+
+@media (max-height: 600px) and (orientation: landscape) {
+  /* Reduce vertical padding */
+  .calendar-section {
+    padding: 12px;
+  }
+
+  /* Smaller toolbar */
+  .fc .fc-toolbar-title {
+    font-size: 16px;
+  }
+
+  /* Compact buttons */
+  .fc .fc-button {
+    padding: 3px 6px;
+    font-size: 11px;
+  }
+}
+
+/* ==================== Accessibility Improvements ==================== */
+
+/* Focus states for keyboard navigation */
+.fc .fc-button:focus,
+.btn-primary:focus,
+.btn-secondary:focus {
+  outline: 2px solid #1890ff;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .calendar-section {
+    border: 2px solid #000;
+  }
+
+  .fc .fc-button {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .fc-event,
+  .fc .fc-button,
+  .btn-primary,
+  .btn-secondary {
+    transition: none;
+  }
+
+  .fc-event:hover {
+    transform: none;
+  }
 }

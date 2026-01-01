@@ -30,6 +30,14 @@ import AssignTeacherView from './pages/MosqueAdminDashboard/CourseManagment/Assi
 import ViewCourseView from './pages/MosqueAdminDashboard/CourseManagment/ViewCourse/ViewCourseView';
 import MyMosqueView from './pages/MosqueAdminDashboard/MyMosque/MyMosqueView';
 
+
+// Events 
+import EventsPage from './pages/EventsPage';
+import EventDetailsPage from './pages/Eventdetailspage';
+import FundraisingApprovalsPage from './pages/Fundraisingapprovalspage';
+
+//chatting
+import ChatPage from './pages/Chatting/ChatPage';
 import TeacherListPage from './pages/MosqueAdminDashboard/TeacherManagement/TeacherList/TeacherListPage';
 import TeacherInfoPage from './pages/MosqueAdminDashboard/TeacherManagement/TeacherInfo/TeacherInfoPage';
 import './App.css';
@@ -319,7 +327,7 @@ function App() {
                 }
               />
 
-              {/* Chat - accessible to all authenticated users */}
+              {/* Chat - accessible to all authenticated users
               <Route
                 path="/chat"
                 element={
@@ -327,7 +335,7 @@ function App() {
                     <div>Chat - To be implemented</div>
                   </ProtectedRoute>
                 }
-              />
+              /> */}
 
 
               <Route path="/meeting/:roomId" element={
@@ -336,11 +344,21 @@ function App() {
                 </ProtectedRoute>
               } />
 
+
+            
+
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
 
-              {/* for the profile page */}
-              <Route path="/profile" element={<Profile />} />
+{/* for the profile page */}
+<Route path="/profile" element={<Profile />} />
+{/* Events Page */}
+<Route path="/events" element={<EventsPage />} />
+<Route path="/events/:id" element={<EventDetailsPage />} />
+<Route path="/fundraising-approvals" element={<FundraisingApprovalsPage />} />
+
+{/*Chatting Route */}
+<Route path="/chat" element={<ChatPage />} />
 
             </Routes>
           </div>

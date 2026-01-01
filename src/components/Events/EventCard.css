@@ -1,0 +1,210 @@
+/* Event Card Component Styles */
+
+.event-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Event Header */
+.event-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f0f5ff 0%, #e6f7ff 100%);
+  border-bottom: 1px solid #d9f7be;
+}
+
+.event-type-badge {
+  display: flex;
+  align-items: center;
+}
+
+.event-mosque {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #595959;
+}
+
+/* Event Content */
+.event-card-content {
+  padding: 20px;
+  flex: 1;
+}
+
+.event-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #262626;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.event-description {
+  font-size: 14px;
+  color: #595959;
+  line-height: 1.6;
+  margin: 0 0 16px 0;
+}
+
+/* Event Details */
+.event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.event-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #8c8c8c;
+}
+
+.detail-icon {
+  font-size: 16px;
+  color: #1890ff;
+}
+
+/* Event Stats */
+.event-stats {
+  display: flex;
+  gap: 20px;
+  padding: 16px 20px;
+  background: #fafafa;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #595959;
+}
+
+.stat-item svg {
+  font-size: 16px;
+}
+
+/* Event Actions */
+.event-actions {
+  display: flex;
+  padding: 12px 16px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: 1px solid #d9d9d9;
+  background: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #595959;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+  background: #f0f5ff;
+}
+
+.action-btn svg {
+  font-size: 16px;
+}
+
+/* Liked State */
+.action-btn.liked {
+  border-color: #ff4d4f;
+  color: #ff4d4f;
+  background: #fff1f0;
+}
+
+.action-btn.liked:hover {
+  border-color: #cf1322;
+  color: #cf1322;
+  background: #ffccc7;
+}
+
+/* RSVP States */
+.action-btn.rsvp-going {
+  border-color: #52c41a;
+  color: #52c41a;
+  background: #f6ffed;
+}
+
+.action-btn.rsvp-going:hover {
+  border-color: #389e0d;
+  color: #389e0d;
+}
+
+.action-btn.rsvp-maybe {
+  border-color: #faad14;
+  color: #faad14;
+  background: #fffbe6;
+}
+
+.action-btn.rsvp-maybe:hover {
+  border-color: #d48806;
+  color: #d48806;
+}
+
+.action-btn.rsvp-not-going {
+  border-color: #ff4d4f;
+  color: #ff4d4f;
+  background: #fff1f0;
+}
+
+.action-btn.rsvp-not-going:hover {
+  border-color: #cf1322;
+  color: #cf1322;
+}
+
+/* View Details Button */
+.view-details-btn {
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .event-actions {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .event-stats {
+    flex-wrap: wrap;
+  }
+}

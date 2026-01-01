@@ -1,0 +1,232 @@
+/* FundraisingApprovals.css */
+
+.fundraising-approvals-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.page-icon {
+  font-size: 36px;
+  color: #fa8c16;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0;
+  color: #262626;
+}
+
+.subtitle {
+  color: #8c8c8c;
+  font-size: 15px;
+  margin: 0;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* Tabs */
+.approval-tabs {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.approval-tabs .ant-tabs-tab {
+  font-size: 16px;
+  padding: 12px 20px;
+}
+
+/* Events Grid */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+/* Event Card */
+.fundraising-event-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.fundraising-event-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.event-header .ant-tag {
+  margin: 0;
+}
+
+.event-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #262626;
+}
+
+.event-info {
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: #595959;
+  font-size: 14px;
+}
+
+.info-row .anticon {
+  color: #1890ff;
+  font-size: 16px;
+}
+
+.event-description {
+  color: #8c8c8c;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.rejection-reason {
+  background: #fff2e8;
+  border-left: 4px solid #ff4d4f;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+.rejection-reason strong {
+  color: #ff4d4f;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.rejection-reason p {
+  margin: 0;
+  color: #595959;
+}
+
+.event-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.event-actions button {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* View Details Modal */
+.event-details-modal .detail-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.event-details-modal .detail-row:last-child {
+  border-bottom: none;
+}
+
+.event-details-modal .detail-row.full-width {
+  grid-template-columns: 1fr;
+}
+
+.event-details-modal .detail-row strong {
+  color: #262626;
+}
+
+.event-details-modal .detail-row span,
+.event-details-modal .detail-row p {
+  color: #595959;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .events-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .fundraising-approvals-page {
+    padding: 16px;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .event-actions {
+    flex-direction: column;
+  }
+
+  .event-actions button {
+    width: 100%;
+  }
+
+  .event-details-modal .detail-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Empty State */
+.ant-empty {
+  padding: 60px 20px;
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fundraising-event-card {
+  animation: slideIn 0.3s ease-out;
+}

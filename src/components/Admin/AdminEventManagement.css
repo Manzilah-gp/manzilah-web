@@ -1,0 +1,327 @@
+/* ===================================================== */
+/* Admin Event Management Styles */
+/* Responsive design for mosque admin event management */
+/* ===================================================== */
+
+.admin-event-management {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.admin-events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.admin-events-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.admin-events-header p {
+  margin: 5px 0 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Loading State */
+.admin-events-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* Events Grid */
+.admin-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+/* Event Card */
+.admin-event-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 1px solid #e5e7eb;
+}
+
+.admin-event-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* Event Header */
+.admin-event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.event-header-left {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Event Title */
+.admin-event-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 12px 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* Event Info */
+.admin-event-info {
+  margin: 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.info-row .anticon {
+  color: #9ca3af;
+}
+
+/* ===================================================== */
+/* Fundraising Info Section (ONLY for fundraising events) */
+/* ===================================================== */
+
+.fundraising-info {
+  margin: 16px 0;
+  padding: 16px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 8px;
+  border-left: 4px solid #10b981;
+}
+
+.fundraising-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #065f46;
+  font-size: 14px;
+}
+
+.fundraising-header .anticon {
+  color: #10b981;
+  font-size: 16px;
+}
+
+.fundraising-amounts {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.raised-amount {
+  font-weight: 700;
+  color: #10b981;
+  font-size: 16px;
+}
+
+.goal-amount {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* Mini Progress Bar */
+.mini-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.mini-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  transition: width 0.5s ease;
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+  position: relative;
+}
+
+.mini-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.progress-percentage {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: #059669;
+}
+
+/* Event Actions */
+.admin-event-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.admin-event-actions button {
+  flex: 1;
+  min-width: 80px;
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 1024px) {
+  .admin-events-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .admin-event-management {
+    padding: 16px;
+  }
+
+  .admin-events-header {
+    padding: 16px;
+  }
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+  .admin-event-management {
+    padding: 12px;
+  }
+
+  .admin-events-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .admin-events-header h2 {
+    font-size: 24px;
+  }
+
+  .admin-events-header button {
+    width: 100%;
+  }
+
+  .admin-events-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-event-card {
+    margin-bottom: 0;
+  }
+
+  .admin-event-title {
+    font-size: 16px;
+  }
+
+  .fundraising-amounts {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .admin-event-actions {
+    flex-direction: column;
+  }
+
+  .admin-event-actions button {
+    width: 100%;
+  }
+}
+
+/* Very Small Mobile Screens */
+@media (max-width: 480px) {
+  .admin-events-header {
+    padding: 12px;
+  }
+
+  .admin-events-header h2 {
+    font-size: 20px;
+  }
+
+  .admin-events-header p {
+    font-size: 13px;
+  }
+
+  .admin-event-card {
+    padding: 12px;
+  }
+
+  .fundraising-info {
+    padding: 12px;
+  }
+
+  .raised-amount {
+    font-size: 15px;
+  }
+
+  .goal-amount {
+    font-size: 13px;
+  }
+}
+
+/* Empty State Styling */
+.ant-empty {
+  padding: 60px 20px;
+}
+
+.ant-empty-description {
+  color: #9ca3af;
+  font-size: 16px;
+}

@@ -4,6 +4,7 @@ import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import UserCalendar from "../components/Calender";
+import AdminEventManagement from "../components/Admin/AdminEventManagement";
 import {
   UserOutlined,
   MailOutlined,
@@ -19,9 +20,11 @@ import {
   TeamOutlined,
   ClockCircleOutlined,
   CheckCircleOutlined,
+  DashboardOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import useUserEvents from '../hooks/useUserEvents';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -36,14 +39,25 @@ function ProfilePage() {
   const [userData, setUserData] = useState(null);
   const [roleData, setRoleData] = useState({});
 
-  // ✅ Auto-collapse sidebar on mobile when route changes
+  // Calendar hook
+  const { events, loading: calendarLoading, error } = useUserEvents();
+
+  // Check if user is a mosque admin
+  const isMosqueAdmin = userData?.activeRoles?.includes('mosque_admin');
+
+  console.log('Calendar events:', events);
+  console.log('Calendar Loading:', calendarLoading);
+  console.log('Calendar Error:', error);
+  console.log('Is Mosque Admin:', isMosqueAdmin);
+
+  // Auto-collapse sidebar on mobile when route changes
   useEffect(() => {
     if (window.innerWidth < 768) {
       setSidebarCollapsed(true);
     }
   }, [location.pathname]);
 
-  // ✅ Handle window resize
+  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
@@ -58,6 +72,24 @@ function ProfilePage() {
   }, []);
 
   useEffect(() => {
+    // Check if navigation included a tab state from sidebar
+    if (location.state?.tab) {
+      const targetTab = location.state.tab;
+      
+      // Validate tab exists (including new admin tab)
+      const validTabs = ['overview', 'student', 'teacher', 'parent', 'donor', 'calendar', 'admin'];
+      
+      if (validTabs.includes(targetTab)) {
+        console.log('Opening tab from sidebar:', targetTab);
+        setActiveTab(targetTab);
+        
+        // Clear the state so back button works normally
+        window.history.replaceState({}, document.title);
+      }
+    }
+  }, [location.state]);
+
+  useEffect(() => {
     fetchUserProfile();
   }, []);
 
@@ -68,12 +100,12 @@ function ProfilePage() {
       console.log('🔑 Token:', token ? 'Exists' : 'Missing');
 
       if (!token) {
-        console.error('❌ No token found');
+        console.error('No token found');
         navigate('/login');
         return;
       }
 
-      console.log('📡 Fetching from: http://localhost:5000/api/profile');
+      console.log('Fetching from: http://localhost:5000/api/profile');
 
       const response = await fetch('http://localhost:5000/api/profile', {
         headers: {
@@ -82,11 +114,11 @@ function ProfilePage() {
         }
       });
 
-      console.log('📊 Response status:', response.status);
+      console.log('Response status:', response.status);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ Response error:', errorText);
+        console.error('Response error:', errorText);
         throw new Error(`Failed to fetch profile: ${response.status}`);
       }
 
@@ -96,12 +128,12 @@ function ProfilePage() {
       if (data.success) {
         setUserData(data.user);
         setRoleData(data.roleSpecificData);
-        console.log('✅ Active Roles:', data.user.activeRoles);
+        console.log('Active Roles:', data.user.activeRoles);
       }
 
       setLoading(false);
     } catch (error) {
-      console.error('❌ Error fetching profile:', error);
+      console.error('Error fetching profile:', error);
       setLoading(false);
     }
   };
@@ -119,7 +151,7 @@ function ProfilePage() {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "غير متوفر";
+    if (!dateString) return "Not Available";
     return new Date(dateString).toLocaleDateString('ar-SA');
   };
 
@@ -129,61 +161,61 @@ function ProfilePage() {
 
   const getRoleNameInArabic = (role) => {
     const roleMap = {
-      'student': 'طالب',
-      'teacher': 'معلم',
-      'parent': 'ولي أمر',
-      'donor': 'متبرع',
-      'mosque_admin': 'مدير مسجد',
-      'ministry_admin': 'مدير وزارة'
+      'student': 'student',
+      'teacher': 'teacher',
+      'parent': 'parent',
+      'donor': 'donor',
+      'mosque_admin': 'mosque admin',
+      'ministry_admin': 'ministry admin'
     };
     return roleMap[role] || role;
   };
 
   const renderGeneralInfo = () => (
     <div className="profile-section">
-      <h3 className="section-title">المعلومات الشخصية</h3>
+      <h3 className="section-title">Personal Information</h3>
       <div className="info-grid">
         <div className="info-item">
           <UserOutlined className="info-icon" />
           <div>
-            <span className="info-label">الاسم الكامل</span>
+            <span className="info-label">Full Name</span>
             <span className="info-value">{userData.full_name}</span>
           </div>
         </div>
         <div className="info-item">
           <MailOutlined className="info-icon" />
           <div>
-            <span className="info-label">البريد الإلكتروني</span>
+            <span className="info-label">Email</span>
             <span className="info-value">{userData.email}</span>
           </div>
         </div>
         <div className="info-item">
           <PhoneOutlined className="info-icon" />
           <div>
-            <span className="info-label">رقم الهاتف</span>
-            <span className="info-value">{userData.phone || "غير متوفر"}</span>
+            <span className="info-label">Phone Number</span>
+            <span className="info-value">{userData.phone || "Not Available"}</span>
           </div>
         </div>
         <div className="info-item">
           <CalendarOutlined className="info-icon" />
           <div>
-            <span className="info-label">العمر</span>
-            <span className="info-value">{calculateAge(userData.dob)} سنة</span>
+            <span className="info-label">Age</span>
+            <span className="info-value">{calculateAge(userData.dob)} Year</span>
           </div>
         </div>
         <div className="info-item">
           <HomeOutlined className="info-icon" />
           <div>
-            <span className="info-label">المحافظة</span>
-            <span className="info-value">{userData.location?.governorate || "غير محدد"}</span>
+            <span className="info-label">City</span>
+            <span className="info-value">{userData.location?.governorate || "undefined"}</span>
           </div>
         </div>
         <div className="info-item">
           <CheckCircleOutlined className="info-icon" />
           <div>
-            <span className="info-label">حالة الحساب</span>
+            <span className="info-label">Status</span>
             <span className={`status-badge ${userData.approved ? 'approved' : 'pending'}`}>
-              {userData.approved ? "مفعّل" : "قيد المراجعة"}
+              {userData.approved ? "Activated" : "Under review"}
             </span>
           </div>
         </div>
@@ -197,52 +229,52 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title">معلومات الطالب</h3>
-
+        <h3 className="section-title">Student Information</h3>
+        
         <div className="stats-row">
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{studentData.enrollments?.length || 0}</h4>
-              <p>الدورات المسجلة</p>
+              <p>Courses Registered</p>
             </div>
           </div>
           <div className="stat-card">
             <TrophyOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{studentData.attendance_rate}%</h4>
-              <p>نسبة الحضور</p>
+              <p>Attendance percentage</p>
             </div>
           </div>
           <div className="stat-card">
             <ClockCircleOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{studentData.sessions_attended}/{studentData.total_sessions}</h4>
-              <p>الجلسات المحضورة</p>
+              <p>Sessions attended</p>
             </div>
           </div>
         </div>
 
         {studentData.enrollments && studentData.enrollments.length > 0 && (
           <div className="enrollments-list">
-            <h4>الدورات الحالية</h4>
+            <h4>Current Courses</h4>
             {studentData.enrollments.map((enrollment, idx) => (
               <div key={idx} className="enrollment-card">
                 <div className="enrollment-header">
                   <h5>{enrollment.course_name}</h5>
                   <span className={`badge ${enrollment.status}`}>
-                    {enrollment.status === 'active' ? 'نشط' : enrollment.status}
+                    {enrollment.status === 'active' ? 'Active' : enrollment.status}
                   </span>
                 </div>
-                <p className="enrollment-teacher">المعلم: {enrollment.teacher_name}</p>
-                <p className="enrollment-level">المستوى: {enrollment.current_level}</p>
+                <p className="enrollment-teacher">Student: {enrollment.teacher_name}</p>
+                <p className="enrollment-level">Level: {enrollment.current_level}</p>
                 <div className="progress-bar">
                   <div
                     className="progress-fill"
                     style={{ width: `${enrollment.progress}%` }}
                   ></div>
                 </div>
-                <span className="progress-text">{Math.round(enrollment.progress)}% مكتمل</span>
+                <span className="progress-text">{Math.round(enrollment.progress)}% Done</span>
               </div>
             ))}
           </div>
@@ -257,58 +289,58 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title">معلومات المعلم</h3>
-
+        <h3 className="section-title">Teacher Information</h3>
+        
         <div className="stats-row">
           <div className="stat-card">
             <TeamOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{teacherData.current_students}</h4>
-              <p>الطلاب الحاليون</p>
+              <p>Current Students</p>
             </div>
           </div>
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{teacherData.completed_courses}</h4>
-              <p>الدورات المكتملة</p>
+              <p>Completed sessions</p>
             </div>
           </div>
           <div className="stat-card">
             <TrophyOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{teacherData.average_rating}/5</h4>
-              <p>التقييم ({teacherData.total_ratings} تقييم)</p>
+              <p>Rating ({teacherData.total_ratings} Ratings)</p>
             </div>
           </div>
         </div>
 
         <div className="certification-info">
-          <h4>الشهادات والخبرة</h4>
+          <h4>Certificates and Experience</h4>
           <div className="cert-grid">
             <div className="cert-item">
-              <CheckCircleOutlined style={{ color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999' }} />
-              <span>شهادة التجويد</span>
+              <CheckCircleOutlined style={{color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999'}} />
+              <span>Tajweed Certificate</span>
             </div>
             <div className="cert-item">
-              <CheckCircleOutlined style={{ color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999' }} />
-              <span>شهادة الشريعة</span>
+              <CheckCircleOutlined style={{color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999'}} />
+              <span>Sharia Certificate</span>
             </div>
             <div className="cert-item">
               <ClockCircleOutlined />
-              <span>{teacherData.certifications?.experience_years || 0} سنوات خبرة</span>
+              <span>{teacherData.certifications?.experience_years || 0} Years of experience</span>
             </div>
           </div>
         </div>
 
         {teacherData.expertise && teacherData.expertise.length > 0 && (
           <div className="expertise-info">
-            <h4>مجالات التخصص</h4>
+            <h4>Areas of specialization</h4>
             {teacherData.expertise.map((exp, idx) => (
               <div key={idx} className="expertise-card">
-                <p><strong>{exp.course_type === 'memorization' ? 'التحفيظ' : exp.course_type}</strong></p>
-                {exp.max_level && <p>المستوى: {exp.max_level}</p>}
-                <p>الأجر: {formatCurrency(exp.hourly_rate_cents)}/ساعة</p>
+                <p><strong>{exp.course_type === 'memorization' ? 'Memorization' : exp.course_type}</strong></p>
+                {exp.max_level && <p>Level: {exp.max_level}</p>}
+                <p>Hourly Rate: {formatCurrency(exp.hourly_rate_cents)}/Hour</p>
               </div>
             ))}
           </div>
@@ -316,7 +348,7 @@ function ProfilePage() {
 
         {teacherData.availability && teacherData.availability.length > 0 && (
           <div className="availability-info">
-            <h4>أوقات التوفر</h4>
+            <h4>Availability times</h4>
             <div className="availability-list">
               {teacherData.availability.map((slot, idx) => (
                 <div key={idx} className="availability-slot">
@@ -337,23 +369,23 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title">معلومات ولي الأمر</h3>
-
+        <h3 className="section-title">Parents Information</h3>
+        
         {parentData.children && parentData.children.length > 0 ? (
           <div className="children-list">
-            <h4>الأبناء المسجلون</h4>
+            <h4>Registered Children</h4>
             {parentData.children.map((child, idx) => (
               <div key={idx} className="child-card">
                 <div className="child-header">
                   <UserOutlined className="child-icon" />
                   <div>
                     <h5>{child.name}</h5>
-                    <p>{child.age} سنة</p>
+                    <p>{child.age} Year</p>
                   </div>
                 </div>
                 <div className="child-stats">
-                  <span>الدورات: {child.courses}</span>
-                  <span>التقدم: {child.progress}%</span>
+                  <span>Courses: {child.courses}</span>
+                  <span>Progress: {child.progress}%</span>
                 </div>
                 <div className="progress-bar">
                   <div
@@ -365,7 +397,7 @@ function ProfilePage() {
             ))}
           </div>
         ) : (
-          <p>لا يوجد أبناء مسجلون</p>
+          <p>No Registered Children</p>
         )}
       </div>
     );
@@ -377,28 +409,28 @@ function ProfilePage() {
 
     return (
       <div className="profile-section">
-        <h3 className="section-title">معلومات المتبرع</h3>
-
+        <h3 className="section-title">Donor Information</h3>
+        
         <div className="stats-row">
           <div className="stat-card">
             <DollarOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{formatCurrency(donorData.total_donated_cents)}</h4>
-              <p>إجمالي التبرعات</p>
+              <p>Total donations</p>
             </div>
           </div>
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{donorData.campaigns_supported}</h4>
-              <p>الحملات المدعومة</p>
+              <p>Sponsored campaigns</p>
             </div>
           </div>
           <div className="stat-card">
             <CalendarOutlined className="stat-icon" />
             <div className="stat-content">
               <h4>{formatDate(donorData.last_donation_date)}</h4>
-              <p>آخر تبرع</p>
+              <p>Last Donation</p>
             </div>
           </div>
         </div>
@@ -411,7 +443,7 @@ function ProfilePage() {
     navigate('/login');
   };
 
-  // ✅ Toggle sidebar function
+  // Toggle sidebar function
   const handleToggleSidebar = () => {
     setSidebarCollapsed(!sidebarCollapsed);
   };
@@ -425,7 +457,7 @@ function ProfilePage() {
           onToggleCollapse={handleToggleSidebar}
         />
         <div className="main-content-wrapper">
-          <div className="loading">جاري التحميل...</div>
+          <div className="loading">Loading...</div>
         </div>
         <Footer />
       </>
@@ -441,7 +473,7 @@ function ProfilePage() {
           onToggleCollapse={handleToggleSidebar}
         />
         <div className="main-content-wrapper">
-          <div className="loading">خطأ في تحميل البيانات</div>
+          <div className="loading">Data loading error</div>
         </div>
         <Footer />
       </>
@@ -478,7 +510,7 @@ function ProfilePage() {
                     </span>
                   ))
                 ) : (
-                  <span className="role-badge">لا توجد أدوار نشطة</span>
+                  <span className="role-badge">No active roles</span>
                 )}
               </div>
             </div>
@@ -486,7 +518,7 @@ function ProfilePage() {
               className="edit-profile-btn"
               onClick={() => navigate('/profile-details')}
             >
-              <EditOutlined /> تعديل الملف الشخصي
+              <EditOutlined /> Edit profile
             </button>
           </div>
 
@@ -496,14 +528,14 @@ function ProfilePage() {
               className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
               onClick={() => setActiveTab('overview')}
             >
-              نظرة عامة
+              Overview
             </button>
             {userData.activeRoles?.includes('student') && (
               <button
                 className={`tab ${activeTab === 'student' ? 'active' : ''}`}
                 onClick={() => setActiveTab('student')}
               >
-                معلومات الطالب
+                Student Information
               </button>
             )}
             {userData.activeRoles?.includes('teacher') && (
@@ -511,7 +543,7 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
                 onClick={() => setActiveTab('teacher')}
               >
-                معلومات المعلم
+                Teacher Information
               </button>
             )}
             {userData.activeRoles?.includes('parent') && (
@@ -519,7 +551,7 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
                 onClick={() => setActiveTab('parent')}
               >
-                معلومات ولي الأمر
+                Parent Information
               </button>
             )}
             {userData.activeRoles?.includes('donor') && (
@@ -527,14 +559,25 @@ function ProfilePage() {
                 className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
                 onClick={() => setActiveTab('donor')}
               >
-                معلومات المتبرع
+                Donor Information
+              </button>
+            )}
+            {/* ===================================================== */}
+            {/* ADMIN TAB (ONLY for mosque admins) */}
+            {/* ===================================================== */}
+            {isMosqueAdmin && (
+              <button 
+                className={`tab admin-tab ${activeTab === 'admin' ? 'active' : ''}`}
+                onClick={() => setActiveTab('admin')}
+              >
+                <DashboardOutlined /> Manage Events
               </button>
             )}
             <button
               className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
               onClick={() => setActiveTab('calendar')}
             >
-              التقويم
+              Calendar
             </button>
           </div>
 
@@ -545,7 +588,25 @@ function ProfilePage() {
             {activeTab === 'teacher' && renderTeacherInfo()}
             {activeTab === 'parent' && renderParentInfo()}
             {activeTab === 'donor' && renderDonorInfo()}
-            {activeTab === 'calendar' && <UserCalendar />}
+            
+            {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}
+            {activeTab === 'admin' && isMosqueAdmin && (
+              <div className="admin-tab-content">
+                <AdminEventManagement />
+              </div>
+            )}
+            
+            {activeTab === 'calendar' && (
+              <div>
+                <UserCalendar 
+                  events={events || []}
+                  loading={calendarLoading}
+                  title="Your Event Schedule"
+                  subtitle="Events you're attending"
+                  showAttendingBadge={true}
+                />
+              </div>
+            )}
           </div>
 
           {/* Action Buttons */}
@@ -554,13 +615,13 @@ function ProfilePage() {
               className="profile-btn settings-btn"
               onClick={() => navigate('/profile-details')}
             >
-              <SettingOutlined /> إعدادات الحساب
+              <SettingOutlined /> Profile Settings
             </button>
             <button
               className="profile-btn logout-btn"
               onClick={handleLogout}
             >
-              <LogoutOutlined /> تسجيل خروج
+              <LogoutOutlined /> Log out
             </button>
           </div>
         </div>

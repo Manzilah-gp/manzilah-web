@@ -1,0 +1,183 @@
+/* =====================================================
+   COMPLETE FINAL CHATPAGE.CSS - FIXED VERSION
+   Removes black area, perfect layout
+   ===================================================== */
+
+/* Main container - covers entire viewport */
+.chat-page-container {
+  position: fixed;
+  top: 64px;        /* Below header */
+  left: 0;          /* Start from left edge */
+  right: 0;
+  bottom: 0;
+  background: white;
+  overflow: hidden;
+  z-index: 1;
+  /* REMOVED padding-left: 270px; - This was causing the black area */
+}
+
+/* Layout wrapper */
+.chat-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  background: white !important;
+  position: relative;
+}
+
+.chat-layout .ant-layout,
+.chat-layout .ant-layout-has-sider {
+  background: white !important;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+/* =====================================================
+   SIDEBAR - 350px conversation list
+   ===================================================== */
+
+.chat-layout .ant-layout-sider {
+  position: relative !important;
+  flex: 0 0 350px !important;
+  max-width: 350px !important;
+  min-width: 350px !important;
+  width: 350px !important;
+  height: 100% !important;
+  background: white !important;
+  border-right: 1px solid #e4e6eb !important;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04) !important;
+  z-index: 2 !important;
+  overflow: hidden !important;
+}
+
+.conversation-sidebar {
+  background: white !important;
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.conversation-sidebar .ant-layout-sider-children {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+/* =====================================================
+   CONTENT - message area
+   ===================================================== */
+
+.chat-layout .ant-layout-content {
+  position: relative !important;
+  flex: 1 !important;
+  width: calc(100% - 350px) !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  background: white !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+}
+
+.message-content-area {
+  background: white !important;
+  height: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* =====================================================
+   MOBILE CONTROLS
+   ===================================================== */
+
+/* Mobile Toggle Button */
+.mobile-toggle-btn {
+  position: fixed;
+  top: 70px;
+  left: 16px;
+  z-index: 1000;
+  display: none;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile Overlay */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+}
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .chat-layout .ant-layout-sider {
+    flex: 0 0 300px !important;
+    max-width: 300px !important;
+    min-width: 300px !important;
+    width: 300px !important;
+  }
+  
+  .chat-layout .ant-layout-content {
+    width: calc(100% - 300px) !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .chat-page-container {
+    top: 56px;
+    height: calc(100vh - 56px);
+  }
+  
+  .mobile-toggle-btn {
+    display: block;
+  }
+  
+  .chat-layout .ant-layout-sider {
+    position: fixed !important;
+    left: -350px;
+    top: 56px;
+    height: calc(100vh - 56px) !important;
+    z-index: 999 !important;
+    transition: left 0.3s ease;
+    flex: 0 0 350px !important;
+    max-width: 350px !important;
+    min-width: 350px !important;
+    width: 350px !important;
+  }
+  
+  .conversation-sidebar.show-mobile {
+    left: 0 !important;
+  }
+  
+  .mobile-overlay.show-mobile {
+    display: block;
+  }
+  
+  .chat-layout .ant-layout-content {
+    width: 100% !important;
+    padding-top: 50px; /* Space for mobile toggle button */
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .chat-layout .ant-layout-sider {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+  }
+}
