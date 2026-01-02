@@ -10,6 +10,7 @@ import React, { useState, useEffect } from "react";
 import MainSideBar from "../components/MainSideBar/MainSideBar";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import TeacherProfileEditSection from "../components/Profile/TeacherProfileEditSection";
 import "../Styles/ProfileDetails.css";
 import { message } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -23,6 +24,7 @@ function ProfileDetails() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isTeacher, setIsTeacher] = useState(false); // Track if user is a teacher
   const [user, setUser] = useState({
     fullName: "",
     email: "",
@@ -122,6 +124,11 @@ function ProfileDetails() {
           address_line2: data.user.location?.address_line2 || "",
           postal_code: data.user.location?.postal_code || ""
         });
+        
+        // Check if user has teacher role
+        if (data.user.activeRoles && data.user.activeRoles.includes('teacher')) {
+          setIsTeacher(true);
+        }
       }
 
       setLoading(false);
@@ -424,6 +431,17 @@ function ProfileDetails() {
               {saving ? 'Saving...' : 'Save Changes'}
             </button>
           </form>
+
+          {/* Teacher-specific profile section - only shown if user is a teacher */}
+          {isTeacher && (
+            <div className="teacher-section-container">
+              <h2 className="section-title">Teacher Information</h2>
+              <p className="section-description">
+                Update your teaching certifications, expertise areas, and availability schedule.
+              </p>
+              <TeacherProfileEditSection />
+            </div>
+          )}
         </div>
       </div>
 
