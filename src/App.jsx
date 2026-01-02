@@ -103,7 +103,7 @@ function App() {
               {/* ============================================ */}
               {/* Protected Dashboard Routes - wrapped in DashboardLayout */}
               <Route
-                path="/"
+                path="/"  
                 element={
                   <ProtectedRoute>
                     <MainLayout />
