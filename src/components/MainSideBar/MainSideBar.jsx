@@ -231,18 +231,9 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
 
   
     const getFilteredMenuItems = useMemo(() => {
-        // Normalize user roles:
-        // 1. If user.roles exists, use it.
-        // 2. If user.role exists (singular), wrap in array.
-        // 3. Otherwise empty array.
-        let userRoles = [];
-        if (user?.roles && Array.isArray(user.roles)) {
-            userRoles = user.roles;
-        } else if (user?.role) {
-            userRoles = [user.role];
-        }
+        if (!user || !user.roles || user.roles.length === 0) return [];
 
-        if (!user || userRoles.length === 0) return [];
+        const userRoles = user.roles; // This is an ARRAY of roles
 
         const hasAccess = (item) => {
             // If item has no role restrictions, allow access

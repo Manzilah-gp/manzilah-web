@@ -60,6 +60,7 @@ import MeetingRoomUIKit from './pages/MeetingRoom/MeetingRoomUIKit';
 // import QiblaPage from './pages/QiblaPage/QiblaPage';
 // import QuranReaderPage from './pages/QuranReader/QuranReaderPage';
 import IslamicStoryteller from './pages/IslamicStoryteller/IslamicStoryteller';
+import PaymentSuccess from './pages/Payment/PaymentSuccess';
 
 function App() {
   return (
@@ -359,6 +360,8 @@ function App() {
 
 {/*Chatting Route */}
 <Route path="/chat" element={<ChatPage />} />
+{/* Enrollment Payment Route */}
+<Route path="/payment/success" element={<PaymentSuccess />} />
 
             </Routes>
           </div>
