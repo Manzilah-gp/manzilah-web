@@ -223,6 +223,11 @@ const PublicCoursesPage = () => {
                                                 {course.target_age_group}
                                             </span>
                                         )}
+                                        {course.target_gender && (
+                                            <span className="course-tag tag-green">
+                                                {course.target_gender}
+                                            </span>
+                                        )}
                                     </div>
 
                                     <p className="course-description">

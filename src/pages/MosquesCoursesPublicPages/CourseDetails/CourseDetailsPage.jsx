@@ -141,8 +141,13 @@ const CourseDetailsPage = () => {
                                     <div className="tag-container">
                                         <span className="tag-blue">{course.course_type}</span>
                                         <span className="tag-purple">{course.schedule_type}</span>
-                                        {course.is_online_enabled && (
+                                        <span className="tag-amber">{course.target_age_group}</span>
+                                        <span className="tag-green">{course.target_gender}</span>
+
+                                        {course.is_online_enabled ? (
                                             <span className="tag-green">🎥 Online Available</span>
+                                        ) : (
+                                            null
                                         )}
                                     </div>
                                 </div>

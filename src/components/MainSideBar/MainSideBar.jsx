@@ -168,7 +168,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             key: 'courses',
             icon: <BookOutlined />,
             label: 'Courses',
-            roles: ['mosque_admin', 'teacher'],
+            roles: ['mosque_admin'],
             children: [
                 {
                     key: 'course-list',

@@ -61,6 +61,11 @@ import MeetingRoomUIKit from './pages/MeetingRoom/MeetingRoomUIKit';
 // import QuranReaderPage from './pages/QuranReader/QuranReaderPage';
 import IslamicStoryteller from './pages/IslamicStoryteller/IslamicStoryteller';
 
+
+// import StudentProgressView from './pages/TeacherDashboard/StudentProgressView';
+
+// Inside your protected routes:
+
 function App() {
   return (
 
@@ -96,6 +101,15 @@ function App() {
               <Route path="/public/mosques" element={<PublicMosques />} />
               <Route path="/public/mosque/:id" element={<MosqueDetailsPage />} />
               <Route path="/public/course/:id" element={<CourseDetailsPage />} />
+
+              {/* <Route
+                path="teacher/student-progress/:enrollmentId"
+                element={
+                  <RoleProtectedRoute allowedRoles={['teacher', 'mosque_admin']}>
+                    <StudentProgressView />
+                  </RoleProtectedRoute>
+                }
+              /> */}
 
 
               {/* ============================================ */}

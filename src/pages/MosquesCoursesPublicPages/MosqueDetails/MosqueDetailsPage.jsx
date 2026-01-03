@@ -46,7 +46,7 @@ const MosqueDetailsPage = () => {
     };
 
     const getGenderLabel = (gender) => {
-        if (!gender) return '⚧️ Mixed (All Genders)';
+        if (!gender) return 'Mixed (All Genders)';
         return gender === 'male' ? '♂️ Male Only' : '♀️ Female Only';
     };
 
@@ -150,25 +150,7 @@ const MosqueDetailsPage = () => {
                                             </span>
                                         </div>
 
-                                        <div className="card-tags">
-                                            <span className="tag tag-blue">
-                                                {course.course_type}
-                                            </span>
-                                            <span className="tag tag-purple">
-                                                {course.schedule_type}
-                                            </span>
-                                            {course.is_online_enabled && (
-                                                <span className="tag tag-green">
-                                                    🎥 Video Call
-                                                </span>
-                                            )}
-                                        </div>
 
-                                        {course.description && (
-                                            <p className="card-description">
-                                                {course.description}
-                                            </p>
-                                        )}
                                     </div>
 
                                     {/* Course Details */}
