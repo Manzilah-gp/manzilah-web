@@ -139,9 +139,9 @@ const TeacherSelectionModal = ({ isOpen, onClose, teachers, onSelect, courseData
 
                                     <div className="must-requirements">
                                         <Space size="middle" className="requirement-icons">
-                                            <Tooltip title="Governorate Match">
+                                            <Tooltip title="Active">
                                                 <span className="requirement-met">
-                                                    <EnvironmentOutlined /> Governorate ✓
+                                                    <EnvironmentOutlined /> Active ✓
                                                 </span>
                                             </Tooltip>
 
