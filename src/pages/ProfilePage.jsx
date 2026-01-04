@@ -25,6 +25,8 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useUserEvents from '../hooks/useUserEvents';
+import ParentRelationshipSection from '../components/Profile/ParentRelationshipSection';
+import StudentParentRequestsSection from '../components/Profile/StudentParentRequestsSection';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -584,9 +586,31 @@ function ProfilePage() {
           {/* Tab Content */}
           <div className="tab-content">
             {activeTab === 'overview' && renderGeneralInfo()}
-            {activeTab === 'student' && renderStudentInfo()}
+            
+            {activeTab === 'student' && (
+              <>
+                {renderStudentInfo()}
+                
+                {/* ⭐ NEW: Student Parent Requests Section */}
+                {userData.activeRoles?.includes('student') && (
+                  <StudentParentRequestsSection />
+                )}
+              </>
+            )}
+            
             {activeTab === 'teacher' && renderTeacherInfo()}
-            {activeTab === 'parent' && renderParentInfo()}
+            
+            {activeTab === 'parent' && (
+              <>
+                {renderParentInfo()}
+                
+                {/* ⭐ NEW: Parent Relationship Section */}
+                {userData.activeRoles?.includes('parent') && (
+                  <ParentRelationshipSection />
+                )}
+              </>
+            )}
+            
             {activeTab === 'donor' && renderDonorInfo()}
             
             {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}
