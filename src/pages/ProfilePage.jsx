@@ -266,7 +266,7 @@ function ProfilePage() {
                     {enrollment.status === 'active' ? 'Active' : enrollment.status}
                   </span>
                 </div>
-                <p className="enrollment-teacher">Student: {enrollment.teacher_name}</p>
+                <p className="enrollment-teacher">Teacher: {enrollment.teacher_name}</p>
                 <p className="enrollment-level">Level: {enrollment.current_level}</p>
                 <div className="progress-bar">
                   <div

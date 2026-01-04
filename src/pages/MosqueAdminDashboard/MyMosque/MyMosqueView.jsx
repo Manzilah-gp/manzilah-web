@@ -12,7 +12,7 @@ import {
     BarChartOutlined
 } from '@ant-design/icons';
 import { getMosqueById } from '../../../api/mosque';
-import { getCoursesByMosque } from '../../../api/course';
+import { getCoursesByMosque, getMyMosqueId } from '../../../api/course';
 import useAuth from '../../../hooks/useAuth';
 import './MyMosqueView.css';
 
@@ -24,6 +24,14 @@ const MyMosqueView = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const getMosqueIdForAdmin = async () => {
+        const adminId = user.id;
+        const response = await getMyMosqueId(adminId);
+
+        return response.data.mosqueId;
+    };
+
+
     useEffect(() => {
         fetchMosqueData();
     }, []);
@@ -31,7 +39,8 @@ const MyMosqueView = () => {
     const fetchMosqueData = async () => {
         try {
             setLoading(true);
-            const mosqueId = user.mosque_id || await getMosqueIdForAdmin();
+            const mosqueId = await getMosqueIdForAdmin();
+            console.log('mosque id ', mosqueId);
 
             if (!mosqueId) {
                 alert('Mosque not found for this admin');
@@ -56,16 +65,6 @@ const MyMosqueView = () => {
             alert('Failed to load mosque data');
         } finally {
             setLoading(false);
-        }
-    };
-
-    const getMosqueIdForAdmin = async () => {
-        return 1; // Placeholder
-    };
-
-    const handleEditMosque = () => {
-        if (mosque) {
-            navigate(`/mosque-admin/edit-mosque/${mosque.id}`);
         }
     };
 

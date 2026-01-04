@@ -168,7 +168,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             key: 'courses',
             icon: <BookOutlined />,
             label: 'Courses',
-            roles: ['mosque_admin', 'teacher'],
+            roles: ['mosque_admin'],
             children: [
                 {
                     key: 'course-list',
@@ -231,9 +231,18 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
 
   
     const getFilteredMenuItems = useMemo(() => {
-        if (!user || !user.roles || user.roles.length === 0) return [];
+        // Normalize user roles:
+        // 1. If user.roles exists, use it.
+        // 2. If user.role exists (singular), wrap in array.
+        // 3. Otherwise empty array.
+        let userRoles = [];
+        if (user?.roles && Array.isArray(user.roles)) {
+            userRoles = user.roles;
+        } else if (user?.role) {
+            userRoles = [user.role];
+        }
 
-        const userRoles = user.roles; // This is an ARRAY of roles
+        if (!user || userRoles.length === 0) return [];
 
         const hasAccess = (item) => {
             // If item has no role restrictions, allow access
