@@ -201,34 +201,8 @@ function ProfileDetails() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  if (loading) {
-    return (
-      <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="profile-container">
-            <h2 className="profile-title">جاري التحميل...</h2>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
   return (
     <>
-      <Header />
-
-      {/* ✅ Pass collapsed state and toggle function */}
-      <MainSideBar
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={handleToggleSidebar}
-      />
-
       <div className="main-content-wrapper">
         <div className="profile-container">
           <h2 className="profile-title">تعديل الملف الشخصي</h2>
@@ -394,7 +368,6 @@ function ProfileDetails() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

@@ -1,0 +1,138 @@
+/* src/components/Progress/AttendanceTracker.css */
+
+.attendance-tracker {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-header {
+    margin-bottom: 24px;
+}
+
+.tracker-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+.attendance-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.stat-card {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    border: 2px solid;
+}
+
+.stat-card.present {
+    border-color: #10b981;
+}
+
+.stat-card.absent {
+    border-color: #ef4444;
+}
+
+.stat-card.excused {
+    border-color: #f59e0b;
+}
+
+.stat-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.stat-card.present .stat-icon {
+    color: #10b981;
+}
+
+.stat-card.absent .stat-icon {
+    color: #ef4444;
+}
+
+.stat-card.excused .stat-icon {
+    color: #f59e0b;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.attendance-progress {
+    margin-bottom: 24px;
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.progress-percentage {
+    color: #3b82f6;
+    font-size: 18px;
+}
+
+.progress-footer {
+    margin-top: 8px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.attendance-calendar {
+    margin-top: 24px;
+}
+
+.attendance-badge {
+    text-align: center;
+}
+
+/* Modal Content */
+.attendance-modal-content .status-selection {
+    margin-bottom: 20px;
+}
+
+.attendance-modal-content label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.attendance-modal-content .notes-section {
+    margin-bottom: 20px;
+}
+
+.attendance-modal-content .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .attendance-stats {
+        grid-template-columns: 1fr;
+    }
+}

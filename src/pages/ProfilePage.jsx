@@ -419,15 +419,7 @@ function ProfilePage() {
   if (loading) {
     return (
       <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="loading">جاري التحميل...</div>
-        </div>
-        <Footer />
+        <div>Loading...</div>
       </>
     );
   }
@@ -435,139 +427,122 @@ function ProfilePage() {
   if (!userData) {
     return (
       <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="loading">خطأ في تحميل البيانات</div>
-        </div>
-        <Footer />
+        <div>No Data for You</div>
       </>
     );
   }
 
   return (
     <div className="profile-page">
-      <Header />
 
-      {/* ✅ Pass collapsed state and toggle function */}
-      <MainSideBar
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={handleToggleSidebar}
-      />
-
-      <div className="main-content-wrapper">
-        <div className="profile-main" style={{ padding: '40px' }}>
-          {/* Profile Header */}
-          <div className="profile-header-enhanced">
-            <div className="profile-avatar-large">
-              <UserOutlined className="avatar-icon" />
+      <div className="profile-main" style={{ padding: '40px' }}>
+        {/* Profile Header */}
+        <div className="profile-header-enhanced">
+          <div className="profile-avatar-large">
+            <UserOutlined className="avatar-icon" />
+          </div>
+          <div className="profile-header-info">
+            <h2 className="profile-name">{userData.full_name}</h2>
+            <p className="profile-email">
+              <MailOutlined /> {userData.email}
+            </p>
+            <div className="roles-badges">
+              {userData.activeRoles && userData.activeRoles.length > 0 ? (
+                userData.activeRoles.map((role, idx) => (
+                  <span key={idx} className="role-badge">
+                    {getRoleNameInArabic(role)}
+                  </span>
+                ))
+              ) : (
+                <span className="role-badge">لا توجد أدوار نشطة</span>
+              )}
             </div>
-            <div className="profile-header-info">
-              <h2 className="profile-name">{userData.full_name}</h2>
-              <p className="profile-email">
-                <MailOutlined /> {userData.email}
-              </p>
-              <div className="roles-badges">
-                {userData.activeRoles && userData.activeRoles.length > 0 ? (
-                  userData.activeRoles.map((role, idx) => (
-                    <span key={idx} className="role-badge">
-                      {getRoleNameInArabic(role)}
-                    </span>
-                  ))
-                ) : (
-                  <span className="role-badge">لا توجد أدوار نشطة</span>
-                )}
-              </div>
-            </div>
-            <button
-              className="edit-profile-btn"
-              onClick={() => navigate('/profile-details')}
-            >
-              <EditOutlined /> تعديل الملف الشخصي
-            </button>
           </div>
+          <button
+            className="edit-profile-btn"
+            onClick={() => navigate('/profile-details')}
+          >
+            <EditOutlined /> تعديل الملف الشخصي
+          </button>
+        </div>
 
-          {/* Tabs Navigation */}
-          <div className="profile-tabs">
+        {/* Tabs Navigation */}
+        <div className="profile-tabs">
+          <button
+            className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
+            onClick={() => setActiveTab('overview')}
+          >
+            نظرة عامة
+          </button>
+          {userData.activeRoles?.includes('student') && (
             <button
-              className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={() => setActiveTab('overview')}
+              className={`tab ${activeTab === 'student' ? 'active' : ''}`}
+              onClick={() => setActiveTab('student')}
             >
-              نظرة عامة
+              معلومات الطالب
             </button>
-            {userData.activeRoles?.includes('student') && (
-              <button
-                className={`tab ${activeTab === 'student' ? 'active' : ''}`}
-                onClick={() => setActiveTab('student')}
-              >
-                معلومات الطالب
-              </button>
-            )}
-            {userData.activeRoles?.includes('teacher') && (
-              <button
-                className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
-                onClick={() => setActiveTab('teacher')}
-              >
-                معلومات المعلم
-              </button>
-            )}
-            {userData.activeRoles?.includes('parent') && (
-              <button
-                className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
-                onClick={() => setActiveTab('parent')}
-              >
-                معلومات ولي الأمر
-              </button>
-            )}
-            {userData.activeRoles?.includes('donor') && (
-              <button
-                className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
-                onClick={() => setActiveTab('donor')}
-              >
-                معلومات المتبرع
-              </button>
-            )}
+          )}
+          {userData.activeRoles?.includes('teacher') && (
             <button
-              className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
-              onClick={() => setActiveTab('calendar')}
+              className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
+              onClick={() => setActiveTab('teacher')}
             >
-              التقويم
+              معلومات المعلم
             </button>
-          </div>
+          )}
+          {userData.activeRoles?.includes('parent') && (
+            <button
+              className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
+              onClick={() => setActiveTab('parent')}
+            >
+              معلومات ولي الأمر
+            </button>
+          )}
+          {userData.activeRoles?.includes('donor') && (
+            <button
+              className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
+              onClick={() => setActiveTab('donor')}
+            >
+              معلومات المتبرع
+            </button>
+          )}
+          <button
+            className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
+            onClick={() => setActiveTab('calendar')}
+          >
+            التقويم
+          </button>
+        </div>
 
-          {/* Tab Content */}
-          <div className="tab-content">
-            {activeTab === 'overview' && renderGeneralInfo()}
-            {activeTab === 'student' && renderStudentInfo()}
-            {activeTab === 'teacher' && renderTeacherInfo()}
-            {activeTab === 'parent' && renderParentInfo()}
-            {activeTab === 'donor' && renderDonorInfo()}
-            {activeTab === 'calendar' && <UserCalendar />}
-          </div>
+        {/* Tab Content */}
+        <div className="tab-content">
+          {activeTab === 'overview' && renderGeneralInfo()}
+          {activeTab === 'student' && renderStudentInfo()}
+          {activeTab === 'teacher' && renderTeacherInfo()}
+          {activeTab === 'parent' && renderParentInfo()}
+          {activeTab === 'donor' && renderDonorInfo()}
+          {activeTab === 'calendar' && <UserCalendar />}
+        </div>
 
-          {/* Action Buttons */}
-          <div className="profile-actions">
-            <button
-              className="profile-btn settings-btn"
-              onClick={() => navigate('/profile-details')}
-            >
-              <SettingOutlined /> إعدادات الحساب
-            </button>
-            <button
-              className="profile-btn logout-btn"
-              onClick={handleLogout}
-            >
-              <LogoutOutlined /> تسجيل خروج
-            </button>
-          </div>
+        {/* Action Buttons */}
+        <div className="profile-actions">
+          <button
+            className="profile-btn settings-btn"
+            onClick={() => navigate('/profile-details')}
+          >
+            <SettingOutlined /> إعدادات الحساب
+          </button>
+          <button
+            className="profile-btn logout-btn"
+            onClick={handleLogout}
+          >
+            <LogoutOutlined /> تسجيل خروج
+          </button>
         </div>
       </div>
-
-      <Footer />
     </div>
+
+
   );
 }
 

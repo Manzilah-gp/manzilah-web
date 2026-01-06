@@ -53,10 +53,17 @@ import MeetingRoomUIKit from './pages/MeetingRoom/MeetingRoomUIKit';
 // import QuranReaderPage from './pages/QuranReader/QuranReaderPage';
 import IslamicStoryteller from './pages/IslamicStoryteller/IslamicStoryteller';
 
+// teacher Dashboard pages
+import StudentProgressView from './pages/TeacherDashboard/StudentProgress/StudentProgressView';
+import MyCoursesPage from './pages/TeacherDashboard/MyCourses/MyCoursesPage';
+import AllStudentsPage from './pages/TeacherDashboard/Students/AllStudentsPage';
+import CourseStudentsPage from './pages/TeacherDashboard/Students/CourseStudentsPage';
+import CourseProgressListPage from './pages/TeacherDashboard/Students/CourseProgressListPage';
+import AttendanceLoggingPage from './pages/TeacherDashboard/Attendance/AttendanceLoggingPage';
+import CourseMaterialsPage from './pages/TeacherDashboard/CourseMaterials/CourseMaterialsPage';
 
-// import StudentProgressView from './pages/TeacherDashboard/StudentProgressView';
 
-// Inside your protected routes:
+
 
 function App() {
   return (
@@ -71,10 +78,8 @@ function App() {
 
             <Routes>
               {/* Default Route → Home  */}
-              <Route path="/" element={<Home />} />
+              <Route path="/public/home" element={<Home />} />
               {/* Profile Details Page */}
-              <Route path="/profile-details" element={<ProfileDetails />} />
-              {/* <-- الإضافة المهمة */}
 
               {/* Auth Pages */}
               {/* <Route path="/" element={<Home />} /> */}
@@ -94,14 +99,7 @@ function App() {
               <Route path="/public/mosque/:id" element={<MosqueDetailsPage />} />
               <Route path="/public/course/:id" element={<CourseDetailsPage />} />
 
-              {/* <Route
-                path="teacher/student-progress/:enrollmentId"
-                element={
-                  <RoleProtectedRoute allowedRoles={['teacher', 'mosque_admin']}>
-                    <StudentProgressView />
-                  </RoleProtectedRoute>
-                }
-              /> */}
+
 
 
               {/* ============================================ */}
@@ -148,26 +146,8 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="profile" element={<div>Profile Page</div>} />
-                <Route path="donations" element={<div>Donations</div>} />
-
-                {/* Settings Routes - Ministry Admin only */}
-                <Route
-                  path="settings/general"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>General Settings - To be implemented</div>
-                    </RoleProtectedRoute>
-                  }
-                />
-                <Route
-                  path="settings/notifications"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['ministry_admin']}>
-                      <div>Notification Settings - To be implemented</div>
-                    </RoleProtectedRoute>
-                  }
-                />
+                <Route path="profile" element={<Profile />} />
+                <Route path="/profile-details" element={<ProfileDetails />} />
 
                 {/* Donation Routes - Ministry Admin only */}
                 <Route
@@ -251,19 +231,67 @@ function App() {
 
                 {/* Teacher Routes */}
                 <Route
-                  path="my-courses"
+                  path="teacher/my-courses"
                   element={
                     <RoleProtectedRoute allowedRoles={['teacher']}>
-                      <div>My Courses - To be implemented</div>
+                      <MyCoursesPage />
                     </RoleProtectedRoute>
                   }
                 />
                 <Route
-                  path="students"
+                  path="teacher/student-progress/:enrollmentId"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher', 'mosque_admin']}>
+                      <StudentProgressView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="teacher/attendance/:courseId"
                   element={
                     <RoleProtectedRoute allowedRoles={['teacher']}>
-                      <div>My Students - To be implemented</div>
+                      <AttendanceLoggingPage />
                     </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="teacher/students"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher']}>
+                      <AllStudentsPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="teacher/course/:courseId/students"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher']}>
+                      <CourseStudentsPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="teacher/course/:courseId/progress"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher']}>
+                      <CourseProgressListPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="teacher/student-progress/:enrollmentId"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['teacher']}>
+                      <StudentProgressView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="teacher/course/:courseId/materials"
+                  element={
+                    <ProtectedRoute>
+                      <CourseMaterialsPage />
+                    </ProtectedRoute>
                   }
                 />
 

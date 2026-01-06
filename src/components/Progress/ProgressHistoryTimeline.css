@@ -1,0 +1,67 @@
+/* src/components/Progress/ProgressHistoryTimeline.css */
+
+.progress-history-timeline {
+    padding: 24px;
+}
+
+.progress-history-timeline h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 24px;
+}
+
+.timeline-item-content {
+    padding: 12px 0;
+}
+
+.milestone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.milestone-header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+.milestone-date {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.milestone-score {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.milestone-score.passed {
+    color: #10b981;
+}
+
+.milestone-score.failed {
+    color: #ef4444;
+}
+
+.milestone-notes {
+    background: #f9fafb;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.milestone-notes strong {
+    color: #374151;
+}
+
+.milestone-footer {
+    font-size: 12px;
+    color: #9ca3af;
+}

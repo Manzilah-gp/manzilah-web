@@ -1,0 +1,78 @@
+/* src/components/Progress/ExamRecordModal.css */
+
+.exam-record-modal .modal-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.exam-record-modal .trophy-icon {
+    font-size: 48px;
+    color: #f59e0b;
+    margin-bottom: 12px;
+}
+
+.exam-record-modal h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.exam-record-modal .page-range {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 0;
+}
+
+.score-input-section {
+    margin-bottom: 24px;
+}
+
+.score-input-section label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.required {
+    color: #ef4444;
+}
+
+.pass-fail-indicator {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.pass-fail-indicator.passed {
+    background: #dcfce7;
+    color: #166534;
+    border: 2px solid #10b981;
+}
+
+.pass-fail-indicator.failed {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 2px solid #ef4444;
+}
+
+.notes-input-section {
+    margin-bottom: 24px;
+}
+
+.notes-input-section label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
