@@ -37,10 +37,9 @@ const Footer = () => {
                             {t('footer.quickLinks')}
                         </Title>
                         <Space direction="vertical" size="small" style={{ width: '100%' }}>
-                            <Link href="/" style={{ color: '#bdc3c7' }}>{t('header.home')}</Link>
-                            <Link href="/about" style={{ color: '#bdc3c7' }}>{t('header.about')}</Link>
-                            <Link href="/courses" style={{ color: '#bdc3c7' }}>{t('header.courses')}</Link>
-                            <Link href="/mosques" style={{ color: '#bdc3c7' }}>{t('header.mosques')}</Link>
+                            <Link href="/public/home" style={{ color: '#bdc3c7' }}>{t('header.home')}</Link>
+                            <Link href="/public/courses" style={{ color: '#bdc3c7' }}>{t('header.courses')}</Link>
+                            <Link href="/public/mosques" style={{ color: '#bdc3c7' }}>{t('header.mosques')}</Link>
                         </Space>
                     </Col>
 

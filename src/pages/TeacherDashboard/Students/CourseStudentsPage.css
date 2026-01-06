@@ -1,0 +1,219 @@
+/* src/pages/TeacherDashboard/Students/CourseStudentsPage.css */
+.course-students-page {
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #f7fafc;
+    min-height: 100vh;
+}
+
+.page-header {
+    display: flex;
+    align-items: start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.header-info {
+    flex: 1;
+}
+
+.header-info h1 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.course-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.course-name {
+    color: #6b7280;
+    font-size: 16px;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    background: white;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.result-count {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.student-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s;
+}
+
+.student-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.student-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.student-info {
+    flex: 1;
+}
+
+.student-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 4px 0;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.progress-section {
+    margin-bottom: 16px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.progress-header span:first-child {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.progress-value {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.course-students-page .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.stat-item.graduated {
+    grid-column: 1 / -1;
+    background: #d1fae5;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    color: #065f46;
+    font-weight: 600;
+}
+
+.card-actions {
+    margin-top: 16px;
+}
+
+.empty-state,
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    background: white;
+    border-radius: 12px;
+    color: #6b7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .course-students-page {
+        padding: 16px;
+    }
+
+    .students-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-bar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+}

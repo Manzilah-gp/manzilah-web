@@ -196,7 +196,7 @@ function ProfileDetails() {
       }
 
       message.success('Profile updated successfully');
-      
+
       // Navigate back to profile page after 1 second
       setTimeout(() => {
         navigate('/profile');
@@ -270,10 +270,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>Full Name *</label>
-                <input 
-                  type="text" 
-                  name="fullName" 
-                  value={user.fullName} 
+                <input
+                  type="text"
+                  name="fullName"
+                  value={user.fullName}
                   onChange={handleChange}
                   required
                 />
@@ -281,10 +281,10 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>Email Address *</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={user.email} 
+                <input
+                  type="email"
+                  name="email"
+                  value={user.email}
                   onChange={handleChange}
                   required
                 />
@@ -294,10 +294,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>Phone Number</label>
-                <input 
-                  type="text" 
-                  name="phone" 
-                  value={user.phone} 
+                <input
+                  type="text"
+                  name="phone"
+                  value={user.phone}
                   onChange={handleChange}
                   placeholder="970599123456"
                 />
@@ -305,9 +305,9 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>Gender *</label>
-                <select 
-                  name="gender" 
-                  value={user.gender} 
+                <select
+                  name="gender"
+                  value={user.gender}
                   onChange={handleChange}
                   required
                 >
@@ -321,10 +321,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>Date of Birth *</label>
-                <input 
-                  type="date" 
-                  name="birthday" 
-                  value={user.birthday} 
+                <input
+                  type="date"
+                  name="birthday"
+                  value={user.birthday}
                   onChange={handleChange}
                   required
                 />
@@ -332,9 +332,9 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>Age</label>
-                <input 
-                  type="text" 
-                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} years` : ""} 
+                <input
+                  type="text"
+                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} years` : ""}
                   disabled
                   style={{ background: '#f0f0f0', cursor: 'not-allowed' }}
                 />
@@ -349,9 +349,9 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>Governorate</label>
-                <select 
-                  name="governorate" 
-                  value={user.governorate} 
+                <select
+                  name="governorate"
+                  value={user.governorate}
                   onChange={handleChange}
                 >
                   <option value="">Select Governorate</option>
@@ -365,10 +365,10 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>Region/City</label>
-                <input 
-                  type="text" 
-                  name="region" 
-                  value={user.region} 
+                <input
+                  type="text"
+                  name="region"
+                  value={user.region}
                   onChange={handleChange}
                   placeholder="e.g., Al-Bireh, Old City"
                 />
@@ -378,10 +378,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>Address Line 1</label>
-                <input 
-                  type="text" 
-                  name="address_line1" 
-                  value={user.address_line1} 
+                <input
+                  type="text"
+                  name="address_line1"
+                  value={user.address_line1}
                   onChange={handleChange}
                   placeholder="Street, Building Number"
                 />
@@ -389,10 +389,10 @@ function ProfileDetails() {
 
               <div className="form-group">
                 <label>Address Line 2</label>
-                <input 
-                  type="text" 
-                  name="address_line2" 
-                  value={user.address_line2} 
+                <input
+                  type="text"
+                  name="address_line2"
+                  value={user.address_line2}
                   onChange={handleChange}
                   placeholder="Additional Details"
                 />
@@ -402,10 +402,10 @@ function ProfileDetails() {
             <div className="form-row">
               <div className="form-group">
                 <label>Postal Code</label>
-                <input 
-                  type="text" 
-                  name="postal_code" 
-                  value={user.postal_code} 
+                <input
+                  type="text"
+                  name="postal_code"
+                  value={user.postal_code}
                   onChange={handleChange}
                   placeholder="12345"
                 />
@@ -416,8 +416,8 @@ function ProfileDetails() {
             </div>
 
             {/* Submit Button */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="save-btn"
               disabled={saving}
             >
@@ -427,7 +427,6 @@ function ProfileDetails() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

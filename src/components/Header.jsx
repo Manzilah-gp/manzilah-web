@@ -40,14 +40,8 @@ const Header = () => {
             key: 'home',
             label: t('header.home'),
             icon: <HomeOutlined />,
-            onClick: () => navigate('/')
+            onClick: () => navigate('/public/home')
             // Add navigation
-        },
-        {
-            key: 'about',
-            label: t('header.about'),
-            icon: <InfoCircleOutlined />,
-            onClick: () => navigate('/about')
         },
         {
             key: 'courses',
@@ -118,7 +112,7 @@ const Header = () => {
                         minWidth: '120px',
                         cursor: 'pointer'
                     }}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/public/home')}
                 >
                     Manzilah
                 </div>

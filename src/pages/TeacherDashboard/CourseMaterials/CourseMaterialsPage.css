@@ -1,0 +1,208 @@
+/* src/pages/CourseMaterials/CourseMaterialsPage.css */
+
+.course-materials-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2c3e50 100%);
+    padding: 40px 20px;
+}
+
+.course-materials-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.course-materials-page .page-header h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.course-materials-page .page-header p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+/* Materials Content */
+.course-materials-page .materials-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Section Card */
+.course-materials-page .section-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.course-materials-page .section-card .ant-card-head {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px 16px 0 0;
+    color: white;
+}
+
+.course-materials-page .section-card .ant-card-head-title {
+    color: white;
+}
+
+.course-materials-page .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Materials Grid */
+.course-materials-page .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* Material Card */
+.course-materials-page .material-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.course-materials-page .material-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.course-materials-page .material-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}
+
+.course-materials-page .material-content {
+    flex: 1;
+}
+
+.course-materials-page .material-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.course-materials-page .material-description {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0 0 12px 0;
+}
+
+.course-materials-page .material-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.course-materials-page .file-size {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.course-materials-page .material-footer {
+    padding-top: 12px;
+    border-top: 1px solid #f3f4f6;
+}
+
+.course-materials-page .upload-info {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.course-materials-page .material-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.course-materials-page .material-actions button {
+    flex: 1;
+}
+
+/* Upload Modal */
+.course-materials-page .upload-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.course-materials-page .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.course-materials-page .form-group label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.course-materials-page .file-info {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.course-materials-page .file-hint {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 4px;
+}
+
+.course-materials-page .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+/* Loading Container */
+.course-materials-page.loading-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .course-materials-page {
+        padding: 20px 12px;
+    }
+
+    .course-materials-page .page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .course-materials-page .materials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-materials-page .material-actions {
+        flex-direction: column;
+    }
+}

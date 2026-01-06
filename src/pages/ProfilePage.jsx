@@ -75,14 +75,14 @@ function ProfilePage() {
     // Check if navigation included a tab state from sidebar
     if (location.state?.tab) {
       const targetTab = location.state.tab;
-      
+
       // Validate tab exists (including new admin tab)
       const validTabs = ['overview', 'student', 'teacher', 'parent', 'donor', 'calendar', 'admin'];
-      
+
       if (validTabs.includes(targetTab)) {
         console.log('Opening tab from sidebar:', targetTab);
         setActiveTab(targetTab);
-        
+
         // Clear the state so back button works normally
         window.history.replaceState({}, document.title);
       }
@@ -230,7 +230,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">Student Information</h3>
-        
+
         <div className="stats-row">
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
@@ -290,7 +290,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">Teacher Information</h3>
-        
+
         <div className="stats-row">
           <div className="stat-card">
             <TeamOutlined className="stat-icon" />
@@ -319,11 +319,11 @@ function ProfilePage() {
           <h4>Certificates and Experience</h4>
           <div className="cert-grid">
             <div className="cert-item">
-              <CheckCircleOutlined style={{color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999'}} />
+              <CheckCircleOutlined style={{ color: teacherData.certifications?.has_tajweed_certificate ? '#52c41a' : '#999' }} />
               <span>Tajweed Certificate</span>
             </div>
             <div className="cert-item">
-              <CheckCircleOutlined style={{color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999'}} />
+              <CheckCircleOutlined style={{ color: teacherData.certifications?.has_sharea_certificate ? '#52c41a' : '#999' }} />
               <span>Sharia Certificate</span>
             </div>
             <div className="cert-item">
@@ -370,7 +370,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">Parents Information</h3>
-        
+
         {parentData.children && parentData.children.length > 0 ? (
           <div className="children-list">
             <h4>Registered Children</h4>
@@ -410,7 +410,7 @@ function ProfilePage() {
     return (
       <div className="profile-section">
         <h3 className="section-title">Donor Information</h3>
-        
+
         <div className="stats-row">
           <div className="stat-card">
             <DollarOutlined className="stat-icon" />
@@ -451,15 +451,7 @@ function ProfilePage() {
   if (loading) {
     return (
       <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="loading">Loading...</div>
-        </div>
-        <Footer />
+        <div>Loading...</div>
       </>
     );
   }
@@ -467,15 +459,7 @@ function ProfilePage() {
   if (!userData) {
     return (
       <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="loading">Data loading error</div>
-        </div>
-        <Footer />
+        <div>No Data for You</div>
       </>
     );
   }
@@ -566,7 +550,7 @@ function ProfilePage() {
             {/* ADMIN TAB (ONLY for mosque admins) */}
             {/* ===================================================== */}
             {isMosqueAdmin && (
-              <button 
+              <button
                 className={`tab admin-tab ${activeTab === 'admin' ? 'active' : ''}`}
                 onClick={() => setActiveTab('admin')}
               >
@@ -588,17 +572,17 @@ function ProfilePage() {
             {activeTab === 'teacher' && renderTeacherInfo()}
             {activeTab === 'parent' && renderParentInfo()}
             {activeTab === 'donor' && renderDonorInfo()}
-            
+
             {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}
             {activeTab === 'admin' && isMosqueAdmin && (
               <div className="admin-tab-content">
                 <AdminEventManagement />
               </div>
             )}
-            
+
             {activeTab === 'calendar' && (
               <div>
-                <UserCalendar 
+                <UserCalendar
                   events={events || []}
                   loading={calendarLoading}
                   title="Your Event Schedule"
@@ -627,9 +611,8 @@ function ProfilePage() {
         </div>
       </div>
 
-      <Footer />
-    </div>
-  );
+
+      );
 }
 
-export default ProfilePage;
+      export default ProfilePage;

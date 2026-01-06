@@ -36,6 +36,7 @@ const resources = {
             "sidebar.donations": "Donations",
             "sidebar.teachersManagement": "Teachers Management",
             "sidebar.eventsManagement": "Events Management",
+            "sidebar.events": "Events",
 
 
             // Dashboard
@@ -323,6 +324,9 @@ const resources = {
             "sidebar.addMosque": "إضافة مسجد",
             "sidebar.mosqueList": "قائمة المساجد",
             "sidebar.donations": "التبرعات",
+            "sidebar.eventsManagement": "إدارة الفعاليات",
+            "sidebar.events": "الفعاليات",
+
 
 
             // Dashboard

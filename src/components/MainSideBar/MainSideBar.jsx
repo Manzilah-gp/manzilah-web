@@ -63,6 +63,13 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher', 'donor'],
             link: '/events'
         },
+        {
+            key: 'events',
+            icon: <CalendarOutlined />,
+            label: t('sidebar.events') || 'Events',
+            roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent'],
+            link: '/events'
+        },
 
 
         // ==================== MINISTRY ADMIN ONLY ====================
@@ -159,12 +166,6 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             roles: ['mosque_admin'],
             link: 'mosque-admin/teacher-list'
         }, {
-            key: 'events-management',
-            icon: <ScheduleOutlined />,
-            label: t('sidebar.eventsManagement') || 'Events Management',
-            roles: ['mosque_admin'],
-            link: '/events-management'
-        }, {
             key: 'courses',
             icon: <BookOutlined />,
             label: 'Courses',
@@ -192,14 +193,14 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <BookOutlined />,
             label: 'My Courses',
             roles: ['teacher'],
-            link: '/my-courses'
+            link: '/teacher/my-courses'
         },
         {
-            key: 'students',
+            key: 'all-students',
             icon: <TeamOutlined />,
-            label: 'My Students',
+            label: 'All Students',
             roles: ['teacher'],
-            link: '/students'
+            link: '/teacher/students'
         },
 
         // ==================== STUDENT ONLY ====================

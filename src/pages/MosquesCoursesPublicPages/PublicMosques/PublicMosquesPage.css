@@ -5,7 +5,7 @@
     flex-direction: column;
 }
 
-.public-mosques-content {
+.public-mosques-page .public-mosques-content {
     flex: 1;
     padding: 40px 20px;
     max-width: 1200px;
@@ -14,25 +14,25 @@
     box-sizing: border-box;
 }
 
-.page-header {
+.public-mosques-page .page-header {
     text-align: center;
     color: white;
     margin-bottom: 40px;
 }
 
-.page-title {
+.public-mosques-page .page-title {
     font-size: 48px;
     font-weight: bold;
     margin-bottom: 16px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.page-subtitle {
+.public-mosques-page .page-subtitle {
     font-size: 20px;
     opacity: 0.9;
 }
 
-.filters-container {
+.public-mosques-page .filters-container {
     background-color: white;
     border-radius: 16px;
     padding: 24px;
@@ -40,17 +40,17 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-.filters-grid {
+.public-mosques-page .filters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 16px;
 }
 
-.search-wrapper {
+.public-mosques-page .search-wrapper {
     position: relative;
 }
 
-.search-icon {
+.public-mosques-page .search-icon {
     position: absolute;
     left: 16px;
     top: 50%;
@@ -58,7 +58,7 @@
     font-size: 18px;
 }
 
-.search-input {
+.public-mosques-page .search-input {
     width: 100%;
     padding: 14px 16px 14px 48px;
     border: 2px solid #e5e7eb;
@@ -69,11 +69,11 @@
     box-sizing: border-box;
 }
 
-.search-input:focus {
+.public-mosques-page .search-input:focus {
     border-color: #667eea;
 }
 
-.filter-select {
+.public-mosques-page .filter-select {
     padding: 14px 16px;
     border: 2px solid #e5e7eb;
     border-radius: 12px;
@@ -85,50 +85,50 @@
     box-sizing: border-box;
 }
 
-.results-count {
+.public-mosques-page .results-count {
     color: white;
     font-size: 18px;
     margin-bottom: 24px;
     opacity: 0.9;
 }
 
-.loading-message {
+.public-mosques-page .loading-message {
     text-align: center;
     color: white;
     padding: 60px;
     font-size: 18px;
 }
 
-.no-results {
+.public-mosques-page .no-results {
     background-color: white;
     border-radius: 16px;
     padding: 60px;
     text-align: center;
 }
 
-.no-results-icon {
+.public-mosques-page .no-results-icon {
     font-size: 64px;
     display: block;
     margin-bottom: 16px;
 }
 
-.no-results-title {
+.public-mosques-page .no-results-title {
     color: #374151;
     margin-bottom: 8px;
     font-size: 24px;
 }
 
-.no-results-text {
+.public-mosques-page .no-results-text {
     color: #6b7280;
 }
 
-.mosques-grid {
+.public-mosques-page .mosques-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
     gap: 24px;
 }
 
-.mosque-card {
+.public-mosques-page .mosque-card {
     background-color: white;
     border-radius: 20px;
     padding: 28px;
@@ -138,13 +138,13 @@
     border: 2px solid transparent;
 }
 
-.mosque-card:hover {
+.public-mosques-page .mosque-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     border-color: #667eea;
 }
 
-.mosque-header {
+.public-mosques-page .mosque-header {
     font-size: 24px;
     font-weight: bold;
     color: #1f2937;
@@ -154,7 +154,7 @@
     gap: 12px;
 }
 
-.mosque-icon {
+.public-mosques-page.mosque-icon {
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -167,7 +167,7 @@
     flex-shrink: 0;
 }
 
-.mosque-location {
+.public-mosques-page .mosque-location {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -175,21 +175,21 @@
     margin-bottom: 12px;
 }
 
-.location-icon {
+.public-mosques-page .location-icon {
     font-size: 18px;
 }
 
-.location-text {
+.public-mosques-page .location-text {
     margin: 0;
     font-weight: 500;
 }
 
-.address-text {
+.public-mosques-page .address-text {
     margin: 0;
     font-size: 14px;
 }
 
-.mosque-contact {
+.public-mosques-page .mosque-contact {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -197,11 +197,11 @@
     margin-bottom: 20px;
 }
 
-.contact-icon {
+.public-mosques-page .contact-icon {
     font-size: 18px;
 }
 
-.mosque-stats {
+.public-mosques-page .mosque-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
@@ -210,35 +210,35 @@
     border-top: 1px solid #e5e7eb;
 }
 
-.stat-item {
+.public-mosques-page .stat-item {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.stat-item.active-courses {
+.public-mosques-page .stat-item.active-courses {
     color: #667eea;
 }
 
-.stat-item.students {
+.public-mosques-page .stat-item.students {
     color: #764ba2;
 }
 
-.stat-icon {
+.public-mosques-page .stat-icon {
     font-size: 20px;
 }
 
-.stat-value {
+.public-mosques-page .stat-value {
     font-size: 24px;
     font-weight: bold;
 }
 
-.stat-label {
+.public-mosques-page .stat-label {
     font-size: 12px;
     color: #6b7280;
 }
 
-.view-details-btn {
+.public-mosques-page .view-details-btn {
     display: flex;
     align-items: center;
     justify-content: space-between;
