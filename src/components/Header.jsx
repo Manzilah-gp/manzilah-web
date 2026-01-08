@@ -24,6 +24,7 @@ import useAuth from '../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import { useLanguage } from '../hooks/useLanguage';
 import { useNavigate } from 'react-router-dom'; // Add this import
+import FirebaseNotificationBell from '../components/Notifications/FirebaseNotificationBell';
 
 const { Header: AntHeader } = Layout;
 const { Option } = Select;
@@ -159,7 +160,8 @@ const Header = () => {
                         <Option value="en">EN</Option>
                         <Option value="ar">AR</Option>
                     </Select>
-
+{/* 🔔 NOTIFICATION BELL - Only show when user is logged in */}
+                    {user && <FirebaseNotificationBell />}
                     {/* User Menu */}
                     {user ? (
                         <Dropdown

@@ -450,26 +450,25 @@ function ProfilePage() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  if (loading) {
-    return (
-      <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="loading">Loading...</div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <>
+  //       <MainSideBar
+  //         collapsed={sidebarCollapsed}
+  //         onToggleCollapse={handleToggleSidebar}
+  //       />
+  //       <div className="main-content-wrapper">
+  //         <div className="loading">Loading...</div>
+  //       </div>
+  //       <Footer />
+  //     </>
+  //   );
+  // }
 
   if (!userData) {
     return (
       <>
-        <Header />
+        {/* <Header /> */}
         <MainSideBar
           collapsed={sidebarCollapsed}
           onToggleCollapse={handleToggleSidebar}

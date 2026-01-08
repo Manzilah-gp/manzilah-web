@@ -75,7 +75,7 @@ function App() {
 
             <Routes>
               {/* Default Route → Home  */}
-              <Route path="/" element={<Home />} />
+              <Route path="/public/Home" element={<Home />} />
               {/* Profile Details Page */}
               <Route path="/profile-details" element={<ProfileDetails />} />
               {/* <-- الإضافة المهمة */}
