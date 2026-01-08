@@ -25,6 +25,8 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useUserEvents from '../hooks/useUserEvents';
+import ParentRelationshipSection from '../components/Profile/ParentRelationshipSection';
+import StudentParentRequestsSection from '../components/Profile/StudentParentRequestsSection';
 
 function ProfilePage() {
   const navigate = useNavigate();
@@ -266,7 +268,7 @@ function ProfilePage() {
                     {enrollment.status === 'active' ? 'Active' : enrollment.status}
                   </span>
                 </div>
-                <p className="enrollment-teacher">Student: {enrollment.teacher_name}</p>
+                <p className="enrollment-teacher">Teacher: {enrollment.teacher_name}</p>
                 <p className="enrollment-level">Level: {enrollment.current_level}</p>
                 <div className="progress-bar">
                   <div
@@ -448,18 +450,33 @@ function ProfilePage() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  if (loading) {
-    return (
-      <>
-        <div>Loading...</div>
-      </>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <>
+  //       <MainSideBar
+  //         collapsed={sidebarCollapsed}
+  //         onToggleCollapse={handleToggleSidebar}
+  //       />
+  //       <div className="main-content-wrapper">
+  //         <div className="loading">Loading...</div>
+  //       </div>
+  //       <Footer />
+  //     </>
+  //   );
+  // }
 
   if (!userData) {
     return (
       <>
-        <div>No Data for You</div>
+        {/* <Header /> */}
+        <MainSideBar
+          collapsed={sidebarCollapsed}
+          onToggleCollapse={handleToggleSidebar}
+        />
+        <div className="main-content-wrapper">
+          <div className="loading">Data loading error</div>
+        </div>
+        <Footer />
       </>
     );
   }
@@ -568,9 +585,31 @@ function ProfilePage() {
           {/* Tab Content */}
           <div className="tab-content">
             {activeTab === 'overview' && renderGeneralInfo()}
-            {activeTab === 'student' && renderStudentInfo()}
+            
+            {activeTab === 'student' && (
+              <>
+                {renderStudentInfo()}
+                
+                {/* ⭐ NEW: Student Parent Requests Section */}
+                {userData.activeRoles?.includes('student') && (
+                  <StudentParentRequestsSection />
+                )}
+              </>
+            )}
+            
             {activeTab === 'teacher' && renderTeacherInfo()}
-            {activeTab === 'parent' && renderParentInfo()}
+            
+            {activeTab === 'parent' && (
+              <>
+                {renderParentInfo()}
+                
+                {/* ⭐ NEW: Parent Relationship Section */}
+                {userData.activeRoles?.includes('parent') && (
+                  <ParentRelationshipSection />
+                )}
+              </>
+            )}
+            
             {activeTab === 'donor' && renderDonorInfo()}
 
             {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}

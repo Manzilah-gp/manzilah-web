@@ -248,6 +248,8 @@
   align-items: center;
 }
 
+
+
 @media (max-width: 768px) {
   .events-header {
     flex-direction: column;

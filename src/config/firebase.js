@@ -1,18 +1,21 @@
-// src/config/firebase.js
 import { initializeApp } from 'firebase/app';
-import { getStorage } from 'firebase/storage';
+import { getFirestore } from 'firebase/firestore';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
+// Your Firebase config from Step 2
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-    measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
+apiKey: "AIzaSyAVsepGas0v1J4CTtGxQUelq7c5UaEBYeU",
+  authDomain: "manzilah-notifications.firebaseapp.com",
+  projectId: "manzilah-notifications",
+  storageBucket: "manzilah-notifications.firebasestorage.app",
+  messagingSenderId: "987112798700",
+  appId: "1:987112798700:web:8ea6458a202e2147b1a8c9",
+  measurementId: "G-S2RE9DLLET"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const storage = getStorage(app);
+const db = getFirestore(app);
+const messaging = getMessaging(app);
 
-export const VAPID_KEY = import.meta.env.VITE_FIREBASE_VAPID_KEY;
+export { app, db, messaging };

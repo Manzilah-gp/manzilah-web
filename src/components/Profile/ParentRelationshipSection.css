@@ -1,0 +1,240 @@
+/* ============================================
+   FILE: web/src/components/Profile/ParentRelationshipSection.css
+   FEATURE 2: Styles for parent section
+   CREATE THIS FILE
+   ============================================ */
+
+.parent-relationship-section {
+    background: white !important;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 1;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f3f4f6;
+    background: transparent !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.section-header h2 {
+    font-size: 24px !important;
+    color: #1f2937 !important;
+    margin: 0 0 8px 0;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.section-header p {
+    color: #6b7280 !important;
+    margin: 0;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.btn-add-child {
+    height: auto;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Fix for Ant Design primary button color override */
+.btn-add-child.ant-btn-primary {
+    background-color: #0830e2 !important;
+    border-color: #0830e2 !important;
+    color: white !important;
+}
+
+.btn-add-child:hover {
+    background: #5568d3 !important;
+    border-color: #5568d3 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.subsection-title {
+    font-size: 18px;
+    color: #374151;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.children-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.child-card {
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    transition: all 0.2s;
+}
+
+.child-card:hover {
+    border-color: #667eea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.child-avatar {
+    font-size: 48px;
+}
+
+.child-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    color: #1f2937;
+}
+
+.child-email {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.child-meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge.relationship {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.badge.enrollments {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.verified-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.requests-table {
+    background: #f9fafb;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.request-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.request-name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.request-email {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.status.verified {
+    color: #059669;
+}
+
+.status.pending {
+    color: #f59e0b;
+}
+
+.modal-content {
+    padding: 8px 0;
+}
+
+.modal-description {
+    margin-bottom: 24px;
+    color: #6b7280;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.info-box {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.info-icon {
+    font-size: 20px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .btn-add-child {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .children-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .request-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+}

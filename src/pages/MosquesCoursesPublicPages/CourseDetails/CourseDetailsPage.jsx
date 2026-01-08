@@ -4,19 +4,18 @@ import Header from '../../../components/Header';
 import Footer from '../../../components/Footer';
 import { getCourseDetails } from '../../../api/publicBrowsing';
 import './CourseDetailsPage.css';
-
-import { checkEnrollmentEligibility, enrollInFreeCourse, enrollInPaidCourse } from '../../../api/enrollment';
+import { checkEnrollmentEligibility, enrollInFreeCourse } from '../../../api/enrollment';
 import useAuth from '../../../hooks/useAuth';
-
+import StripePaymentModal from '../../../components/Payment/StripePaymentModal';  
 
 const CourseDetailsPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
-
     const { user } = useAuth();
     const [enrolling, setEnrolling] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);  
 
     useEffect(() => {
         if (id) {
@@ -64,22 +63,15 @@ const CourseDetailsPage = () => {
 
             // Enroll based on price
             if (course.price_cents === 0) {
-                // Free course
+                // Free course - enroll directly
                 const enrollRes = await enrollInFreeCourse(id);
                 if (enrollRes.data.success) {
                     alert('Successfully enrolled!');
-                    navigate('/enrolled-courses');
+                    navigate('/my-enrollments');
                 }
             } else {
-                // Paid course - for now, simulate payment
-                const enrollRes = await enrollInPaidCourse(id, {
-                    gateway: 'local',
-                    reference: `PAY-${Date.now()}`
-                });
-                if (enrollRes.data.success) {
-                    alert(`Payment successful! Enrolled in course.`);
-                    navigate('/enrolled-courses');
-                }
+                // ⭐ PAID COURSE - SHOW PAYMENT MODAL (NOT DIRECT ENROLLMENT!)
+                setShowPaymentModal(true);
             }
         } catch (error) {
             console.error('Enrollment error:', error);
@@ -94,7 +86,7 @@ const CourseDetailsPage = () => {
     };
 
     const formatPrice = (priceCents) => {
-        return priceCents === 0 ? 'Free' : `₪${priceCents}`;
+        return priceCents === 0 ? 'Free' : `₪${(priceCents / 100).toFixed(2)}`;
     };
 
     if (loading) {
@@ -255,6 +247,8 @@ const CourseDetailsPage = () => {
                                 </div>
                             </div>
                         </div>
+
+                        {/* Enroll Button */}
                         <div style={{ marginTop: '32px' }}>
                             <button
                                 onClick={handleEnroll}
@@ -281,6 +275,14 @@ const CourseDetailsPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* ⭐ PAYMENT MODAL - Shows when user clicks enroll on paid course */}
+            <StripePaymentModal
+                visible={showPaymentModal}
+                onCancel={() => setShowPaymentModal(false)}
+                course={course}
+            />
+
             <Footer />
         </div>
     );

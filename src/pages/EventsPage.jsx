@@ -35,11 +35,32 @@ function EventsPage() {
   const [filterType, setFilterType] = useState('all');
   const [filterScope, setFilterScope] = useState('all');
   const [editModalVisible, setEditModalVisible] = useState(false);
-const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
+  const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
   
-  // Check user roles
+  // Check user roles with debugging
   const isMosqueAdmin = user?.roles?.includes('mosque_admin');
   const isMinistryAdmin = user?.roles?.includes('ministry_admin');
+  const isStudent = user?.roles?.includes('student');
+  const isParent = user?.roles?.includes('parent');
+
+  // ⭐ ADD DEBUGGING
+  useEffect(() => {
+    console.log('==========================================');
+    console.log('🔍 DEBUGGING EVENT PAGE');
+    console.log('==========================================');
+    console.log('Full user object:', user);
+    console.log('user.role (original):', user?.role);
+    console.log('user.roles (array):', user?.roles);
+    console.log('---');
+    console.log('isMosqueAdmin:', isMosqueAdmin);
+    console.log('isMinistryAdmin:', isMinistryAdmin);
+    console.log('isStudent:', isStudent);
+    console.log('isParent:', isParent);
+    console.log('---');
+    console.log('Should show filter section?', (isMosqueAdmin || isStudent || isParent));
+    console.log('Should show enrolled mosques button?', (isStudent || isParent));
+    console.log('==========================================');
+  }, [user, isMosqueAdmin, isMinistryAdmin, isStudent, isParent]);
 
   useEffect(() => {
     fetchEvents();
@@ -51,11 +72,23 @@ const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
       const token = localStorage.getItem('token');
       let url = 'http://localhost:5000/api/events';
       
+      // ⭐ Handle enrolled mosques filter for students/parents
+      if (filterScope === 'enrolled_mosques') {
+        url = 'http://localhost:5000/api/events/my-enrolled-mosques';
+        console.log('🌐 Fetching from enrolled mosques endpoint');
+      }
+      
       const params = new URLSearchParams();
       if (filterType !== 'all') params.append('event_type', filterType);
-      if (filterScope !== 'all') params.append('filter', filterScope);
+      
+      // Only add filter param if NOT using enrolled mosques endpoint
+      if (filterScope !== 'all' && filterScope !== 'enrolled_mosques') {
+        params.append('filter', filterScope);
+      }
       
       if (params.toString()) url += `?${params.toString()}`;
+
+      console.log('🌐 Fetching events from:', url);
 
       const response = await fetch(url, {
         headers: {
@@ -65,14 +98,16 @@ const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
       });
 
       const data = await response.json();
+      console.log('📥 Events response:', data);
       
       if (data.success) {
-        setEvents(data.events);
+        // Handle both response formats (events or data)
+        setEvents(data.events || data.data);
       }
       
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error('❌ Error fetching events:', error);
       message.error('Failed to load events');
       setLoading(false);
     }
@@ -160,19 +195,19 @@ const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
   };
 
   // Handle edit event button click
-const handleEditEvent = (event) => {
-  console.log('Edit event:', event);
-  setSelectedEventForEdit(event);
-  setEditModalVisible(true);
-};
+  const handleEditEvent = (event) => {
+    console.log('Edit event:', event);
+    setSelectedEventForEdit(event);
+    setEditModalVisible(true);
+  };
 
-// Handle event updated successfully
-const handleEventUpdated = () => {
-  setEditModalVisible(false);
-  setSelectedEventForEdit(null);
-  fetchEvents();
-  message.success('Event updated and resubmitted for approval!');
-};
+  // Handle event updated successfully
+  const handleEventUpdated = () => {
+    setEditModalVisible(false);
+    setSelectedEventForEdit(null);
+    fetchEvents();
+    message.success('Event updated and resubmitted for approval!');
+  };
 
   // Check if event belongs to current user
   const isMyEvent = (event) => {
@@ -196,6 +231,9 @@ const handleEventUpdated = () => {
       </>
     );
   }
+
+  console.log('🎨 RENDERING EVENT PAGE');
+  console.log('Rendering filter section:', (isMosqueAdmin || isStudent || isParent));
 
   return (
     <>
@@ -244,27 +282,49 @@ const handleEventUpdated = () => {
             </div>
           </div>
 
+   
+
           {/* Filters Section */}
           <div className="events-filters">
-            {isMosqueAdmin && (
+            {/* ⭐ Show scope filter for mosque admins AND students/parents */}
+            {(isMosqueAdmin || isStudent || isParent) ? (
               <div className="filter-item scope-filter">
                 <FilterOutlined className="filter-icon" />
                 <span>Show:</span>
                 <Radio.Group 
                   value={filterScope} 
-                  onChange={(e) => setFilterScope(e.target.value)}
+                  onChange={(e) => {
+                    console.log('🔄 Filter changed to:', e.target.value);
+                    setFilterScope(e.target.value);
+                  }}
                   buttonStyle="solid"
                 >
                   <Radio.Button value="all">
                     <GlobalOutlined /> All Events
                   </Radio.Button>
-                  <Radio.Button value="my_mosque">
-                    <BankOutlined /> My Mosque Events
-                  </Radio.Button>
+                  
+                  {/* ⭐ Enrolled Mosques option for students/parents */}
+                  {(isStudent || isParent) && (
+                    <Radio.Button value="enrolled_mosques">
+                      <BankOutlined /> My Enrolled Mosques
+                    </Radio.Button>
+                  )}
+                  
+                  {/* Mosque admin option */}
+                  {isMosqueAdmin && (
+                    <Radio.Button value="my_mosque">
+                      <BankOutlined /> My Mosque Events
+                    </Radio.Button>
+                  )}
                 </Radio.Group>
+              </div>
+            ) : (
+              <div style={{ background: 'red', color: 'white', padding: '10px' }}>
+                ⚠️ FILTER SECTION HIDDEN - None of the role checks passed!
               </div>
             )}
 
+            {/* Event Type Filter */}
             <div className="filter-item">
               <FilterOutlined className="filter-icon" />
               <span>Event Type:</span>
@@ -289,30 +349,43 @@ const handleEventUpdated = () => {
                 <BankOutlined /> Showing events from your mosque only
               </p>
             </div>
-          )
-          }
+          )}
+
+          {/* ⭐ Info message for enrolled mosques filter */}
+          {(isStudent || isParent) && filterScope === 'enrolled_mosques' && (
+            <div className="filter-info">
+              <p>
+                <BankOutlined /> Showing events from mosques where you're enrolled in courses
+              </p>
+            </div>
+          )}
 
           {/* Events Grid */}
           <div className="events-grid">
             {events.length > 0 ? (
-         events.map(event => (
-  <EventCard
-    key={event.id}
-    event={event}
-    onLike={handleLike}
-    onUnlike={handleUnlike}
-    onRSVP={handleRSVP}
-    onView={handleViewEvent}
-    onViewInteractions={handleViewInteractions}
-    onEdit={handleEditEvent}  // ← ADD THIS LINE
-    isMosqueAdmin={isMosqueAdmin}
-    isMyEvent={isMyEvent(event)}
-  />
-))
+              events.map(event => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  onLike={handleLike}
+                  onUnlike={handleUnlike}
+                  onRSVP={handleRSVP}
+                  onView={handleViewEvent}
+                  onViewInteractions={handleViewInteractions}
+                  onEdit={handleEditEvent}
+                  isMosqueAdmin={isMosqueAdmin}
+                  isMyEvent={isMyEvent(event)}
+                />
+              ))
             ) : (
               <div className="no-events">
                 <CalendarOutlined style={{ fontSize: 64, color: '#ccc' }} />
-                <p>No events available at the moment</p>
+                <p>
+                  {filterScope === 'enrolled_mosques' 
+                    ? 'No events from your enrolled mosques yet'
+                    : 'No events available at the moment'
+                  }
+                </p>
                 {filterScope !== 'all' && (
                   <Button 
                     type="link" 
@@ -347,18 +420,20 @@ const handleEventUpdated = () => {
           eventId={selectedEventId}
         />
       )}
-{/* Edit Event Modal */}
-{editModalVisible && (
-  <EditEventModal
-    visible={editModalVisible}
-    onClose={() => {
-      setEditModalVisible(false);
-      setSelectedEventForEdit(null);
-    }}
-    onSuccess={handleEventUpdated}
-    event={selectedEventForEdit}
-  />
-)}
+
+      {/* Edit Event Modal */}
+      {editModalVisible && (
+        <EditEventModal
+          visible={editModalVisible}
+          onClose={() => {
+            setEditModalVisible(false);
+            setSelectedEventForEdit(null);
+          }}
+          onSuccess={handleEventUpdated}
+          event={selectedEventForEdit}
+        />
+      )}
+
       <Footer />
     </>
   );

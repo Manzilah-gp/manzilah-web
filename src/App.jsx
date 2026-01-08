@@ -60,6 +60,7 @@ import MeetingRoomUIKit from './pages/MeetingRoom/MeetingRoomUIKit';
 // import QiblaPage from './pages/QiblaPage/QiblaPage';
 // import QuranReaderPage from './pages/QuranReader/QuranReaderPage';
 import IslamicStoryteller from './pages/IslamicStoryteller/IslamicStoryteller';
+import PaymentSuccess from './pages/Payment/PaymentSuccess';
 
 // teacher Dashboard pages
 import StudentProgressView from './pages/TeacherDashboard/StudentProgress/StudentProgressView';
@@ -86,7 +87,7 @@ function App() {
 
             <Routes>
               {/* Default Route → Home  */}
-              <Route path="/public/home" element={<Home />} />
+              <Route path="/public/Home" element={<Home />} />
               {/* Profile Details Page */}
 
               {/* Auth Pages */}
@@ -401,6 +402,8 @@ function App() {
 
               {/*Chatting Route */}
               <Route path="/chat" element={<ChatPage />} />
+{/* Enrollment Payment Route */}
+<Route path="/payment/success" element={<PaymentSuccess />} />
 
             </Routes>
           </div>
