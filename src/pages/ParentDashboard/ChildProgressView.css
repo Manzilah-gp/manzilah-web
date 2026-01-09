@@ -1,0 +1,202 @@
+/* ============================================ */
+/* ChildProgressView - Parent View Styles */
+/* Read-only progress view for parents */
+/* ============================================ */
+
+.child-progress-view {
+    width: 100%;
+    min-height: 100vh;
+    background: #f7fafc;
+    padding: 40px 60px;
+    box-sizing: border-box;
+}
+
+/* ============================================ */
+/* Loading & Error States */
+/* ============================================ */
+
+.loading-container,
+.error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+}
+
+/* ============================================ */
+/* Progress Header */
+/* ============================================ */
+
+.progress-header {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.header-info {
+    margin-top: 20px;
+}
+
+.header-info h1 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 12px 0;
+}
+
+.course-name {
+    font-size: 20px;
+    color: #3b82f6;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+}
+
+.course-details {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+}
+
+.course-type {
+    background: #eff6ff;
+    color: #3b82f6;
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.separator {
+    color: #d1d5db;
+}
+
+.teacher {
+    color: #4b5563;
+}
+
+/* ============================================ */
+/* Progress Card */
+/* ============================================ */
+
+.progress-card {
+    border-radius: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.progress-card .ant-card-body {
+    padding: 32px;
+}
+
+.progress-card .ant-tabs-nav {
+    margin-bottom: 24px;
+}
+
+.progress-card .ant-tabs-tab {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 12px 20px;
+}
+
+.progress-card .ant-tabs-tab-active {
+    background: #eff6ff;
+    border-radius: 12px;
+}
+
+/* ============================================ */
+/* Responsive Design */
+/* ============================================ */
+
+/* Large screens */
+@media (min-width: 1400px) {
+    .child-progress-view {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 40px 80px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .child-progress-view {
+        padding: 30px 40px;
+    }
+
+    .progress-header {
+        padding: 28px;
+    }
+
+    .header-info h1 {
+        font-size: 28px;
+    }
+
+    .course-name {
+        font-size: 18px;
+    }
+
+    .progress-card .ant-card-body {
+        padding: 24px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .child-progress-view {
+        padding: 20px;
+    }
+
+    .progress-header {
+        padding: 24px 20px;
+    }
+
+    .header-info h1 {
+        font-size: 24px;
+    }
+
+    .course-name {
+        font-size: 16px;
+    }
+
+    .course-details {
+        font-size: 14px;
+        gap: 8px;
+    }
+
+    .progress-card .ant-card-body {
+        padding: 20px;
+    }
+
+    .progress-card .ant-tabs-tab {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .child-progress-view {
+        padding: 16px;
+    }
+
+    .progress-header {
+        padding: 20px 16px;
+    }
+
+    .header-info h1 {
+        font-size: 20px;
+    }
+
+    .course-name {
+        font-size: 15px;
+    }
+
+    .progress-card .ant-card-body {
+        padding: 16px;
+    }
+}

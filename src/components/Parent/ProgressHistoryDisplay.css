@@ -1,0 +1,311 @@
+/* ============================================ */
+/* ProgressHistoryDisplay - Parent View Styles */
+/* Read-only exam history timeline */
+/* ============================================ */
+
+.progress-history-display {
+    padding: 32px;
+    background: white;
+    border-radius: 16px;
+    min-height: 400px;
+}
+
+/* ============================================ */
+/* Display Header */
+/* ============================================ */
+
+.display-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.display-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.display-subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* ============================================ */
+/* Loading Container */
+/* ============================================ */
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+/* ============================================ */
+/* Timeline Item Content */
+/* ============================================ */
+
+.timeline-item-content {
+    padding: 16px 0;
+}
+
+.milestone-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.milestone-header h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+}
+
+.milestone-date {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+    background: #f3f4f6;
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
+/* ============================================ */
+/* Milestone Score Section */
+/* ============================================ */
+
+.milestone-score-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.milestone-score {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 10px;
+    display: inline-block;
+}
+
+.milestone-score.passed {
+    color: #10b981;
+    background: #ecfdf5;
+    border: 2px solid #10b981;
+}
+
+.milestone-score.failed {
+    color: #ef4444;
+    background: #fef2f2;
+    border: 2px solid #ef4444;
+}
+
+.status-tag {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 8px;
+}
+
+/* ============================================ */
+/* Milestone Notes */
+/* ============================================ */
+
+.milestone-notes {
+    background: #f9fafb;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border-left: 4px solid #3b82f6;
+}
+
+.milestone-notes strong {
+    color: #374151;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.milestone-notes p {
+    font-size: 14px;
+    color: #4b5563;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ============================================ */
+/* Milestone Footer */
+/* ============================================ */
+
+.milestone-footer {
+    font-size: 13px;
+    color: #9ca3af;
+    margin-top: 8px;
+}
+
+.milestone-footer span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ============================================ */
+/* Timeline Customization */
+/* ============================================ */
+
+.progress-history-display .ant-timeline {
+    margin-top: 24px;
+}
+
+.progress-history-display .ant-timeline-item {
+    padding-bottom: 32px;
+}
+
+.progress-history-display .ant-timeline-item-head {
+    background: white;
+    border-width: 3px;
+    width: 16px;
+    height: 16px;
+}
+
+.progress-history-display .ant-timeline-item-tail {
+    border-left-width: 2px;
+}
+
+/* Custom dot colors */
+.progress-history-display .ant-timeline-item-head-green {
+    border-color: #10b981;
+}
+
+.progress-history-display .ant-timeline-item-head-red {
+    border-color: #ef4444;
+}
+
+.progress-history-display .ant-timeline-item-head-orange {
+    border-color: #f59e0b;
+}
+
+/* ============================================ */
+/* Empty State */
+/* ============================================ */
+
+.progress-history-display .ant-empty {
+    padding: 60px 0;
+}
+
+.progress-history-display .ant-empty-description {
+    font-size: 16px;
+    color: #6b7280;
+}
+
+/* ============================================ */
+/* Responsive Design */
+/* ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .progress-history-display {
+        padding: 28px;
+    }
+
+    .display-title {
+        font-size: 22px;
+    }
+
+    .milestone-header h4 {
+        font-size: 17px;
+    }
+
+    .milestone-score {
+        font-size: 18px;
+        padding: 6px 14px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .progress-history-display {
+        padding: 24px 20px;
+    }
+
+    .display-title {
+        font-size: 20px;
+    }
+
+    .display-subtitle {
+        font-size: 14px;
+    }
+
+    .milestone-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .milestone-header h4 {
+        font-size: 16px;
+    }
+
+    .milestone-date {
+        font-size: 13px;
+    }
+
+    .milestone-score {
+        font-size: 17px;
+    }
+
+    .milestone-notes {
+        padding: 14px;
+    }
+
+    .milestone-notes strong {
+        font-size: 13px;
+    }
+
+    .milestone-notes p {
+        font-size: 13px;
+    }
+
+    .progress-history-display .ant-timeline-item {
+        padding-bottom: 24px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .progress-history-display {
+        padding: 20px 16px;
+    }
+
+    .display-title {
+        font-size: 18px;
+    }
+
+    .milestone-header h4 {
+        font-size: 15px;
+    }
+
+    .milestone-score {
+        font-size: 16px;
+        padding: 6px 12px;
+    }
+
+    .status-tag {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    .milestone-notes {
+        padding: 12px;
+    }
+}

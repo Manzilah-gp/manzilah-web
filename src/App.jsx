@@ -72,6 +72,12 @@ import AttendanceLoggingPage from './pages/TeacherDashboard/Attendance/Attendanc
 import CourseMaterialsPage from './pages/TeacherDashboard/CourseMaterials/CourseMaterialsPage';
 
 
+//Parent/chilfren Progress /My Children 
+import MyChildrenPage from './pages/ParentDashboard/MyChildrenPage';
+import ChildProgressView from './pages/ParentDashboard/ChildProgressView';
+import ProgressReportsPage from './pages/ParentDashboard/ProgressReportsPage';
+import ChildOverviewPage from './pages/ParentDashboard/ChildOverviewPage';
+
 
 
 function App() {
@@ -323,11 +329,19 @@ function App() {
                 />
 
                 {/* Parent Routes */}
-                <Route
+               <Route
                   path="children"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
-                      <div>My Children - To be implemented</div>
+                      <MyChildrenPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="children/:childId"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['parent']}>
+                      <ChildOverviewPage />
                     </RoleProtectedRoute>
                   }
                 />
@@ -335,7 +349,15 @@ function App() {
                   path="progress"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
-                      <div>Progress Reports - To be implemented</div>
+                      <ProgressReportsPage />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="progress/:enrollmentId"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['parent']}>
+                      <ChildProgressView />
                     </RoleProtectedRoute>
                   }
                 />
@@ -405,6 +427,11 @@ function App() {
 {/* Enrollment Payment Route */}
 <Route path="/payment/success" element={<PaymentSuccess />} />
 
+{/* Parent/Children progress routes */}
+<Route path="/parent/children" element={<MyChildrenPage />} />
+<Route path="/parent/progress/:enrollmentId" element={<ChildProgressView />} />
+<Route path="/parent/reports" element={<ProgressReportsPage />} />
+<Route path="/parent/children/:childId" element={<ChildOverviewPage />} />
             </Routes>
           </div>
         </Router>

@@ -167,7 +167,8 @@ const FirebaseNotificationBell = () => {
         
         try {
           const token = await getToken(messaging, {
-            vapidKey: 'BPgFVd2sWgvjv1d76d1Ns94fJGPNMdaezR4RdOgRcXlPjDZC_AJ5zq-M93T7UqkEg5Rgu0jz4qe1hLnBPRgGH4w'
+            // vapidKey: 'BPgFVd2sWgvjv1d76d1Ns94fJGPNMdaezR4RdOgRcXlPjDZC_AJ5zq-M93T7UqkEg5Rgu0jz4qe1hLnBPRgGH4w'
+            vapidKey:'BDIGOkPepTZY3vjJvyoe5-3TeokfsrAQ3Suw2ICKGTmTKneK-ilEu3kvWgTzksHztMtcQStHptpU_8qGIZ8aRic'
           });
 
           console.log('🎫 FCM Token:', token);
