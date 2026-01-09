@@ -1,4 +1,4 @@
-/* Enhanced Profile Page Styles */
+/* Enhanced Profile Page Styles - FIXED LAYOUT */
 
 :root {
   --primary-color: #1a73e8;
@@ -23,23 +23,35 @@
   --shadow-strong: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
-/* Layout Scoped to Profile Page */
-.profile-page .profile-layout,
+/* ============================================ */
+/* MAIN LAYOUT FIX - Full Width */
+/* ============================================ */
+
 .profile-page {
-  /* display: flex; REMOVED to avoid messing with main layout if applied to root */
-  gap: 25px;
-  padding: 40px;
-  min-height: 90vh;
+  width: 100%;
+  min-height: 100vh;
   background: var(--light-bg);
 }
 
-/* Apply background to the specific container if needed, or rely on .profile-main */
-
-.profile-page .profile-main {
-  flex: 1;
+.profile-page .main-content-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
+.profile-page .profile-main {
+  width: 100%;
+  max-width: 1400px; /* Maximum content width */
+  margin: 0 auto; /* Center the content */
+  padding: 40px 60px; /* Side padding */
+  box-sizing: border-box;
+}
+
+/* ============================================ */
 /* Enhanced Profile Header */
+/* ============================================ */
+
 .profile-page .profile-header-enhanced {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
   padding: 40px;
@@ -51,6 +63,7 @@
   margin-bottom: 30px;
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .profile-page .profile-header-enhanced::before {
@@ -68,7 +81,6 @@
   from {
     transform: rotate(0deg);
   }
-
   to {
     transform: rotate(360deg);
   }
@@ -108,6 +120,9 @@
   color: rgba(255, 255, 255, 0.9);
   font-size: 16px;
   margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .profile-page .roles-badges {
@@ -148,7 +163,10 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Tabs Navigation */
+/* ============================================ */
+/* Tabs Navigation - Full Width */
+/* ============================================ */
+
 .profile-page .profile-tabs {
   display: flex;
   gap: 10px;
@@ -158,6 +176,7 @@
   border-radius: 15px;
   box-shadow: var(--shadow-soft);
   overflow-x: auto;
+  width: 100%;
 }
 
 .profile-page .profile-tabs .tab {
@@ -183,9 +202,20 @@
   color: white;
 }
 
-/* Tab Content */
+/* Admin tab special styling */
+.profile-page .profile-tabs .tab.admin-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ============================================ */
+/* Tab Content - Full Width */
+/* ============================================ */
+
 .profile-page .tab-content {
   animation: fadeIn 0.4s ease;
+  width: 100%;
 }
 
 @keyframes fadeIn {
@@ -193,20 +223,23 @@
     opacity: 0;
     transform: translateY(10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
+/* ============================================ */
 /* Profile Section */
+/* ============================================ */
+
 .profile-page .profile-section {
   background: white;
   padding: 30px;
   border-radius: 15px;
   box-shadow: var(--shadow-soft);
   margin-bottom: 25px;
+  width: 100%;
 }
 
 .profile-page .section-title {
@@ -218,11 +251,15 @@
   font-weight: bold;
 }
 
-/* Info Grid */
+/* ============================================ */
+/* Info Grid - Responsive */
+/* ============================================ */
+
 .profile-page .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
+  width: 100%;
 }
 
 .profile-page .info-item {
@@ -246,10 +283,11 @@
   margin-top: 3px;
 }
 
-.profile-page .info-item>div {
+.profile-page .info-item > div {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  flex: 1;
 }
 
 .profile-page .info-label {
@@ -284,12 +322,16 @@
   border: 1px solid var(--warning-color);
 }
 
-/* Stats Row */
+/* ============================================ */
+/* Stats Row - Full Width Grid */
+/* ============================================ */
+
 .profile-page .stats-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   margin-bottom: 30px;
+  width: 100%;
 }
 
 .profile-page .stat-card {
@@ -327,7 +369,10 @@
   margin: 5px 0 0 0;
 }
 
+/* ============================================ */
 /* Enrollments List */
+/* ============================================ */
+
 .profile-page .enrollments-list h4 {
   font-size: 18px;
   color: var(--text-color);
@@ -403,7 +448,10 @@
   font-weight: 500;
 }
 
-/* Certification Info */
+/* ============================================ */
+/* Certification, Expertise, Availability */
+/* ============================================ */
+
 .profile-page .certification-info,
 .profile-page .expertise-info,
 .profile-page .availability-info {
@@ -475,7 +523,10 @@
   color: var(--text-light);
 }
 
+/* ============================================ */
 /* Children List */
+/* ============================================ */
+
 .profile-page .children-list h4 {
   font-size: 18px;
   color: var(--text-color);
@@ -523,11 +574,23 @@
   color: var(--text-color);
 }
 
+/* ============================================ */
+/* Admin Tab Content */
+/* ============================================ */
+
+.profile-page .admin-tab-content {
+  width: 100%;
+}
+
+/* ============================================ */
 /* Action Buttons */
+/* ============================================ */
+
 .profile-page .profile-actions {
   display: flex;
   gap: 15px;
   margin-top: 30px;
+  flex-wrap: wrap;
 }
 
 .profile-page .profile-btn {
@@ -565,7 +628,10 @@
   box-shadow: var(--shadow-medium);
 }
 
+/* ============================================ */
 /* Loading State */
+/* ============================================ */
+
 .profile-page .loading {
   display: flex;
   justify-content: center;
@@ -575,23 +641,61 @@
   color: var(--text-light);
 }
 
-/* Responsive Design */
+/* ============================================ */
+/* RESPONSIVE DESIGN */
+/* ============================================ */
+
+/* Large screens */
+@media (min-width: 1400px) {
+  .profile-page .profile-main {
+    max-width: 1600px;
+    padding: 40px 80px;
+  }
+}
+
+/* Tablet */
 @media (max-width: 1024px) {
-  .profile-page .profile-layout {
-    padding: 20px;
+  .profile-page .profile-main {
+    padding: 30px 40px;
   }
 
   .profile-page .profile-header-enhanced {
     flex-direction: column;
     text-align: center;
+    padding: 30px;
   }
 
   .profile-page .profile-header-info {
     align-items: center;
   }
+
+  .profile-page .info-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .profile-page .stats-row {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
 }
 
+/* Mobile */
 @media (max-width: 768px) {
+  .profile-page .profile-main {
+    padding: 20px;
+  }
+
+  .profile-page .profile-header-enhanced {
+    padding: 25px 20px;
+  }
+
+  .profile-page .profile-name {
+    font-size: 24px;
+  }
+
+  .profile-page .profile-email {
+    font-size: 14px;
+  }
+
   .profile-page .info-grid {
     grid-template-columns: 1fr;
   }
@@ -601,7 +705,13 @@
   }
 
   .profile-page .profile-tabs {
-    overflow-x: scroll;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .profile-page .profile-tabs .tab {
+    padding: 10px 16px;
+    font-size: 14px;
   }
 
   .profile-page .profile-actions {
@@ -612,48 +722,40 @@
     width: 100%;
     justify-content: center;
   }
+
+  .profile-page .cert-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* 
-   SIDEBAR LAYOUT AND STYLES
-   (Note: Sidebar might be used outside strictly profile-page context, 
-   but if it's specific to profile page, we scope it. If global, leave as is. 
-   Assuming purely for Profile based on file location)
-*/
-.profile-page .profile-sidebar {
-  width: 260px;
-  background: var(--white);
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: var(--shadow-medium);
-  height: fit-content;
-}
+/* Small mobile */
+@media (max-width: 480px) {
+  .profile-page .profile-main {
+    padding: 15px;
+  }
 
-.profile-page .sidebar-title {
-  color: var(--primary-color);
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
+  .profile-page .profile-header-enhanced {
+    padding: 20px 15px;
+  }
 
-.profile-page .profile-sidebar ul {
-  list-style: none;
-  padding: 0;
-}
+  .profile-page .profile-avatar-large {
+    width: 100px;
+    height: 100px;
+  }
 
-.profile-page .profile-sidebar li {
-  padding: 12px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  color: var(--text-color);
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  transition: 0.3s;
-}
+  .profile-page .profile-avatar-large .avatar-icon {
+    font-size: 50px;
+  }
 
-.profile-page .profile-sidebar li:hover {
-  background: var(--primary-color);
-  color: white;
-  transform: translateX(5px);
+  .profile-page .profile-name {
+    font-size: 20px;
+  }
+
+  .profile-page .section-title {
+    font-size: 18px;
+  }
+
+  .profile-page .profile-section {
+    padding: 20px 15px;
+  }
 }

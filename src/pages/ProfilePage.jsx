@@ -214,12 +214,13 @@ function ProfilePage() {
         </div>
         <div className="info-item">
           <CheckCircleOutlined className="info-icon" />
-          <div>
-            <span className="info-label">Status</span>
-            <span className={`status-badge ${userData.approved ? 'approved' : 'pending'}`}>
-              {userData.approved ? "Activated" : "Under review"}
-            </span>
-          </div>
+     <div>
+  <span className="info-label">Status</span>
+  <span className="status-badge approved">
+    Activated
+  </span>
+</div>
+
         </div>
       </div>
     </div>
@@ -450,29 +451,12 @@ function ProfilePage() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  // if (loading) {
-  //   return (
-  //     <>
-  //       <MainSideBar
-  //         collapsed={sidebarCollapsed}
-  //         onToggleCollapse={handleToggleSidebar}
-  //       />
-  //       <div className="main-content-wrapper">
-  //         <div className="loading">Loading...</div>
-  //       </div>
-  //       <Footer />
-  //     </>
-  //   );
-  // }
+
 
   if (!userData) {
     return (
       <>
-        {/* <Header /> */}
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
+      
         <div className="main-content-wrapper">
           <div className="loading">Data loading error</div>
         </div>
@@ -483,13 +467,8 @@ function ProfilePage() {
 
   return (
     <div className="profile-page">
-      <Header />
 
-      {/* ✅ Pass collapsed state and toggle function */}
-      <MainSideBar
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={handleToggleSidebar}
-      />
+    
 
       <div className="main-content-wrapper">
         <div className="profile-main" style={{ padding: '40px' }}>

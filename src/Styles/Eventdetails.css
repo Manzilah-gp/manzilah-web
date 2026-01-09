@@ -1,9 +1,15 @@
-/* EventDetails.css */
+/* EventDetails.css - FIXED FULL WIDTH */
+
+/* ============================================ */
+/* MAIN LAYOUT FIX - Full Width */
+/* ============================================ */
 
 .event-details-page {
-  padding: 24px;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 1400px; /* Wider max-width */
   margin: 0 auto;
+  padding: 40px 60px; /* Better side padding */
+  box-sizing: border-box;
 }
 
 .loading-container {
@@ -13,8 +19,13 @@
   min-height: 400px;
 }
 
+/* ============================================ */
+/* Event Details Card - Full Width */
+/* ============================================ */
+
 .event-details-card {
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .event-details-header {
@@ -22,10 +33,11 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .event-details-header h1 {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: bold;
   margin: 12px 0;
   color: #262626;
@@ -39,83 +51,118 @@
   font-size: 16px;
 }
 
+/* ============================================ */
+/* Event Info Grid - Better Layout */
+/* ============================================ */
+
 .event-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
   margin-bottom: 24px;
-  padding: 16px;
+  padding: 24px;
   background: #f5f5f5;
-  border-radius: 8px;
+  border-radius: 12px;
+  width: 100%;
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   font-size: 15px;
   color: #595959;
 }
 
 .info-item .anticon {
-  font-size: 18px;
+  font-size: 20px;
   color: #1890ff;
+  flex-shrink: 0;
 }
+
+/* ============================================ */
+/* Event Description - Full Width */
+/* ============================================ */
 
 .event-description {
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .event-description h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 600;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   color: #262626;
 }
 
 .event-description p {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
   color: #595959;
   white-space: pre-wrap;
 }
 
+/* ============================================ */
+/* Event Stats - Better Grid */
+/* ============================================ */
+
 .event-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  padding: 24px;
   background: #fafafa;
-  border-radius: 8px;
+  border-radius: 12px;
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 15px;
   font-weight: 500;
+  justify-content: center;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .stat-item .anticon {
-  font-size: 20px;
+  font-size: 22px;
 }
 
+/* ============================================ */
+/* Event Actions - Responsive Buttons */
+/* ============================================ */
+
 .event-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
+  width: 100%;
 }
 
 .event-actions button {
-  flex: 1;
-  min-width: 120px;
+  width: 100%;
+  min-height: 40px;
 }
 
-/* Comments Section */
+/* ============================================ */
+/* Comments Section - Full Width */
+/* ============================================ */
+
 .comments-section {
   margin-bottom: 24px;
+  width: 100%;
 }
 
 .add-comment {
@@ -124,6 +171,7 @@
   margin-bottom: 24px;
   padding-bottom: 24px;
   border-bottom: 1px solid #f0f0f0;
+  width: 100%;
 }
 
 .comment-input-wrapper {
@@ -141,19 +189,21 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
 .comment-item {
   display: flex;
   gap: 12px;
-  padding: 16px;
+  padding: 20px;
   background: #fafafa;
-  border-radius: 8px;
-  transition: background 0.3s;
+  border-radius: 12px;
+  transition: all 0.3s ease;
 }
 
 .comment-item:hover {
   background: #f0f0f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .comment-content {
@@ -185,96 +235,266 @@
   white-space: pre-wrap;
 }
 
-/* Fundraising Section Styles */
+/* ============================================ */
+/* Fundraising Section - Full Width & Beautiful */
+/* ============================================ */
+
 .fundraising-section {
   margin: 30px 0;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 12px;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 16px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
 }
 
 .fundraising-card {
   background: white;
-  padding: 25px;
-  border-radius: 8px;
+  padding: 35px;
+  border-radius: 12px;
   margin-bottom: 25px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
 }
 
 .fundraising-card h2 {
-  margin: 0 0 20px 0;
+  margin: 0 0 24px 0;
   color: #1a1a1a;
-  font-size: 24px;
+  font-size: 26px;
+  font-weight: 700;
 }
 
-/* Progress Bar Styles */
+/* ============================================ */
+/* Progress Bar - Enhanced */
+/* ============================================ */
+
 .progress-container {
-  margin: 20px 0;
+  margin: 24px 0;
+  width: 100%;
 }
 
 .progress-bar {
   width: 100%;
-  height: 24px;
+  height: 28px;
   background: #e9ecef;
-  border-radius: 12px;
+  border-radius: 14px;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg, #10b981 0%, #059669 100%);
   transition: width 0.5s ease;
-  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .progress-info {
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  align-items: center;
+  font-size: 15px;
   color: #6b7280;
 }
 
 .progress-info .raised {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 18px;
   color: #10b981;
 }
 
-/* Donate Button Styles */
+.progress-info .goal {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+/* ============================================ */
+/* Donate Button - Enhanced */
+/* ============================================ */
+
 .donate-button {
   width: 100%;
-  padding: 16px 24px;
+  padding: 18px 32px;
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 20px;
+  margin-top: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .donate-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.donate-button:active:not(:disabled) {
+  transform: translateY(-1px);
 }
 
 .donate-button:disabled {
   background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
   cursor: not-allowed;
   opacity: 0.7;
+  box-shadow: none;
 }
 
-/* Responsive Design for Mobile */
-@media (max-width: 768px) {
+/* ============================================ */
+/* RESPONSIVE DESIGN */
+/* ============================================ */
+
+/* Large screens */
+@media (min-width: 1400px) {
+  .event-details-page {
+    max-width: 1600px;
+    padding: 40px 80px;
+  }
+
+  .event-details-header h1 {
+    font-size: 40px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .event-details-page {
+    padding: 30px 40px;
+  }
+
+  .event-details-header h1 {
+    font-size: 32px;
+  }
+
+  .event-info {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .event-stats {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
   .fundraising-section {
-    padding: 15px;
+    padding: 24px;
+  }
+
+  .fundraising-card {
+    padding: 28px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .event-details-page {
+    padding: 20px;
+  }
+
+  .event-details-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .event-details-header h1 {
+    font-size: 26px;
+  }
+
+  .event-info {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .event-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .stat-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px 8px;
+  }
+
+  .event-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .event-actions button {
+    width: 100%;
+  }
+
+  .add-comment {
+    flex-direction: column;
+  }
+
+  .fundraising-section {
+    padding: 20px;
     margin: 20px 0;
+  }
+
+  .fundraising-card {
+    padding: 24px;
+  }
+
+  .fundraising-card h2 {
+    font-size: 22px;
+  }
+
+  .progress-bar {
+    height: 24px;
+  }
+
+  .progress-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .progress-info .raised {
+    font-size: 16px;
+  }
+
+  .donate-button {
+    font-size: 16px;
+    padding: 16px 24px;
+  }
+
+  .comment-item {
+    padding: 16px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .event-details-page {
+    padding: 15px;
+  }
+
+  .event-details-header h1 {
+    font-size: 22px;
+  }
+
+  .event-stats {
+    grid-template-columns: 1fr;
   }
 
   .fundraising-card {
@@ -285,40 +505,37 @@
     font-size: 20px;
   }
 
-  .progress-info {
-    flex-direction: column;
-    gap: 5px;
+  .progress-bar {
+    height: 20px;
   }
 
   .donate-button {
-    font-size: 16px;
+    font-size: 15px;
     padding: 14px 20px;
   }
 }
-/* Responsive */
-@media (max-width: 768px) {
-  .event-details-page {
-    padding: 16px;
-  }
 
-  .event-details-header h1 {
-    font-size: 24px;
-  }
+/* ============================================ */
+/* Additional Enhancements */
+/* ============================================ */
 
-  .event-info {
-    flex-direction: column;
-    gap: 12px;
-  }
+/* Smooth transitions */
+* {
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-  .event-actions {
-    flex-direction: column;
-  }
+/* Better spacing */
+.event-details-page > * {
+  margin-bottom: 24px;
+}
 
-  .event-actions button {
-    width: 100%;
-  }
+.event-details-page > *:last-child {
+  margin-bottom: 0;
+}
 
-  .add-comment {
-    flex-direction: column;
-  }
+/* Loading state enhancement */
+.loading-container {
+  font-size: 18px;
+  color: #6b7280;
+  font-weight: 500;
 }
