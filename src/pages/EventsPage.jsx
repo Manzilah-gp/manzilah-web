@@ -25,18 +25,18 @@ function EventsPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
-  
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [createModalVisible, setCreateModalVisible] = useState(false);
   const [interactionsModalVisible, setInteractionsModalVisible] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
-  
+
   const [filterType, setFilterType] = useState('all');
   const [filterScope, setFilterScope] = useState('all');
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [selectedEventForEdit, setSelectedEventForEdit] = useState(null);
-  
+
   // Check user roles with debugging
   const isMosqueAdmin = user?.roles?.includes('mosque_admin');
   const isMinistryAdmin = user?.roles?.includes('ministry_admin');
@@ -71,21 +71,21 @@ function EventsPage() {
     try {
       const token = localStorage.getItem('token');
       let url = 'http://localhost:5000/api/events';
-      
+
       // ⭐ Handle enrolled mosques filter for students/parents
       if (filterScope === 'enrolled_mosques') {
         url = 'http://localhost:5000/api/events/my-enrolled-mosques';
         console.log('🌐 Fetching from enrolled mosques endpoint');
       }
-      
+
       const params = new URLSearchParams();
       if (filterType !== 'all') params.append('event_type', filterType);
-      
+
       // Only add filter param if NOT using enrolled mosques endpoint
       if (filterScope !== 'all' && filterScope !== 'enrolled_mosques') {
         params.append('filter', filterScope);
       }
-      
+
       if (params.toString()) url += `?${params.toString()}`;
 
       console.log('🌐 Fetching events from:', url);
@@ -99,12 +99,12 @@ function EventsPage() {
 
       const data = await response.json();
       console.log('📥 Events response:', data);
-      
+
       if (data.success) {
         // Handle both response formats (events or data)
         setEvents(data.events || data.data);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('❌ Error fetching events:', error);
@@ -218,16 +218,13 @@ function EventsPage() {
   if (loading) {
     return (
       <>
-        <Header />
-        <MainSideBar collapsed={sidebarCollapsed} onToggleCollapse={handleToggleSidebar} />
-        <div className="main-content-wrapper">
-          <div className="events-page">
-            <div className="loading-container">
-              <Spin size="large" />
-            </div>
+
+        <div className="events-page">
+          <div className="loading-container">
+            <Spin size="large" />
           </div>
         </div>
-        <Footer />
+
       </>
     );
   }
@@ -237,166 +234,162 @@ function EventsPage() {
 
   return (
     <>
-      <Header />
-      <MainSideBar collapsed={sidebarCollapsed} onToggleCollapse={handleToggleSidebar} />
-      
-      <div className="main-content-wrapper">
-        <div className="events-page">
-          {/* Page Header */}
-          <div className="events-header">
-            <div className="events-title-section">
-              <CalendarOutlined className="page-icon" />
-              <h1>Events & Activities</h1>
-            </div>
-            
-            <div className="header-buttons">
-              {/* Mosque Admin - Create Event Button */}
-              {isMosqueAdmin && (
-                <Button
-                  type="primary"
-                  icon={<PlusOutlined />}
-                  onClick={handleCreateEvent}
-                  size="large"
-                >
-                  Create New Event
-                </Button>
-              )}
 
-              {/* Ministry Admin - Review Fundraising Button */}
-              {isMinistryAdmin && (
-                <Button
-                  icon={<DollarOutlined />}
-                  onClick={() => navigate('/fundraising-approvals')}
-                  size="large"
-                  style={{
-                    background: '#fff7e6',
-                    borderColor: '#ffa940',
-                    color: '#fa8c16',
-                    fontWeight: 500,
-                    marginLeft: isMosqueAdmin ? 12 : 0
-                  }}
-                >
-                  Review Fundraising Events
-                </Button>
-              )}
-            </div>
+      <div className="events-page">
+        {/* Page Header */}
+        <div className="events-header">
+          <div className="events-title-section">
+            <CalendarOutlined className="page-icon" />
+            <h1>Events & Activities</h1>
           </div>
 
-   
-
-          {/* Filters Section */}
-          <div className="events-filters">
-            {/* ⭐ Show scope filter for mosque admins AND students/parents */}
-            {(isMosqueAdmin || isStudent || isParent) ? (
-              <div className="filter-item scope-filter">
-                <FilterOutlined className="filter-icon" />
-                <span>Show:</span>
-                <Radio.Group 
-                  value={filterScope} 
-                  onChange={(e) => {
-                    console.log('🔄 Filter changed to:', e.target.value);
-                    setFilterScope(e.target.value);
-                  }}
-                  buttonStyle="solid"
-                >
-                  <Radio.Button value="all">
-                    <GlobalOutlined /> All Events
-                  </Radio.Button>
-                  
-                  {/* ⭐ Enrolled Mosques option for students/parents */}
-                  {(isStudent || isParent) && (
-                    <Radio.Button value="enrolled_mosques">
-                      <BankOutlined /> My Enrolled Mosques
-                    </Radio.Button>
-                  )}
-                  
-                  {/* Mosque admin option */}
-                  {isMosqueAdmin && (
-                    <Radio.Button value="my_mosque">
-                      <BankOutlined /> My Mosque Events
-                    </Radio.Button>
-                  )}
-                </Radio.Group>
-              </div>
-            ) : (
-              <div style={{ background: 'red', color: 'white', padding: '10px' }}>
-                ⚠️ FILTER SECTION HIDDEN - None of the role checks passed!
-              </div>
-            )}
-
-            {/* Event Type Filter */}
-            <div className="filter-item">
-              <FilterOutlined className="filter-icon" />
-              <span>Event Type:</span>
-              <Select
-                value={filterType}
-                onChange={setFilterType}
-                style={{ width: 200 }}
+          <div className="header-buttons">
+            {/* Mosque Admin - Create Event Button */}
+            {isMosqueAdmin && (
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={handleCreateEvent}
+                size="large"
               >
-                <Option value="all">All</Option>
-                <Option value="religious">Religious</Option>
-                <Option value="educational">Educational</Option>
-                <Option value="social">Social</Option>
-                <Option value="fundraising">Fundraising</Option>
-              </Select>
-            </div>
-          </div>
+                Create New Event
+              </Button>
+            )}
 
-          {/* Filter Info */}
-          {isMosqueAdmin && filterScope === 'my_mosque' && (
-            <div className="filter-info">
-              <p>
-                <BankOutlined /> Showing events from your mosque only
-              </p>
-            </div>
-          )}
-
-          {/* ⭐ Info message for enrolled mosques filter */}
-          {(isStudent || isParent) && filterScope === 'enrolled_mosques' && (
-            <div className="filter-info">
-              <p>
-                <BankOutlined /> Showing events from mosques where you're enrolled in courses
-              </p>
-            </div>
-          )}
-
-          {/* Events Grid */}
-          <div className="events-grid">
-            {events.length > 0 ? (
-              events.map(event => (
-                <EventCard
-                  key={event.id}
-                  event={event}
-                  onLike={handleLike}
-                  onUnlike={handleUnlike}
-                  onRSVP={handleRSVP}
-                  onView={handleViewEvent}
-                  onViewInteractions={handleViewInteractions}
-                  onEdit={handleEditEvent}
-                  isMosqueAdmin={isMosqueAdmin}
-                  isMyEvent={isMyEvent(event)}
-                />
-              ))
-            ) : (
-              <div className="no-events">
-                <CalendarOutlined style={{ fontSize: 64, color: '#ccc' }} />
-                <p>
-                  {filterScope === 'enrolled_mosques' 
-                    ? 'No events from your enrolled mosques yet'
-                    : 'No events available at the moment'
-                  }
-                </p>
-                {filterScope !== 'all' && (
-                  <Button 
-                    type="link" 
-                    onClick={() => setFilterScope('all')}
-                  >
-                    Show all events
-                  </Button>
-                )}
-              </div>
+            {/* Ministry Admin - Review Fundraising Button */}
+            {isMinistryAdmin && (
+              <Button
+                icon={<DollarOutlined />}
+                onClick={() => navigate('/fundraising-approvals')}
+                size="large"
+                style={{
+                  background: '#fff7e6',
+                  borderColor: '#ffa940',
+                  color: '#fa8c16',
+                  fontWeight: 500,
+                  marginLeft: isMosqueAdmin ? 12 : 0
+                }}
+              >
+                Review Fundraising Events
+              </Button>
             )}
           </div>
+        </div>
+
+
+
+        {/* Filters Section */}
+        <div className="events-filters">
+          {/* ⭐ Show scope filter for mosque admins AND students/parents */}
+          {(isMosqueAdmin || isStudent || isParent) ? (
+            <div className="filter-item scope-filter">
+              <FilterOutlined className="filter-icon" />
+              <span>Show:</span>
+              <Radio.Group
+                value={filterScope}
+                onChange={(e) => {
+                  console.log('🔄 Filter changed to:', e.target.value);
+                  setFilterScope(e.target.value);
+                }}
+                buttonStyle="solid"
+              >
+                <Radio.Button value="all">
+                  <GlobalOutlined /> All Events
+                </Radio.Button>
+
+                {/* ⭐ Enrolled Mosques option for students/parents */}
+                {(isStudent || isParent) && (
+                  <Radio.Button value="enrolled_mosques">
+                    <BankOutlined /> My Enrolled Mosques
+                  </Radio.Button>
+                )}
+
+                {/* Mosque admin option */}
+                {isMosqueAdmin && (
+                  <Radio.Button value="my_mosque">
+                    <BankOutlined /> My Mosque Events
+                  </Radio.Button>
+                )}
+              </Radio.Group>
+            </div>
+          ) : (
+            <div style={{ background: 'red', color: 'white', padding: '10px' }}>
+              ⚠️ FILTER SECTION HIDDEN - None of the role checks passed!
+            </div>
+          )}
+
+          {/* Event Type Filter */}
+          <div className="filter-item">
+            <FilterOutlined className="filter-icon" />
+            <span>Event Type:</span>
+            <Select
+              value={filterType}
+              onChange={setFilterType}
+              style={{ width: 200 }}
+            >
+              <Option value="all">All</Option>
+              <Option value="religious">Religious</Option>
+              <Option value="educational">Educational</Option>
+              <Option value="social">Social</Option>
+              <Option value="fundraising">Fundraising</Option>
+            </Select>
+          </div>
+        </div>
+
+        {/* Filter Info */}
+        {isMosqueAdmin && filterScope === 'my_mosque' && (
+          <div className="filter-info">
+            <p>
+              <BankOutlined /> Showing events from your mosque only
+            </p>
+          </div>
+        )}
+
+        {/* ⭐ Info message for enrolled mosques filter */}
+        {(isStudent || isParent) && filterScope === 'enrolled_mosques' && (
+          <div className="filter-info">
+            <p>
+              <BankOutlined /> Showing events from mosques where you're enrolled in courses
+            </p>
+          </div>
+        )}
+
+        {/* Events Grid */}
+        <div className="events-grid">
+          {events.length > 0 ? (
+            events.map(event => (
+              <EventCard
+                key={event.id}
+                event={event}
+                onLike={handleLike}
+                onUnlike={handleUnlike}
+                onRSVP={handleRSVP}
+                onView={handleViewEvent}
+                onViewInteractions={handleViewInteractions}
+                onEdit={handleEditEvent}
+                isMosqueAdmin={isMosqueAdmin}
+                isMyEvent={isMyEvent(event)}
+              />
+            ))
+          ) : (
+            <div className="no-events">
+              <CalendarOutlined style={{ fontSize: 64, color: '#ccc' }} />
+              <p>
+                {filterScope === 'enrolled_mosques'
+                  ? 'No events from your enrolled mosques yet'
+                  : 'No events available at the moment'
+                }
+              </p>
+              {filterScope !== 'all' && (
+                <Button
+                  type="link"
+                  onClick={() => setFilterScope('all')}
+                >
+                  Show all events
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -434,7 +427,6 @@ function EventsPage() {
         />
       )}
 
-      <Footer />
     </>
   );
 }

@@ -124,7 +124,7 @@ function ProfileDetails() {
           address_line2: data.user.location?.address_line2 || "",
           postal_code: data.user.location?.postal_code || ""
         });
-        
+
         // Check if user has teacher role
         if (data.user.activeRoles && data.user.activeRoles.includes('teacher')) {
           setIsTeacher(true);
@@ -241,210 +241,185 @@ function ProfileDetails() {
 
   // Loading state
   if (loading) {
-    return (
-      <>
-        <Header />
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="profile-container">
-            <h2 className="profile-title">Loading...</h2>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
+    return null;
   }
 
   return (
     <>
-      <Header />
+      <div className="profile-container">
+        <h2 className="profile-title">Edit Profile</h2>
 
-      {/* Sidebar with collapse functionality */}
-      <MainSideBar
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={handleToggleSidebar}
-      />
-
-      <div className="main-content-wrapper">
-        <div className="profile-container">
-          <h2 className="profile-title">Edit Profile</h2>
-
-          <form className="profile-form" onSubmit={handleSubmit}>
-            {/* Basic Information Section */}
-            <div className="form-row">
-              <div className="form-group">
-                <label>Full Name *</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={user.fullName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Email Address *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+        <form className="profile-form" onSubmit={handleSubmit}>
+          {/* Basic Information Section */}
+          <div className="form-row">
+            <div className="form-group">
+              <label>Full Name *</label>
+              <input
+                type="text"
+                name="fullName"
+                value={user.fullName}
+                onChange={handleChange}
+                required
+              />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Phone Number</label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={user.phone}
-                  onChange={handleChange}
-                  placeholder="970599123456"
-                />
-              </div>
+            <div className="form-group">
+              <label>Email Address *</label>
+              <input
+                type="email"
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
 
-              <div className="form-group">
-                <label>Gender *</label>
-                <select
-                  name="gender"
-                  value={user.gender}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                </select>
-              </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input
+                type="text"
+                name="phone"
+                value={user.phone}
+                onChange={handleChange}
+                placeholder="970599123456"
+              />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Date of Birth *</label>
-                <input
-                  type="date"
-                  name="birthday"
-                  value={user.birthday}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            <div className="form-group">
+              <label>Gender *</label>
+              <select
+                name="gender"
+                value={user.gender}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+          </div>
 
-              <div className="form-group">
-                <label>Age</label>
-                <input
-                  type="text"
-                  value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} years` : ""}
-                  disabled
-                  style={{ background: '#f0f0f0', cursor: 'not-allowed' }}
-                />
-              </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Date of Birth *</label>
+              <input
+                type="date"
+                name="birthday"
+                value={user.birthday}
+                onChange={handleChange}
+                required
+              />
             </div>
 
-            {/* Location Information Section */}
-            <h3 style={{ marginTop: '30px', marginBottom: '15px', color: '#1d4ed8' }}>
-              Address Information
-            </h3>
+            <div className="form-group">
+              <label>Age</label>
+              <input
+                type="text"
+                value={calculateAge(user.birthday) ? `${calculateAge(user.birthday)} years` : ""}
+                disabled
+                style={{ background: '#f0f0f0', cursor: 'not-allowed' }}
+              />
+            </div>
+          </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Governorate</label>
-                <select
-                  name="governorate"
-                  value={user.governorate}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Governorate</option>
-                  {governorates.map((gov) => (
-                    <option key={gov.value} value={gov.value}>
-                      {gov.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          {/* Location Information Section */}
+          <h3 style={{ marginTop: '30px', marginBottom: '15px', color: '#1d4ed8' }}>
+            Address Information
+          </h3>
 
-              <div className="form-group">
-                <label>Region/City</label>
-                <input
-                  type="text"
-                  name="region"
-                  value={user.region}
-                  onChange={handleChange}
-                  placeholder="e.g., Al-Bireh, Old City"
-                />
-              </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Governorate</label>
+              <select
+                name="governorate"
+                value={user.governorate}
+                onChange={handleChange}
+              >
+                <option value="">Select Governorate</option>
+                {governorates.map((gov) => (
+                  <option key={gov.value} value={gov.value}>
+                    {gov.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Address Line 1</label>
-                <input
-                  type="text"
-                  name="address_line1"
-                  value={user.address_line1}
-                  onChange={handleChange}
-                  placeholder="Street, Building Number"
-                />
-              </div>
+            <div className="form-group">
+              <label>Region/City</label>
+              <input
+                type="text"
+                name="region"
+                value={user.region}
+                onChange={handleChange}
+                placeholder="e.g., Al-Bireh, Old City"
+              />
+            </div>
+          </div>
 
-              <div className="form-group">
-                <label>Address Line 2</label>
-                <input
-                  type="text"
-                  name="address_line2"
-                  value={user.address_line2}
-                  onChange={handleChange}
-                  placeholder="Additional Details"
-                />
-              </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Address Line 1</label>
+              <input
+                type="text"
+                name="address_line1"
+                value={user.address_line1}
+                onChange={handleChange}
+                placeholder="Street, Building Number"
+              />
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label>Postal Code</label>
-                <input
-                  type="text"
-                  name="postal_code"
-                  value={user.postal_code}
-                  onChange={handleChange}
-                  placeholder="12345"
-                />
-              </div>
-              <div className="form-group">
-                {/* Empty div for grid alignment */}
-              </div>
+            <div className="form-group">
+              <label>Address Line 2</label>
+              <input
+                type="text"
+                name="address_line2"
+                value={user.address_line2}
+                onChange={handleChange}
+                placeholder="Additional Details"
+              />
             </div>
+          </div>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="save-btn"
-              disabled={saving}
-            >
-              {saving ? 'Saving...' : 'Save Changes'}
-            </button>
-          </form>
-
-          {/* Teacher-specific profile section - only shown if user is a teacher */}
-          {isTeacher && (
-            <div className="teacher-section-container">
-              <h2 className="section-title">Teacher Information</h2>
-              <p className="section-description">
-                Update your teaching certifications, expertise areas, and availability schedule.
-              </p>
-              <TeacherProfileEditSection />
+          <div className="form-row">
+            <div className="form-group">
+              <label>Postal Code</label>
+              <input
+                type="text"
+                name="postal_code"
+                value={user.postal_code}
+                onChange={handleChange}
+                placeholder="12345"
+              />
             </div>
-          )}
-        </div>
+            <div className="form-group">
+              {/* Empty div for grid alignment */}
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="save-btn"
+            disabled={saving}
+          >
+            {saving ? 'Saving...' : 'Save Changes'}
+          </button>
+        </form>
+
+        {/* Teacher-specific profile section - only shown if user is a teacher */}
+        {isTeacher && (
+          <div className="teacher-section-container">
+            <h2 className="section-title">Teacher Information</h2>
+            <p className="section-description">
+              Update your teaching certifications, expertise areas, and availability schedule.
+            </p>
+            <TeacherProfileEditSection />
+          </div>
+        )}
       </div>
-
     </>
   );
 }

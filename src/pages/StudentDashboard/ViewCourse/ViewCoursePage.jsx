@@ -204,12 +204,9 @@ const ViewCoursePage = () => {
                             <h2 className="card-title">
                                 <BookOutlined /> Course Materials
                             </h2>
-                            <button className="materials-button" disabled>
-                                Course Materials (Coming Soon)
+                            <button className="materials-button" onClick={() => navigate(`/course/${enrollment.course_id}/materials`)}>
+                                View Materials
                             </button>
-                            <p className="coming-soon-text">
-                                Course materials and assignments will be available soon
-                            </p>
                         </div>
                     </div>
 

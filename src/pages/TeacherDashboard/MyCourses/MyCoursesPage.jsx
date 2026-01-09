@@ -130,7 +130,7 @@ const MyCoursesPage = () => {
                                     </button>
                                 )}
                                 <button
-                                    onClick={() => navigate(`/teacher/course/${course.course_id}/materials`)}
+                                    onClick={() => navigate(`/course/${course.course_id}/materials`)}
                                     className="btn-secondary"
                                 >
                                     📚 Materials

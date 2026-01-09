@@ -1,7 +1,7 @@
 import api from './api';
 
 /**
- * Upload material (with file)
+ * Upload material (with file) - NO CHANGES NEEDED
  */
 export const uploadMaterial = (formData) => {
     return api.post('/materials/upload', formData, {
@@ -12,29 +12,33 @@ export const uploadMaterial = (formData) => {
 };
 
 /**
- * Get course materials
+ * Download material (UPDATED)
  */
+export const downloadMaterial = async (materialId) => {
+    try {
+        const response = await api.get(`/materials/download/${materialId}`, {
+            responseType: 'blob' // Important for file download
+        });
+
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// All other functions remain THE SAME
 export const getCourseMaterials = (courseId) => {
     return api.get(`/materials/course/${courseId}`);
 };
 
-/**
- * Delete material
- */
 export const deleteMaterial = (materialId) => {
     return api.delete(`/materials/${materialId}`);
 };
 
-/**
- * Track download
- */
 export const trackDownload = (materialId) => {
     return api.post(`/materials/download/${materialId}`);
 };
 
-/**
- * Section Management
- */
 export const createSection = (sectionData) => {
     return api.post('/materials/sections', sectionData);
 };

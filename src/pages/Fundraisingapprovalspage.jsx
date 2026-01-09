@@ -25,12 +25,12 @@ function FundraisingApprovalsPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
-  
+
   const [pendingEvents, setPendingEvents] = useState([]);
   const [approvedEvents, setApprovedEvents] = useState([]);
   const [rejectedEvents, setRejectedEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   const [rejectModalVisible, setRejectModalVisible] = useState(false);
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -53,7 +53,7 @@ function FundraisingApprovalsPage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      
+
       const response = await fetch('http://localhost:5000/api/events?event_type=fundraising', {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -62,26 +62,26 @@ function FundraisingApprovalsPage() {
       });
 
       const data = await response.json();
-      
+
       console.log('=== FUNDRAISING EVENTS RESPONSE ===');
       console.log('Success:', data.success);
       console.log('Total events:', data.events?.length);
       console.log('All events:', data.events);
-      
+
       if (data.success) {
         const pending = data.events.filter(e => e.approval_status === 'pending');
         const approved = data.events.filter(e => e.approval_status === 'approved');
         const rejected = data.events.filter(e => e.approval_status === 'rejected');
-        
+
         console.log('Pending events:', pending.length, pending);
         console.log('Approved events:', approved.length, approved);
         console.log('Rejected events:', rejected.length, rejected);
-        
+
         setPendingEvents(pending);
         setApprovedEvents(approved);
         setRejectedEvents(rejected);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -95,7 +95,7 @@ function FundraisingApprovalsPage() {
     try {
       setActionLoading(true);
       const token = localStorage.getItem('token');
-      
+
       const response = await fetch(`http://localhost:5000/api/events/${eventId}/approve`, {
         method: 'PUT',
         headers: {
@@ -105,7 +105,7 @@ function FundraisingApprovalsPage() {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         message.success('Fundraising event approved successfully!');
         fetchFundraisingEvents();
@@ -137,7 +137,7 @@ function FundraisingApprovalsPage() {
     try {
       setActionLoading(true);
       const token = localStorage.getItem('token');
-      
+
       const response = await fetch(`http://localhost:5000/api/events/${selectedEvent.id}/reject`, {
         method: 'PUT',
         headers: {
@@ -148,7 +148,7 @@ function FundraisingApprovalsPage() {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         message.success('Fundraising event rejected');
         setRejectModalVisible(false);
@@ -182,9 +182,7 @@ function FundraisingApprovalsPage() {
     });
   };
 
-  const handleToggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
+
 
   // Render event card component
   const renderEventCard = (event, showActions = false) => (
@@ -207,7 +205,7 @@ function FundraisingApprovalsPage() {
       </div>
 
       <h3 className="event-title">{event.title}</h3>
-      
+
       <div className="event-info">
         <div className="info-row">
           <BankOutlined />
@@ -236,8 +234,8 @@ function FundraisingApprovalsPage() {
       </div>
 
       <p className="event-description">
-        {event.description?.length > 150 
-          ? `${event.description.substring(0, 150)}...` 
+        {event.description?.length > 150
+          ? `${event.description.substring(0, 150)}...`
           : event.description}
       </p>
 
@@ -255,7 +253,7 @@ function FundraisingApprovalsPage() {
         >
           View Details
         </Button>
-        
+
         {showActions && event.approval_status === 'pending' && (
           <>
             <Button
@@ -284,16 +282,11 @@ function FundraisingApprovalsPage() {
   if (loading) {
     return (
       <>
-        <Header />
-        <MainSideBar collapsed={sidebarCollapsed} onToggleCollapse={handleToggleSidebar} />
-        <div className="main-content-wrapper">
-          <div className="fundraising-approvals-page">
-            <div className="loading-container">
-              <Spin size="large" />
-            </div>
+        <div className="events-page">
+          <div className="loading-container">
+            <Spin size="large" />
           </div>
         </div>
-        <Footer />
       </>
     );
   }
@@ -313,7 +306,7 @@ function FundraisingApprovalsPage() {
           {pendingEvents.map(event => renderEventCard(event, true))}
         </div>
       ) : (
-        <Empty 
+        <Empty
           description="No pending fundraising events"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
@@ -332,7 +325,7 @@ function FundraisingApprovalsPage() {
           {approvedEvents.map(event => renderEventCard(event, false))}
         </div>
       ) : (
-        <Empty 
+        <Empty
           description="No approved fundraising events"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
@@ -351,7 +344,7 @@ function FundraisingApprovalsPage() {
           {rejectedEvents.map(event => renderEventCard(event, false))}
         </div>
       ) : (
-        <Empty 
+        <Empty
           description="No rejected fundraising events"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
@@ -361,27 +354,23 @@ function FundraisingApprovalsPage() {
 
   return (
     <>
-      <Header />
-      <MainSideBar collapsed={sidebarCollapsed} onToggleCollapse={handleToggleSidebar} />
-      
-      <div className="main-content-wrapper">
-        <div className="fundraising-approvals-page">
-          <div className="page-header">
-            <div className="title-section">
-              <DollarOutlined className="page-icon" />
-              <h1>Fundraising Events Approval</h1>
-            </div>
-            <p className="subtitle">Review and approve fundraising events from mosques</p>
+      <div className="fundraising-approvals-page">
+        <div className="page-header">
+          <div className="title-section">
+            <DollarOutlined className="page-icon" />
+            <h1>Fundraising Events Approval</h1>
           </div>
-
-          {/* Ant Design v5 Tabs with items prop */}
-          <Tabs 
-            defaultActiveKey="pending" 
-            className="approval-tabs"
-            items={tabItems}
-          />
+          <p className="subtitle">Review and approve fundraising events from mosques</p>
         </div>
+
+        {/* Ant Design v5 Tabs with items prop */}
+        <Tabs
+          defaultActiveKey="pending"
+          className="approval-tabs"
+          items={tabItems}
+        />
       </div>
+
 
       {/* View Details Modal */}
       <Modal
@@ -503,8 +492,6 @@ function FundraisingApprovalsPage() {
           />
         </div>
       </Modal>
-
-      <Footer />
     </>
   );
 }

@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/Profile.css";
-import MainSideBar from "../components/MainSideBar/MainSideBar";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import UserCalendar from "../components/Calender";
+
+import CalendarPage from "./Calendar/CalendarPage";
 import AdminEventManagement from "../components/Admin/AdminEventManagement";
 import {
   UserOutlined,
@@ -116,7 +114,8 @@ function ProfilePage() {
         }
       });
 
-      console.log('Response status:', response.status);
+
+      console.log('Response for Hala:', response);
 
       if (!response.ok) {
         const errorText = await response.text();
@@ -139,6 +138,13 @@ function ProfilePage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!loading && !userData) {
+      console.warn('Profile data missing after load, redirecting to login...');
+      navigate('/login');
+    }
+  }, [loading, userData, navigate]);
 
   const calculateAge = (dob) => {
     if (!dob) return 0;
@@ -210,15 +216,6 @@ function ProfilePage() {
           <div>
             <span className="info-label">City</span>
             <span className="info-value">{userData.location?.governorate || "undefined"}</span>
-          </div>
-        </div>
-        <div className="info-item">
-          <CheckCircleOutlined className="info-icon" />
-          <div>
-            <span className="info-label">Status</span>
-            <span className={`status-badge ${userData.approved ? 'approved' : 'pending'}`}>
-              {userData.approved ? "Activated" : "Under review"}
-            </span>
           </div>
         </div>
       </div>
@@ -306,13 +303,6 @@ function ProfilePage() {
             <div className="stat-content">
               <h4>{teacherData.completed_courses}</h4>
               <p>Completed sessions</p>
-            </div>
-          </div>
-          <div className="stat-card">
-            <TrophyOutlined className="stat-icon" />
-            <div className="stat-content">
-              <h4>{teacherData.average_rating}/5</h4>
-              <p>Rating ({teacherData.total_ratings} Ratings)</p>
             </div>
           </div>
         </div>
@@ -450,209 +440,178 @@ function ProfilePage() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
-  // if (loading) {
-  //   return (
-  //     <>
-  //       <MainSideBar
-  //         collapsed={sidebarCollapsed}
-  //         onToggleCollapse={handleToggleSidebar}
-  //       />
-  //       <div className="main-content-wrapper">
-  //         <div className="loading">Loading...</div>
-  //       </div>
-  //       <Footer />
-  //     </>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: '400px' }}>
+        <div className="loading">Loading...</div>
+      </div>
+    );
+  }
 
   if (!userData) {
-    return (
-      <>
-        {/* <Header /> */}
-        <MainSideBar
-          collapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleSidebar}
-        />
-        <div className="main-content-wrapper">
-          <div className="loading">Data loading error</div>
-        </div>
-        <Footer />
-      </>
-    );
+    // Only redirect if loading is finished and we still have no data
+    // Note: fetchUserProfile covers most auth failures, this is a fallback
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Redirecting to login...</div>;
   }
 
   return (
     <div className="profile-page">
-      <Header />
-
-      {/* ✅ Pass collapsed state and toggle function */}
-      <MainSideBar
-        collapsed={sidebarCollapsed}
-        onToggleCollapse={handleToggleSidebar}
-      />
-
-      <div className="main-content-wrapper">
-        <div className="profile-main" style={{ padding: '40px' }}>
-          {/* Profile Header */}
-          <div className="profile-header-enhanced">
-            <div className="profile-avatar-large">
-              <UserOutlined className="avatar-icon" />
-            </div>
-            <div className="profile-header-info">
-              <h2 className="profile-name">{userData.full_name}</h2>
-              <p className="profile-email">
-                <MailOutlined /> {userData.email}
-              </p>
-              <div className="roles-badges">
-                {userData.activeRoles && userData.activeRoles.length > 0 ? (
-                  userData.activeRoles.map((role, idx) => (
-                    <span key={idx} className="role-badge">
-                      {getRoleNameInArabic(role)}
-                    </span>
-                  ))
-                ) : (
-                  <span className="role-badge">No active roles</span>
-                )}
-              </div>
-            </div>
-            <button
-              className="edit-profile-btn"
-              onClick={() => navigate('/profile-details')}
-            >
-              <EditOutlined /> Edit profile
-            </button>
-          </div>
-
-          {/* Tabs Navigation */}
-          <div className="profile-tabs">
-            <button
-              className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
-              onClick={() => setActiveTab('overview')}
-            >
-              Overview
-            </button>
-            {userData.activeRoles?.includes('student') && (
-              <button
-                className={`tab ${activeTab === 'student' ? 'active' : ''}`}
-                onClick={() => setActiveTab('student')}
-              >
-                Student Information
-              </button>
+      {/* Profile Header */}
+      <div className="profile-header-enhanced">
+        <div className="profile-avatar-large">
+          <UserOutlined className="avatar-icon" />
+        </div>
+        <div className="profile-header-info">
+          <h2 className="profile-name">{userData.full_name}</h2>
+          <p className="profile-email">
+            <MailOutlined /> {userData.email}
+          </p>
+          <div className="roles-badges">
+            {userData.activeRoles && userData.activeRoles.length > 0 ? (
+              userData.activeRoles.map((role, idx) => (
+                <span key={idx} className="role-badge">
+                  {getRoleNameInArabic(role)}
+                </span>
+              ))
+            ) : (
+              <span className="role-badge">No active roles</span>
             )}
-            {userData.activeRoles?.includes('teacher') && (
-              <button
-                className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
-                onClick={() => setActiveTab('teacher')}
-              >
-                Teacher Information
-              </button>
-            )}
-            {userData.activeRoles?.includes('parent') && (
-              <button
-                className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
-                onClick={() => setActiveTab('parent')}
-              >
-                Parent Information
-              </button>
-            )}
-            {userData.activeRoles?.includes('donor') && (
-              <button
-                className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
-                onClick={() => setActiveTab('donor')}
-              >
-                Donor Information
-              </button>
-            )}
-            {/* ===================================================== */}
-            {/* ADMIN TAB (ONLY for mosque admins) */}
-            {/* ===================================================== */}
-            {isMosqueAdmin && (
-              <button
-                className={`tab admin-tab ${activeTab === 'admin' ? 'active' : ''}`}
-                onClick={() => setActiveTab('admin')}
-              >
-                <DashboardOutlined /> Manage Events
-              </button>
-            )}
-            <button
-              className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
-              onClick={() => setActiveTab('calendar')}
-            >
-              Calendar
-            </button>
-          </div>
-
-          {/* Tab Content */}
-          <div className="tab-content">
-            {activeTab === 'overview' && renderGeneralInfo()}
-            
-            {activeTab === 'student' && (
-              <>
-                {renderStudentInfo()}
-                
-                {/* ⭐ NEW: Student Parent Requests Section */}
-                {userData.activeRoles?.includes('student') && (
-                  <StudentParentRequestsSection />
-                )}
-              </>
-            )}
-            
-            {activeTab === 'teacher' && renderTeacherInfo()}
-            
-            {activeTab === 'parent' && (
-              <>
-                {renderParentInfo()}
-                
-                {/* ⭐ NEW: Parent Relationship Section */}
-                {userData.activeRoles?.includes('parent') && (
-                  <ParentRelationshipSection />
-                )}
-              </>
-            )}
-            
-            {activeTab === 'donor' && renderDonorInfo()}
-
-            {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}
-            {activeTab === 'admin' && isMosqueAdmin && (
-              <div className="admin-tab-content">
-                <AdminEventManagement />
-              </div>
-            )}
-
-            {activeTab === 'calendar' && (
-              <div>
-                <UserCalendar
-                  events={events || []}
-                  loading={calendarLoading}
-                  title="Your Event Schedule"
-                  subtitle="Events you're attending"
-                  showAttendingBadge={true}
-                />
-              </div>
-            )}
-          </div>
-
-          {/* Action Buttons */}
-          <div className="profile-actions">
-            <button
-              className="profile-btn settings-btn"
-              onClick={() => navigate('/profile-details')}
-            >
-              <SettingOutlined /> Profile Settings
-            </button>
-            <button
-              className="profile-btn logout-btn"
-              onClick={handleLogout}
-            >
-              <LogoutOutlined /> Log out
-            </button>
           </div>
         </div>
-      </div>
+        <button
+          className="edit-profile-btn"
+          onClick={() => navigate('/profile-details')}
+        >
+          <EditOutlined /> Edit profile
+        </button>
       </div>
 
+      {/* Tabs Navigation */}
+      <div className="profile-tabs">
+        <button
+          className={`tab ${activeTab === 'overview' ? 'active' : ''}`}
+          onClick={() => setActiveTab('overview')}
+        >
+          Overview
+        </button>
+        {userData.activeRoles?.includes('student') && (
+          <button
+            className={`tab ${activeTab === 'student' ? 'active' : ''}`}
+            onClick={() => setActiveTab('student')}
+          >
+            Student Information
+          </button>
+        )}
+        {userData.activeRoles?.includes('teacher') && (
+          <button
+            className={`tab ${activeTab === 'teacher' ? 'active' : ''}`}
+            onClick={() => setActiveTab('teacher')}
+          >
+            Teacher Information
+          </button>
+        )}
+        {userData.activeRoles?.includes('parent') && (
+          <button
+            className={`tab ${activeTab === 'parent' ? 'active' : ''}`}
+            onClick={() => setActiveTab('parent')}
+          >
+            Parent Information
+          </button>
+        )}
+        {userData.activeRoles?.includes('donor') && (
+          <button
+            className={`tab ${activeTab === 'donor' ? 'active' : ''}`}
+            onClick={() => setActiveTab('donor')}
+          >
+            Donor Information
+          </button>
+        )}
+        {/* ===================================================== */}
+        {/* ADMIN TAB (ONLY for mosque admins) */}
+        {/* ===================================================== */}
+        {isMosqueAdmin && (
+          <button
+            className={`tab admin-tab ${activeTab === 'admin' ? 'active' : ''}`}
+            onClick={() => setActiveTab('admin')}
+          >
+            <DashboardOutlined /> Manage Events
+          </button>
+        )}
+        <button
+          className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
+          onClick={() => setActiveTab('calendar')}
+        >
+          Calendar
+        </button>
+      </div>
 
-      );
+      {/* Tab Content */}
+      <div className="tab-content">
+        {activeTab === 'overview' && renderGeneralInfo()}
+
+        {activeTab === 'student' && (
+          <>
+            {renderStudentInfo()}
+
+            {/* ⭐ NEW: Student Parent Requests Section */}
+            {userData.activeRoles?.includes('student') && (
+              <StudentParentRequestsSection />
+            )}
+          </>
+        )}
+
+        {activeTab === 'teacher' && renderTeacherInfo()}
+
+        {activeTab === 'parent' && (
+          <>
+            {renderParentInfo()}
+
+            {/* ⭐ NEW: Parent Relationship Section */}
+            {userData.activeRoles?.includes('parent') && (
+              <ParentRelationshipSection />
+            )}
+          </>
+        )}
+
+        {activeTab === 'donor' && renderDonorInfo()}
+
+        {/* ADMIN EVENT MANAGEMENT TAB (ONLY for mosque admins) */}
+        {activeTab === 'admin' && isMosqueAdmin && (
+          <div className="admin-tab-content">
+            <AdminEventManagement />
+          </div>
+        )}
+
+        {activeTab === 'calendar' && (
+          <div>
+            <CalendarPage
+              events={events || []}
+              loading={calendarLoading}
+              title="Your Event Schedule"
+              subtitle="Events you're attending"
+              showAttendingBadge={true}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="profile-actions">
+        <button
+          className="profile-btn settings-btn"
+          onClick={() => navigate('/profile-details')}
+        >
+          <SettingOutlined /> Profile Settings
+        </button>
+        <button
+          className="profile-btn logout-btn"
+          onClick={handleLogout}
+        >
+          <LogoutOutlined /> Log out
+        </button>
+      </div>
+    </div>
+  );
 }
 
-      export default ProfilePage;
+export default ProfilePage;

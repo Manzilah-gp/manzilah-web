@@ -14,7 +14,8 @@ import {
 import useAuth from '../../../hooks/useAuth';
 import {
     getCourseMaterials, uploadMaterial, deleteMaterial,
-    trackDownload, createSection, getSections, deleteSection
+    trackDownload, createSection, getSections, deleteSection,
+    downloadMaterial
 } from '../../../api/materials';
 import './CourseMaterialsPage.css';
 
@@ -152,13 +153,24 @@ const CourseMaterialsPage = () => {
     };
 
     // Handle download
+    // Find this function and replace it:
     const handleDownload = async (material) => {
         try {
             // Track download
             await trackDownload(material.id);
 
-            // Open in new tab for download
-            window.open(material.firebase_url, '_blank');
+            // Download file using API (authenticated)
+            const response = await downloadMaterial(material.id);
+
+            // Create blob link to download
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', material.file_name);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            window.URL.revokeObjectURL(url);
 
             message.success('Download started');
         } catch (error) {

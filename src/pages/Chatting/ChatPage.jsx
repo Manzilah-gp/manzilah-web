@@ -61,7 +61,7 @@ const ChatPage = () => {
     if (selectedConversation) {
       joinConversation(selectedConversation.id);
       fetchMessages(selectedConversation.id);
-      
+
       return () => {
         leaveConversation(selectedConversation.id);
       };
@@ -78,11 +78,11 @@ const ChatPage = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setConversations(data.conversations);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching conversations:', error);
@@ -103,7 +103,7 @@ const ChatPage = () => {
       );
 
       const data = await response.json();
-      
+
       if (data.success) {
         setMessages(data.messages);
         await markMessagesAsRead(conversationId);
@@ -131,7 +131,7 @@ const ChatPage = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setMessages(prev => [...prev, data.message]);
         sendMessage({
@@ -227,11 +227,11 @@ const ChatPage = () => {
       prev.map(conv =>
         conv.id === conversationId
           ? {
-              ...conv,
-              last_message: message.message_text,
-              last_message_at: message.created_at,
-              updated_at: message.created_at
-            }
+            ...conv,
+            last_message: message.message_text,
+            last_message_at: message.created_at,
+            updated_at: message.created_at
+          }
           : conv
       ).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
     );
@@ -245,7 +245,7 @@ const ChatPage = () => {
   const handleConversationCreated = (newConversation) => {
     fetchConversations();
     setShowNewChatModal(false);
-    
+
     if (newConversation.id) {
       setTimeout(() => {
         const conv = conversations.find(c => c.id === newConversation.id);
@@ -258,8 +258,6 @@ const ChatPage = () => {
 
   return (
     <>
-      <Header />
-
       <div className="chat-page-container">
         {/* Mobile Toggle Button */}
         <Button
@@ -273,8 +271,8 @@ const ChatPage = () => {
 
         <Layout className="chat-layout">
           {/* Sidebar with mobile toggle */}
-          <Sider 
-            width={350} 
+          <Sider
+            width={350}
             theme="light"
             className={`conversation-sidebar ${showSidebar ? 'show-mobile' : ''}`}
             breakpoint="lg"
@@ -292,8 +290,8 @@ const ChatPage = () => {
 
           {/* Overlay for mobile */}
           {showSidebar && (
-            <div 
-              className="mobile-overlay" 
+            <div
+              className="mobile-overlay"
               onClick={() => setShowSidebar(false)}
             />
           )}

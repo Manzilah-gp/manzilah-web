@@ -86,7 +86,7 @@ function App() {
             {/* ============================================ */}
 
             <Routes>
-              {/* Default Route → Home  */}
+              {/*  Route → Home  */}
               <Route path="/public/Home" element={<Home />} />
               {/* Profile Details Page */}
 
@@ -108,7 +108,8 @@ function App() {
               <Route path="/public/mosque/:id" element={<MosqueDetailsPage />} />
               <Route path="/public/course/:id" element={<CourseDetailsPage />} />
 
-
+              {/* Default redirect */}
+              <Route index element={<Navigate to="/profile" replace />} />
 
 
               {/* ============================================ */}
@@ -124,8 +125,9 @@ function App() {
                 }
               >
 
-                {/* Default redirect */}
-                <Route index element={<Navigate to="/profile" replace />} />
+                {/* Profile Routes */}
+                <Route path="profile" element={<Profile />} />
+                <Route path="profile-details" element={<ProfileDetails />} />
 
 
                 {/* Ministry Admin Routes */}
@@ -155,8 +157,8 @@ function App() {
 
 
                 {/* Profile, Settings, etc. */}
-                <Route path="profile" element={<Profile />} />
-                <Route path="/profile-details" element={<ProfileDetails />} />
+
+                <Route path="profile-details" element={<ProfileDetails />} />
 
                 {/* Donation Routes - Ministry Admin only */}
                 <Route
@@ -296,7 +298,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="teacher/course/:courseId/materials"
+                  path="course/:courseId/materials"
                   element={
                     <ProtectedRoute>
                       <CourseMaterialsPage />
@@ -356,7 +358,14 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-              </Route>
+
+                {/* Events Page */}
+
+                <Route path="/events" element={<EventsPage />} />
+                <Route path="/events/:id" element={<EventDetailsPage />} />
+                <Route path="/fundraising-approvals" element={<FundraisingApprovalsPage />} />
+
+              </Route>{/* End of Layout */}
 
               {/* Edit Mosque - Separate route outside dashboard layout */}
               <Route
@@ -388,22 +397,12 @@ function App() {
               } />
 
 
-
-
               {/* 404 Catch-all */}
               <Route path="*" element={<Navigate to="/" replace />} />
-
-              {/* for the profile page */}
-              <Route path="/profile" element={<Profile />} />
-              {/* Events Page */}
-              <Route path="/events" element={<EventsPage />} />
-              <Route path="/events/:id" element={<EventDetailsPage />} />
-              <Route path="/fundraising-approvals" element={<FundraisingApprovalsPage />} />
-
               {/*Chatting Route */}
               <Route path="/chat" element={<ChatPage />} />
-{/* Enrollment Payment Route */}
-<Route path="/payment/success" element={<PaymentSuccess />} />
+              {/* Enrollment Payment Route */}
+              <Route path="/payment/success" element={<PaymentSuccess />} />
 
             </Routes>
           </div>

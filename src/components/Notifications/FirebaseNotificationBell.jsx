@@ -5,13 +5,13 @@ import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 
 // Firestore imports
-import { 
-  collection, 
-  query, 
-  where, 
-  orderBy, 
+import {
+  collection,
+  query,
+  where,
+  orderBy,
   onSnapshot,
-  limit 
+  limit
 } from 'firebase/firestore';
 
 // Messaging imports
@@ -26,32 +26,32 @@ import './NotificationBell.css';
 const FirebaseNotificationBell = () => {
   // Add console log immediately
   console.log('🔔 ========== NotificationBell Component Loaded ==========');
-  
+
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  
+
   // Get current user ID from JWT token
   let currentUserId = null;
   try {
     // Get token from localStorage
     const token = localStorage.getItem('token');
     console.log('🎫 Token exists:', !!token);
-    
+
     if (token) {
       try {
         // Decode JWT token (format: header.payload.signature)
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
           return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
-        
+
         const payload = JSON.parse(jsonPayload);
         console.log('📄 Token payload:', payload);
-        
+
         // Try different possible field names
         currentUserId = payload?.id || payload?.userId || payload?.user_id || payload?.sub;
         console.log('✅ User ID from token:', currentUserId);
@@ -67,7 +67,7 @@ const FirebaseNotificationBell = () => {
 
   useEffect(() => {
     console.log('🔄 useEffect triggered');
-    
+
     if (!currentUserId) {
       console.error('❌ No current user ID found');
       return;
@@ -81,7 +81,7 @@ const FirebaseNotificationBell = () => {
     // Listen to Firestore notifications
     try {
       console.log('👂 Setting up Firestore listener...');
-      
+
       const notificationsRef = collection(db, 'notifications');
       const q = query(
         notificationsRef,
@@ -91,11 +91,11 @@ const FirebaseNotificationBell = () => {
       );
 
       const unsubscribe = onSnapshot(
-        q, 
+        q,
         (snapshot) => {
           console.log('📊 Firestore snapshot received');
           console.log('📄 Snapshot size:', snapshot.size);
-          
+
           const notifs = [];
           let unread = 0;
 
@@ -149,7 +149,7 @@ const FirebaseNotificationBell = () => {
 
   const requestNotificationPermission = async () => {
     console.log('🔐 Requesting notification permission...');
-    
+
     try {
       // Check if notifications are supported
       if (!('Notification' in window)) {
@@ -161,13 +161,13 @@ const FirebaseNotificationBell = () => {
 
       const permission = await Notification.requestPermission();
       console.log('📢 Permission result:', permission);
-      
+
       if (permission === 'granted') {
         console.log('✅ Permission granted, getting FCM token...');
-        
+
         try {
           const token = await getToken(messaging, {
-            vapidKey: 'BPgFVd2sWgvjv1d76d1Ns94fJGPNMdaezR4RdOgRcXlPjDZC_AJ5zq-M93T7UqkEg5Rgu0jz4qe1hLnBPRgGH4w'
+            vapidKey: 'BDIGOkPepTZY3vjJvyoe5-3TeokfsrAQ3Suw2ICKGTmTKneK-ilEu3kvWgTzksHztMtcQStHptpU_8qGIZ8aRic'
           });
 
           console.log('🎫 FCM Token:', token);
@@ -184,7 +184,7 @@ const FirebaseNotificationBell = () => {
 
           const data = await response.json();
           console.log('💾 Save token response:', data);
-          
+
         } catch (tokenError) {
           console.error('❌ Error getting/saving FCM token:', tokenError);
         }
@@ -279,15 +279,15 @@ const FirebaseNotificationBell = () => {
           </Button>
         )}
       </div>
-      
+
       {error && (
         <div style={{ padding: '20px', color: 'red' }}>
           Error: {error}
         </div>
       )}
-      
+
       {notifications.length === 0 ? (
-        <Empty 
+        <Empty
           description="No notifications"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           style={{ padding: '40px 20px' }}
@@ -340,7 +340,7 @@ const FirebaseNotificationBell = () => {
                   <>
                     <div className="notification-message">{item.message}</div>
                     <div className="notification-time">
-                      {item.createdAt && item.createdAt.toDate ? 
+                      {item.createdAt && item.createdAt.toDate ?
                         formatDistanceToNow(item.createdAt.toDate(), { addSuffix: true }) :
                         'Just now'
                       }
@@ -352,7 +352,7 @@ const FirebaseNotificationBell = () => {
           )}
         />
       )}
-      
+
       <div className="notification-footer">
         <Button type="link" onClick={() => {
           navigate('/notifications');

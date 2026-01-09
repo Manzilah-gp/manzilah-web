@@ -53,15 +53,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <CalendarOutlined />,
             label: t('sidebar.calendar') || 'Calendar',
             roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent', 'donor'],
-            link: '/profile',
-            state: { tab: 'calendar' }  //   Navigate to profile calendar tab
-        },
-        {//For Events 
-            key: 'events',
-            icon: <CalendarOutlined />,
-            label: t('events') || 'Events',
-            roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher', 'donor'],
-            link: '/events'
+            link: '/calendar',
         },
         {
             key: 'events',
@@ -230,7 +222,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
 
     ];
 
-  
+
     const getFilteredMenuItems = useMemo(() => {
         // Normalize user roles:
         // 1. If user.roles exists, use it.
@@ -273,12 +265,12 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         });
     }, [user]);
 
-  
+
     const toggleDropdown = (key) => {
         setOpenDropdown(openDropdown === key ? null : key);
     };
 
-    
+
     const handleItemClick = (link, state = null) => {
         if (link) {
             // Navigate with state if provided
@@ -294,7 +286,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         }
     };
 
-  
+
     const isActive = (link) => {
         return location.pathname === link;
     };
@@ -303,7 +295,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
         return children?.some(child => location.pathname === child.link);
     };
 
-   
+
     const handleLogout = () => {
         logout();
         navigate('/login');
