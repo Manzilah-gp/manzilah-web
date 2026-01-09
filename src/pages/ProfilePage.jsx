@@ -451,7 +451,8 @@ function ProfilePage() {
   if (!userData) {
     // Only redirect if loading is finished and we still have no data
     // Note: fetchUserProfile covers most auth failures, this is a fallback
-    return <div style={{ padding: '20px', textAlign: 'center' }}>Redirecting to login...</div>;
+    return <div style={{ padding: '20px', textAlign: 'center' }}>Redirecting to login...</div>
+
   }
 
   return (

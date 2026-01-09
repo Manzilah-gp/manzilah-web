@@ -1,0 +1,482 @@
+/* ============================================ */
+/* ChildOverviewPage - Parent View Styles */
+/* Detailed view of one child with all courses */
+/* ============================================ */
+
+.child-overview-page {
+    width: 100%;
+    min-height: 100vh;
+    background: #f7fafc;
+    padding: 40px 60px;
+    box-sizing: border-box;
+}
+
+/* ============================================ */
+/* Page Header */
+/* ============================================ */
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+/* ============================================ */
+/* Loading Container */
+/* ============================================ */
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+/* ============================================ */
+/* Child Information Card */
+/* ============================================ */
+
+.child-info-card {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 32px;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.child-info-card .ant-card-body {
+    padding: 36px;
+}
+
+.child-profile {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.child-avatar-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.child-details {
+    flex: 1;
+}
+
+.child-name {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 12px 0;
+}
+
+.child-meta {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+.meta-item .anticon {
+    color: #3b82f6;
+    font-size: 16px;
+}
+
+.contact-info p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 4px 0;
+}
+
+/* ============================================ */
+/* Section Header */
+/* ============================================ */
+
+.section-header {
+    margin-bottom: 24px;
+}
+
+.section-header h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-header h2 .anticon {
+    color: #3b82f6;
+}
+
+.section-subtitle {
+    font-size: 15px;
+    color: #6b7280;
+    margin: 0;
+}
+
+/* ============================================ */
+/* Empty Enrollments */
+/* ============================================ */
+
+.empty-enrollments {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.empty-enrollments .ant-card-body {
+    padding: 60px;
+}
+
+/* ============================================ */
+/* Enrollments Grid */
+/* ============================================ */
+
+.enrollments-grid {
+    margin-bottom: 32px;
+}
+
+/* ============================================ */
+/* Enrollment Card */
+/* ============================================ */
+
+.enrollment-card {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.enrollment-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.enrollment-card .ant-card-body {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+/* Course Header */
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.course-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0;
+    flex: 1;
+    line-height: 1.3;
+}
+
+/* Course Type */
+.course-type {
+    margin-bottom: 4px;
+}
+
+.type-badge {
+    display: inline-block;
+    background: #eff6ff;
+    color: #3b82f6;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Course Info */
+.course-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-line {
+    font-size: 14px;
+    color: #4b5563;
+    margin: 0;
+}
+
+.info-line strong {
+    color: #374151;
+    font-weight: 600;
+}
+
+/* Progress Section */
+.progress-section {
+    margin-top: auto;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.progress-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.progress-percentage {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Course Stats */
+.course-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 16px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+/* Graduated Badge */
+.graduated-badge {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #92400e;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.graduated-badge .anticon {
+    font-size: 16px;
+}
+
+/* View Progress Button */
+.view-progress-btn {
+    margin-top: 8px;
+    height: 48px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.view-progress-btn:hover {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* ============================================ */
+/* Responsive Design */
+/* ============================================ */
+
+/* Large screens */
+@media (min-width: 1400px) {
+    .child-overview-page {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 40px 80px;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .child-overview-page {
+        padding: 30px 40px;
+    }
+
+    .child-info-card .ant-card-body {
+        padding: 32px;
+    }
+
+    .child-avatar-large {
+        width: 90px;
+        height: 90px;
+        font-size: 36px;
+    }
+
+    .child-name {
+        font-size: 28px;
+    }
+
+    .section-header h2 {
+        font-size: 24px;
+    }
+
+    .enrollment-card .ant-card-body {
+        padding: 24px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .child-overview-page {
+        padding: 20px;
+    }
+
+    .child-info-card .ant-card-body {
+        padding: 28px 24px;
+    }
+
+    .child-profile {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .child-avatar-large {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+        margin: 0 auto;
+    }
+
+    .child-details {
+        text-align: center;
+        width: 100%;
+    }
+
+    .child-name {
+        font-size: 24px;
+    }
+
+    .child-meta {
+        justify-content: center;
+        gap: 16px;
+    }
+
+    .section-header h2 {
+        font-size: 22px;
+    }
+
+    .enrollment-card .ant-card-body {
+        padding: 24px 20px;
+        gap: 16px;
+    }
+
+    .course-name {
+        font-size: 18px;
+    }
+
+    .course-stats {
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .stat-value {
+        font-size: 18px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .child-overview-page {
+        padding: 16px;
+    }
+
+    .child-info-card .ant-card-body {
+        padding: 24px 20px;
+    }
+
+    .child-avatar-large {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+
+    .child-name {
+        font-size: 20px;
+    }
+
+    .child-meta {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .section-header h2 {
+        font-size: 20px;
+    }
+
+    .enrollment-card .ant-card-body {
+        padding: 20px 16px;
+    }
+
+    .course-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .course-name {
+        font-size: 17px;
+    }
+
+    .course-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .view-progress-btn {
+        height: 44px;
+        font-size: 14px;
+    }
+}

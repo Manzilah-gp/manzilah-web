@@ -1,30 +1,23 @@
 /**
- * ProfileDetails Component
+ * ProfileDetails Component - FIXED
  * 
  * Allows users to view and edit their profile information
- * Includes personal details and location information
- * Features mobile responsive design with collapsible sidebar
+ * Uses main layout - no duplicate header/footer/sidebar
+ * Features mobile responsive design
  */
 
 import React, { useState, useEffect } from "react";
-import MainSideBar from "../components/MainSideBar/MainSideBar";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import TeacherProfileEditSection from "../components/Profile/TeacherProfileEditSection";
 import "../Styles/ProfileDetails.css";
 import { message } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ProfileDetails() {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  // ✅ Sidebar state management
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth < 768);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [isTeacher, setIsTeacher] = useState(false); // Track if user is a teacher
+  const [isTeacher, setIsTeacher] = useState(false);
   const [user, setUser] = useState({
     fullName: "",
     email: "",
@@ -53,31 +46,6 @@ function ProfileDetails() {
     { value: "salfit", label: "Salfit" },
     { value: "jericho", label: "Jericho" }
   ];
-
-  /**
-   * Auto-collapse sidebar on mobile when route changes
-   */
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setSidebarCollapsed(true);
-    }
-  }, [location.pathname]);
-
-  /**
-   * Handle window resize - collapse sidebar on mobile
-   */
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setSidebarCollapsed(true);
-      } else {
-        setSidebarCollapsed(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   /**
    * Fetch user profile on component mount
@@ -232,20 +200,19 @@ function ProfileDetails() {
     return age;
   };
 
-  /**
-   * Toggle sidebar collapsed state
-   */
-  const handleToggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
-
   // Loading state
   if (loading) {
-    return null;
+    return (
+      <div className="profile-details-page">
+        <div className="profile-container">
+          <h2 className="profile-title">Loading...</h2>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
+    <div className="profile-details-page">
       <div className="profile-container">
         <h2 className="profile-title">Edit Profile</h2>
 
@@ -420,7 +387,7 @@ function ProfileDetails() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,0 +1,407 @@
+/* ============================================ */
+/* MemorizationProgressDisplay - Parent View */
+/* Read-only memorization progress styles */
+/* ============================================ */
+
+.memorization-progress-display {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+}
+
+/* ============================================ */
+/* Display Header */
+/* ============================================ */
+
+.display-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.display-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+    margin: 0;
+}
+
+.current-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-label {
+    color: #6b7280;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.progress-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #3b82f6;
+}
+
+/* ============================================ */
+/* Visual Progress Bar */
+/* ============================================ */
+
+.progress-visual {
+    margin-bottom: 32px;
+}
+
+.progress-bar-container {
+    position: relative;
+    height: 40px;
+    background: #f3f4f6;
+    border-radius: 20px;
+    overflow: visible;
+    margin-bottom: 12px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #10b981 100%);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* ============================================ */
+/* Exam Checkpoint Markers (Read-Only) */
+/* ============================================ */
+
+.exam-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 36px;
+    height: 36px;
+    background: white;
+    border: 3px solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    cursor: default; /* Read-only, no pointer */
+}
+
+.exam-marker.passed {
+    background: #dcfce7;
+    border-color: #10b981;
+    color: #10b981;
+}
+
+.exam-marker.failed {
+    background: #fee2e2;
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.exam-marker.pending {
+    background: white;
+    border-color: #d1d5db;
+    color: #9ca3af;
+}
+
+/* ============================================ */
+/* Page Labels */
+/* ============================================ */
+
+.page-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #9ca3af;
+    font-size: 13px;
+    padding: 0 4px;
+    font-weight: 500;
+}
+
+/* ============================================ */
+/* Current Page Info */
+/* ============================================ */
+
+.current-page-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+    padding: 20px;
+    background: #f9fafb;
+    border-radius: 12px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.info-label {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+/* ============================================ */
+/* Exam Status Summary */
+/* ============================================ */
+
+.exam-status-summary {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 2px solid #f3f4f6;
+}
+
+.exam-status-summary h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 20px;
+}
+
+.exam-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* ============================================ */
+/* Exam Cards */
+/* ============================================ */
+
+.exam-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-left-width: 4px;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.exam-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.exam-card.passed {
+    border-left-color: #10b981;
+    background: #f0fdf4;
+}
+
+.exam-card.failed {
+    border-left-color: #ef4444;
+    background: #fef2f2;
+}
+
+.exam-card.pending {
+    border-left-color: #d1d5db;
+}
+
+.exam-card.final {
+    border-left-color: #f59e0b;
+    background: #fffbeb;
+}
+
+.exam-card.final.completed {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+}
+
+.exam-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.exam-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.exam-card-body {
+    margin-top: 12px;
+}
+
+.exam-pages {
+    color: #6b7280;
+    font-size: 13px;
+    margin: 0 0 10px 0;
+}
+
+.exam-score {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.exam-score.passed {
+    color: #10b981;
+}
+
+.exam-score.failed {
+    color: #ef4444;
+}
+
+.exam-pending {
+    color: #9ca3af;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* ============================================ */
+/* Graduation Banner */
+/* ============================================ */
+
+.graduation-banner {
+    margin-top: 32px;
+    padding: 24px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-radius: 16px;
+    border: 3px solid #f59e0b;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.trophy-icon {
+    font-size: 48px;
+    color: #f59e0b;
+}
+
+.graduation-text h3 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #92400e;
+    margin: 0 0 6px 0;
+}
+
+.graduation-text p {
+    font-size: 16px;
+    color: #78350f;
+    margin: 0;
+}
+
+/* ============================================ */
+/* Responsive Design */
+/* ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .memorization-progress-display {
+        padding: 28px;
+    }
+
+    .display-title {
+        font-size: 22px;
+    }
+
+    .progress-value {
+        font-size: 24px;
+    }
+
+    .exam-cards {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .memorization-progress-display {
+        padding: 24px 20px;
+    }
+
+    .display-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .display-title {
+        font-size: 20px;
+    }
+
+    .progress-value {
+        font-size: 22px;
+    }
+
+    .progress-bar-container {
+        height: 32px;
+    }
+
+    .exam-marker {
+        width: 28px;
+        height: 28px;
+        font-size: 12px;
+    }
+
+    .current-page-info {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .exam-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .graduation-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .trophy-icon {
+        font-size: 40px;
+    }
+
+    .graduation-text h3 {
+        font-size: 20px;
+    }
+
+    .graduation-text p {
+        font-size: 14px;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .memorization-progress-display {
+        padding: 20px 16px;
+    }
+
+    .display-title {
+        font-size: 18px;
+    }
+
+    .exam-card {
+        padding: 16px;
+    }
+
+    .exam-score {
+        font-size: 20px;
+    }
+}
