@@ -111,6 +111,7 @@ const StudentProgressView = () => {
                             children: (
                                 <ProgressHistoryTimeline
                                     enrollmentId={enrollmentId}
+                                    
                                 />
                             )
                         }

@@ -25,7 +25,13 @@ import useAuth from "../hooks/useAuth";
 import useUserEvents from '../hooks/useUserEvents';
 import ParentRelationshipSection from '../components/Profile/ParentRelationshipSection';
 import StudentParentRequestsSection from '../components/Profile/StudentParentRequestsSection';
-
+// Imports for student progress view
+import { Modal, Tabs } from 'antd';
+import MemorizationProgressDisplay from '../components/Parent/MemorizationProgressDisplay';
+import AttendanceDisplay from '../components/Parent/AttendanceDisplay';
+import ProgressHistoryDisplay from '../components/Parent/ProgressHistoryDisplay';
+// At the top of ProfilePage.jsx, ADD this import:
+import { getMyProgressHistory } from '../api/studentProgressApi';
 function ProfilePage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -38,6 +44,15 @@ function ProfilePage() {
   const [activeTab, setActiveTab] = useState("overview");
   const [userData, setUserData] = useState(null);
   const [roleData, setRoleData] = useState({});
+
+   // student progress state managment 
+  const [progressModal, setProgressModal] = useState({
+    visible: false,
+    enrollmentId: null,
+    courseName: '',
+    courseType: '',
+    progressData: null
+  });
 
   // Calendar hook
   const { events, loading: calendarLoading, error } = useUserEvents();
@@ -92,6 +107,55 @@ function ProfilePage() {
   useEffect(() => {
     fetchUserProfile();
   }, []);
+
+/**
+ * Fetch detailed progress for a specific enrollment
+ */
+const fetchEnrollmentProgress = async (enrollmentId, courseName, courseType) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(
+      `http://localhost:5000/api/student-progress/my-progress/${enrollmentId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch progress');
+    }
+
+    const data = await response.json();
+    
+    if (data.success) {
+      setProgressModal({
+        visible: true,
+        enrollmentId,
+        courseName,
+        courseType,
+        progressData: data.data
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching progress:', error);
+  }
+};
+
+/**
+ * Close progress modal
+ */
+const closeProgressModal = () => {
+  setProgressModal({
+    visible: false,
+    enrollmentId: null,
+    courseName: '',
+    courseType: '',
+    progressData: null
+  });
+};
 
   const fetchUserProfile = async () => {
     try {
@@ -222,14 +286,21 @@ function ProfilePage() {
     </div>
   );
 
-  const renderStudentInfo = () => {
-    if (!roleData.student) return null;
-    const studentData = roleData.student;
+  
 
-    return (
+/**
+ * Enhanced Student Info Section with Detailed Progress
+ */
+const renderStudentInfo = () => {
+  if (!roleData.student) return null;
+  const studentData = roleData.student;
+
+  return (
+    <>
       <div className="profile-section">
-        <h3 className="section-title">Student Information</h3>
+        <h3 className="section-title">📚 Student Information</h3>
 
+        {/* Summary Statistics */}
         <div className="stats-row">
           <div className="stat-card">
             <BookOutlined className="stat-icon" />
@@ -254,34 +325,228 @@ function ProfilePage() {
           </div>
         </div>
 
+        {/* Detailed Course Progress */}
         {studentData.enrollments && studentData.enrollments.length > 0 && (
           <div className="enrollments-list">
-            <h4>Current Courses</h4>
+            <h4>📖 My Courses - Detailed Progress</h4>
+            <p style={{ color: '#6b7280', marginBottom: '20px' }}>
+              Click on any course to view detailed progress, attendance, and exam history
+            </p>
+            
             {studentData.enrollments.map((enrollment, idx) => (
-              <div key={idx} className="enrollment-card">
+              <div 
+                key={idx} 
+                className="enrollment-card enhanced"
+                style={{ cursor: 'pointer', transition: 'all 0.3s ease' }}
+                onClick={() => fetchEnrollmentProgress(
+                  enrollment.enrollment_id,
+                  enrollment.course_name,
+                  enrollment.course_type
+                )}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+                }}
+              >
                 <div className="enrollment-header">
-                  <h5>{enrollment.course_name}</h5>
+                  <div>
+                    <h5 style={{ fontSize: '18px', marginBottom: '4px' }}>
+                      {enrollment.course_name}
+                    </h5>
+                    <span style={{ 
+                      fontSize: '13px', 
+                      color: '#6b7280',
+                      textTransform: 'capitalize'
+                    }}>
+                      {enrollment.course_type === 'memorization' ? '📝 Memorization' : '📚 ' + enrollment.course_type}
+                    </span>
+                  </div>
                   <span className={`badge ${enrollment.status}`}>
-                    {enrollment.status === 'active' ? 'Active' : enrollment.status}
+                    {enrollment.status === 'active' ? '✅ Active' : enrollment.status}
                   </span>
                 </div>
-                <p className="enrollment-teacher">Teacher: {enrollment.teacher_name}</p>
-                <p className="enrollment-level">Level: {enrollment.current_level}</p>
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{ width: `${enrollment.progress}%` }}
-                  ></div>
+
+                <div style={{ marginTop: '12px' }}>
+                  <p className="enrollment-teacher" style={{ marginBottom: '8px' }}>
+                    👨‍🏫 Teacher: <strong>{enrollment.teacher_name}</strong>
+                  </p>
+                  {enrollment.course_type === 'memorization' && enrollment.current_level && (
+                    <p className="enrollment-level" style={{ marginBottom: '8px' }}>
+                      📊 Level: <strong>{enrollment.current_level}</strong>
+                    </p>
+                  )}
                 </div>
-                <span className="progress-text">{Math.round(enrollment.progress)}% Done</span>
+
+                {/* Progress Bar */}
+                <div style={{ marginTop: '16px' }}>
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    marginBottom: '8px' 
+                  }}>
+                    <span style={{ fontSize: '14px', color: '#374151', fontWeight: '500' }}>
+                      Progress
+                    </span>
+                    <span style={{ 
+                      fontSize: '16px', 
+                      fontWeight: 'bold',
+                      color: enrollment.progress >= 80 ? '#10b981' : 
+                             enrollment.progress >= 50 ? '#f59e0b' : '#ef4444'
+                    }}>
+                      {Math.round(enrollment.progress)}%
+                    </span>
+                  </div>
+                  <div className="progress-bar" style={{ height: '10px', borderRadius: '5px' }}>
+                    <div
+                      className="progress-fill"
+                      style={{ 
+                        width: `${enrollment.progress}%`,
+                        background: enrollment.progress >= 80 ? 
+                          'linear-gradient(90deg, #10b981 0%, #059669 100%)' : 
+                          enrollment.progress >= 50 ?
+                          'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)' :
+                          'linear-gradient(90deg, #ef4444 0%, #dc2626 100%)',
+                        transition: 'width 0.5s ease'
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Click to view details hint */}
+                <div style={{ 
+                  marginTop: '16px', 
+                  paddingTop: '12px', 
+                  borderTop: '1px solid #e5e7eb',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <span style={{ fontSize: '13px', color: '#9ca3af' }}>
+                    🔍 Click to view detailed progress
+                  </span>
+                  <span style={{ 
+                    fontSize: '20px',
+                    color: '#3b82f6',
+                    transition: 'transform 0.3s ease'
+                  }}>
+                    →
+                  </span>
+                </div>
               </div>
             ))}
           </div>
         )}
-      </div>
-    );
-  };
 
+        {/* No Enrollments Message */}
+        {(!studentData.enrollments || studentData.enrollments.length === 0) && (
+          <div style={{
+            textAlign: 'center',
+            padding: '60px 20px',
+            background: '#f9fafb',
+            borderRadius: '16px',
+            marginTop: '20px'
+          }}>
+            <BookOutlined style={{ fontSize: '48px', color: '#d1d5db', marginBottom: '16px' }} />
+            <p style={{ fontSize: '16px', color: '#6b7280' }}>
+              No courses registered yet
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* PROGRESS MODAL - Shows Detailed Progress */}
+      <Modal
+        title={
+          <div style={{ 
+            fontSize: '20px', 
+            fontWeight: 'bold',
+            color: '#1f2937',
+            borderBottom: '2px solid #e5e7eb',
+            paddingBottom: '12px'
+          }}>
+            📊 {progressModal.courseName}
+            <div style={{ 
+              fontSize: '14px', 
+              color: '#6b7280', 
+              fontWeight: 'normal',
+              marginTop: '4px',
+              textTransform: 'capitalize'
+            }}>
+              {progressModal.courseType === 'memorization' ? 'Memorization Course' : progressModal.courseType + ' Course'}
+            </div>
+          </div>
+        }
+        open={progressModal.visible}
+        onCancel={closeProgressModal}
+        footer={null}
+        width={900}
+        style={{ top: 20 }}
+        bodyStyle={{ 
+          padding: '24px',
+          maxHeight: '80vh',
+          overflowY: 'auto'
+        }}
+      >
+        {progressModal.progressData && (
+          <Tabs
+            defaultActiveKey="progress"
+            items={[
+              {
+                key: 'progress',
+                label: '📈 Progress',
+                children: (
+                  <div>
+                    {/* Info Alert */}
+                    <div style={{
+                      background: '#eff6ff',
+                      border: '1px solid #3b82f6',
+                      borderRadius: '8px',
+                      padding: '12px 16px',
+                      marginBottom: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px'
+                    }}>
+                      <span style={{ fontSize: '16px' }}>ℹ️</span>
+                      <span style={{ color: '#1e40af', fontSize: '14px' }}>
+                        View Only - Track your learning progress
+                      </span>
+                    </div>
+
+                    {/* Render appropriate progress component */}
+                    {progressModal.courseType === 'memorization' ? (
+                      <MemorizationProgressDisplay 
+                        progressData={progressModal.progressData} 
+                      />
+                    ) : (
+                      <AttendanceDisplay 
+                        attendanceData={progressModal.progressData.attendance || {}} 
+                      />
+                    )}
+                  </div>
+                )
+              },
+            {
+  key: 'history',
+  label: '📜 History',
+  children: (
+    <ProgressHistoryDisplay 
+      enrollmentId={progressModal.enrollmentId}
+      apiCall={getMyProgressHistory}  // ← Pass student API
+    />
+  )
+}
+            ]}
+          />
+        )}
+      </Modal>
+    </>
+  );
+};
   const renderTeacherInfo = () => {
     if (!roleData.teacher) return null;
     const teacherData = roleData.teacher;

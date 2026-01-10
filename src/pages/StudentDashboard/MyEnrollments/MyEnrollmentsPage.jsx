@@ -276,7 +276,7 @@ const MyEnrollmentsPage = () => {
                                     </div>
                                     <div className="progress-badge">
                                         <div className="progress-value">
-                                            {enrollment.completion_percentage || 0}%
+                                            {enrollment.progress || 0}%
                                         </div>
                                         <div className="progress-label">Progress</div>
                                     </div>

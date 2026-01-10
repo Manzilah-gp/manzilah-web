@@ -278,45 +278,45 @@ function EventsPage() {
 
 
 
-        {/* Filters Section */}
-        <div className="events-filters">
-          {/* ⭐ Show scope filter for mosque admins AND students/parents */}
-          {(isMosqueAdmin || isStudent || isParent) ? (
-            <div className="filter-item scope-filter">
-              <FilterOutlined className="filter-icon" />
-              <span>Show:</span>
-              <Radio.Group
-                value={filterScope}
-                onChange={(e) => {
-                  console.log('🔄 Filter changed to:', e.target.value);
-                  setFilterScope(e.target.value);
-                }}
-                buttonStyle="solid"
-              >
-                <Radio.Button value="all">
-                  <GlobalOutlined /> All Events
-                </Radio.Button>
-
-                {/* ⭐ Enrolled Mosques option for students/parents */}
-                {(isStudent || isParent) && (
-                  <Radio.Button value="enrolled_mosques">
-                    <BankOutlined /> My Enrolled Mosques
+          {/* Filters Section */}
+          <div className="events-filters">
+            {/* ⭐ Show scope filter for mosque admins AND students/parents */}
+            {(isMosqueAdmin || isStudent || isParent) ? (
+              <div className="filter-item scope-filter">
+                <FilterOutlined className="filter-icon" />
+                <span>Show:</span>
+                <Radio.Group 
+                  value={filterScope} 
+                  onChange={(e) => {
+                    console.log('🔄 Filter changed to:', e.target.value);
+                    setFilterScope(e.target.value);
+                  }}
+                  buttonStyle="solid"
+                >
+                  <Radio.Button value="all">
+                    <GlobalOutlined /> All Events
                   </Radio.Button>
-                )}
-
-                {/* Mosque admin option */}
-                {isMosqueAdmin && (
-                  <Radio.Button value="my_mosque">
-                    <BankOutlined /> My Mosque Events
-                  </Radio.Button>
-                )}
-              </Radio.Group>
-            </div>
-          ) : (
-            <div style={{ background: 'red', color: 'white', padding: '10px' }}>
-              ⚠️ FILTER SECTION HIDDEN - None of the role checks passed!
-            </div>
-          )}
+                  
+                  {/* ⭐ Enrolled Mosques option for students/parents */}
+                  {(isStudent || isParent) && (
+                    <Radio.Button value="enrolled_mosques">
+                      <BankOutlined /> My Enrolled Mosques
+                    </Radio.Button>
+                  )}
+                  
+                  {/* Mosque admin option */}
+                  {isMosqueAdmin && (
+                    <Radio.Button value="my_mosque">
+                      <BankOutlined /> My Mosque Events
+                    </Radio.Button>
+                  )}
+                </Radio.Group>
+              </div>
+            ) : (
+              <div style={{ background: 'white', color: 'white', padding: '10px' }}>
+                 FILTER SECTION HIDDEN - None of the role checks passed!
+              </div>
+            )}
 
           {/* Event Type Filter */}
           <div className="filter-item">
