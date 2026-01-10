@@ -319,8 +319,8 @@ function EventsPage() {
                 </Radio.Group>
               </div>
             ) : (
-              <div style={{ background: 'red', color: 'white', padding: '10px' }}>
-                ⚠️ FILTER SECTION HIDDEN - None of the role checks passed!
+              <div style={{ background: 'white', color: 'white', padding: '10px' }}>
+                 FILTER SECTION HIDDEN - None of the role checks passed!
               </div>
             )}
 
