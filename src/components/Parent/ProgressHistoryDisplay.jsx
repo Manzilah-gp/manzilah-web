@@ -1,17 +1,24 @@
 // ============================================
-// ProgressHistoryDisplay - Parent View
-// Read-only display of child's exam history
-// Shows timeline of exams and achievements
+// ProgressHistoryDisplay - FIXED VERSION
+// Works for BOTH Parent and Student views
+// Parents: See their children's exam history
+// Students: See their own exam history
 // ============================================
 
 import React, { useState, useEffect } from 'react';
 import { Timeline, Spin, Empty, Tag } from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined, TrophyOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { getChildProgressHistory } from '../../api/parentProgressApi';
 import './ProgressHistoryDisplay.css';
 
-const ProgressHistoryDisplay = ({ enrollmentId }) => {
+/**
+ * Display progress history timeline
+ * @param {number} enrollmentId - The enrollment to show history for
+ * @param {function} apiCall - Custom API function to fetch history
+ *                             - For students: pass getMyProgressHistory
+ *                             - For parents: pass getChildProgressHistory
+ */
+const ProgressHistoryDisplay = ({ enrollmentId, apiCall }) => {
     const [loading, setLoading] = useState(true);
     const [history, setHistory] = useState([]);
 
@@ -21,11 +28,14 @@ const ProgressHistoryDisplay = ({ enrollmentId }) => {
 
     /**
      * Fetch progress history from backend
+     * Uses the API function passed via props
      */
     const fetchHistory = async () => {
         setLoading(true);
         try {
-            const response = await getChildProgressHistory(enrollmentId);
+            // Use the custom API function passed from parent component
+            const response = await apiCall(enrollmentId);
+            
             if (response.data.success) {
                 setHistory(response.data.data);
             }
@@ -145,7 +155,7 @@ const ProgressHistoryDisplay = ({ enrollmentId }) => {
             <div className="display-header">
                 <h3 className="display-title">📜 Exam History</h3>
                 <p className="display-subtitle">
-                    Track your child's exam progress and achievements over time
+                    Track exam progress and achievements over time
                 </p>
             </div>
             <Timeline 

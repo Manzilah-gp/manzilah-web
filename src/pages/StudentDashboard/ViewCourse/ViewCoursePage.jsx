@@ -128,7 +128,7 @@ const ViewCoursePage = () => {
                         </div>
                         <div className="progress-circle">
                             <div className="progress-number">
-                                {enrollment.completion_percentage || 0}%
+                                {enrollment.progress || 0}%
                             </div>
                             <div className="progress-text">Complete</div>
                         </div>

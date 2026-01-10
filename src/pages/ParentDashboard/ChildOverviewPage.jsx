@@ -195,14 +195,14 @@ const ChildOverviewPage = () => {
                                         <span className="progress-label">Progress</span>
                                         <span 
                                             className="progress-percentage"
-                                            style={{ color: getProgressColor(enrollment.completion_percentage || 0) }}
+                                            style={{ color: getProgressColor(enrollment.progress || 0) }}
                                         >
-                                            {enrollment.completion_percentage || 0}%
+                                            {enrollment.progress || 0}%
                                         </span>
                                     </div>
                                     <Progress
-                                        percent={enrollment.completion_percentage || 0}
-                                        strokeColor={getProgressColor(enrollment.completion_percentage || 0)}
+                                        percent={enrollment.progress || 0}
+                                        strokeColor={getProgressColor(enrollment.progress || 0)}
                                         showInfo={false}
                                         strokeWidth={10}
                                     />
