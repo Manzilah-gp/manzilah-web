@@ -26,6 +26,8 @@ import { useLanguage } from '../hooks/useLanguage';
 import { useNavigate } from 'react-router-dom'; // Add this import
 import FirebaseNotificationBell from '../components/Notifications/FirebaseNotificationBell';
 
+import manzilahLogo from '../Images/logo3.png'; // Add this import
+
 const { Header: AntHeader } = Layout;
 const { Option } = Select;
 
@@ -75,7 +77,7 @@ const Header = () => {
             key: 'logout',
             icon: <LogoutOutlined />,
             label: t('header.logout'),
-             onClick: logout,
+            onClick: logout,
             danger: true,
         },
     ];
@@ -100,7 +102,7 @@ const Header = () => {
                     position: 'sticky',
                     top: 0,
                     zIndex: 1000,
-                    height: '64px',
+                    height: '90px',
                     width: '100%',
                 }}
             >
@@ -110,12 +112,19 @@ const Header = () => {
                         color: 'white',
                         fontSize: '20px',
                         fontWeight: 'bold',
-                        minWidth: '120px',
-                        cursor: 'pointer'
+                        height: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        padding: '10px 0'
                     }}
                     onClick={() => navigate('/public/home')}
                 >
-                    Manzilah
+                    <img
+                        src={manzilahLogo}
+                        alt="Manzilah Logo"
+                        style={{ maxHeight: '100%', width: '235px' }}
+                    />
                 </div>
 
                 {/* Desktop Navigation */}
@@ -154,7 +163,7 @@ const Header = () => {
                         <Option value="en">EN</Option>
                         <Option value="ar">AR</Option>
                     </Select>
-{/* 🔔 NOTIFICATION BELL - Only show when user is logged in */}
+                    {/* 🔔 NOTIFICATION BELL - Only show when user is logged in */}
                     {user && <FirebaseNotificationBell />}
                     {/* User Menu */}
                     {user ? (

@@ -45,7 +45,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             key: 'profile',
             icon: <ProfileOutlined />,
             label: t('sidebar.profile') || 'Profile',
-            roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
+            roles: [], // Accessible to all (even if user has no role)
             link: '/profile'
         },
         {
@@ -235,7 +235,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             userRoles = [user.role];
         }
 
-        if (!user || userRoles.length === 0) return [];
+        if (!user) return [];
 
         const hasAccess = (item) => {
             // If item has no role restrictions, allow access

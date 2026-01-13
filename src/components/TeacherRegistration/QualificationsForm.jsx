@@ -20,8 +20,12 @@ const QualificationsForm = ({ formData, updateFormData }) => {
         }
         if (info.file.status === 'done') {
             // Handle successful upload
+            const url = info.file.response.url;
             updateFormData({
-                [`${certificateType}_certificate_url`]: info.file.response.url
+                [`${certificateType}_certificate_url`]: url
+            });
+            form.setFieldsValue({
+                [`${certificateType}_certificate_url`]: url
             });
         }
     };
@@ -49,6 +53,7 @@ const QualificationsForm = ({ formData, updateFormData }) => {
                         <h3>Teaching Certifications</h3>
 
                         <Row gutter={16}>
+                            {/* Tajweed Certificate */}
                             <Col xs={24} md={12}>
                                 <Form.Item name="has_tajweed_certificate" valuePropName="checked">
                                     <Checkbox
@@ -64,21 +69,19 @@ const QualificationsForm = ({ formData, updateFormData }) => {
                                 </Form.Item>
 
                                 {formData.has_tajweed_certificate && (
-                                    <Form.Item
-                                        name="tajweed_certificate_url"
-                                        label="Upload Tajweed Certificate"
-                                    >
-                                        <Upload
-                                            {...certificateUploadProps}
-                                            fileList={tajweedFileList}
-                                            onChange={(info) => handleCertificateUpload('tajweed', info)}
+                                    <>
+                                        <Form.Item
+                                            name="tajweed_certificate_url"
+                                            label="Enter Certificate Link"
+                                            help="Provide a link to your certificate (e.g. Google Drive)"
                                         >
-                                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                                        </Upload>
-                                    </Form.Item>
+                                            <Input placeholder="https://..." />
+                                        </Form.Item>
+                                    </>
                                 )}
                             </Col>
 
+                            {/* Sharea Certificate */}
                             <Col xs={24} md={12}>
                                 <Form.Item name="has_sharea_certificate" valuePropName="checked">
                                     <Checkbox
@@ -94,18 +97,15 @@ const QualificationsForm = ({ formData, updateFormData }) => {
                                 </Form.Item>
 
                                 {formData.has_sharea_certificate && (
-                                    <Form.Item
-                                        name="sharea_certificate_url"
-                                        label="Upload Sharea Certificate"
-                                    >
-                                        <Upload
-                                            {...certificateUploadProps}
-                                            fileList={shareaFileList}
-                                            onChange={(info) => handleCertificateUpload('sharea', info)}
+                                    <>
+                                        <Form.Item
+                                            name="sharea_certificate_url"
+                                            label="Enter Certificate Link"
+                                            help="Provide a link to your certificate (e.g. Google Drive)"
                                         >
-                                            <Button icon={<UploadOutlined />}>Click to Upload</Button>
-                                        </Upload>
-                                    </Form.Item>
+                                            <Input placeholder="https://..." />
+                                        </Form.Item>
+                                    </>
                                 )}
                             </Col>
                         </Row>
@@ -114,7 +114,7 @@ const QualificationsForm = ({ formData, updateFormData }) => {
 
                 <Card className="form-section-card">
                     <div className="form-section">
-                        <h3>Teaching Experience</h3>
+                        <h3>👨‍🏫 Teaching Experience</h3>
 
                         <Row gutter={16}>
                             <Col xs={24} md={12}>
@@ -131,9 +131,7 @@ const QualificationsForm = ({ formData, updateFormData }) => {
                                     />
                                 </Form.Item>
                             </Col>
-
                         </Row>
-
                     </div>
                 </Card>
             </Form>

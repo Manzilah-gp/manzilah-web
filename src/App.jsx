@@ -15,6 +15,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Unauthorized from './pages/Auth/Unauthorized';
 import TeacherRegistrationPage from './pages/TeacherRegister/TeacherRegistrationPage';
+import ChangePassword from './pages/Auth/ChangePassword';
 
 // Dashboard Pages
 import StatisticsView from './components/Dashboard/Ministry/Statistics';
@@ -102,6 +103,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
+              <Route path="/change-password" element={<ChangePassword />} />
               {/* <Route path="/qibla" element={<QiblaPage />} />
               <Route path="/quran" element={<QuranReaderPage />} /> */}
 
@@ -331,7 +333,7 @@ function App() {
                 />
 
                 {/* Parent Routes */}
-               <Route
+                <Route
                   path="children"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
@@ -426,11 +428,11 @@ function App() {
               {/* Enrollment Payment Route */}
               <Route path="/payment/success" element={<PaymentSuccess />} />
 
-{/* Parent/Children progress routes */}
-<Route path="/parent/children" element={<MyChildrenPage />} />
-<Route path="/parent/progress/:enrollmentId" element={<ChildProgressView />} />
-<Route path="/parent/reports" element={<ProgressReportsPage />} />
-<Route path="/parent/children/:childId" element={<ChildOverviewPage />} />
+              {/* Parent/Children progress routes */}
+              <Route path="/parent/children" element={<MyChildrenPage />} />
+              <Route path="/parent/progress/:enrollmentId" element={<ChildProgressView />} />
+              <Route path="/parent/reports" element={<ProgressReportsPage />} />
+              <Route path="/parent/children/:childId" element={<ChildOverviewPage />} />
             </Routes>
           </div>
         </Router>

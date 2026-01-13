@@ -99,7 +99,7 @@ const LocationStep = React.memo(({
 
             {/* Governorate Select */}
             <Select
-                placeholder={t('auth.0') || "Select Governorate"}
+                placeholder={t('auth.governorate') || "Select Governorate"}
                 name="address.governorate"
                 value={form.governorate || undefined}
                 onChange={(value) => {

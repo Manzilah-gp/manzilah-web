@@ -12,3 +12,9 @@ export const registerTeacher = (data) =>
 
 export const getProfile = () =>
     api.get("/users/profile");
+
+export const changePassword = (data) =>
+    api.post("/users/change-password", data);
+
+export const sendVerificationCode = (email) =>
+    api.post("/users/send-code", { email });

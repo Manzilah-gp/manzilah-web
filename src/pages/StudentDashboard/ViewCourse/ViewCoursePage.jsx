@@ -56,7 +56,7 @@ const ViewCoursePage = () => {
     };
 
     const formatPrice = (cents) => {
-        return cents === 0 ? 'Free' : `₪${cents}`;
+        return cents === 0 ? 'Free' : `$${cents}`;
     };
 
     const formatDate = (date) => {
