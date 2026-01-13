@@ -8,10 +8,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Tabs, Button, Spin, Alert, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getChildProgress } from '../../api/parentProgressApi';
+import { getChildProgress ,getChildProgressHistory } from '../../api/parentProgressApi';
 import MemorizationProgressDisplay from '../../components/Parent/MemorizationProgressDisplay';
 import AttendanceDisplay from '../../components/Parent/AttendanceDisplay';
 import ProgressHistoryDisplay from '../../components/Parent/ProgressHistoryDisplay';
+
 import './ChildProgressView.css';
 
 const ChildProgressView = () => {
@@ -135,14 +136,16 @@ const ChildProgressView = () => {
                             )
                         },
                         {
-                            key: 'history',
-                            label: '📜 History',
-                            children: (
-                                <ProgressHistoryDisplay
-                                    enrollmentId={enrollmentId}
-                                />
-                            )
-                        }
+    key: 'history',
+    label: '📜 History',
+    children: (
+        <ProgressHistoryDisplay
+            enrollmentId={enrollmentId}
+            apiCall={getChildProgressHistory}
+        />
+    )
+}
+                   
                     ]}
                 />
             </Card>
