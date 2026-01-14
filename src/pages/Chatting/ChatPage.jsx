@@ -258,6 +258,7 @@ const ChatPage = () => {
 
   return (
     <>
+      <Header />
       <div className="chat-page-container">
         {/* Mobile Toggle Button */}
         <Button
