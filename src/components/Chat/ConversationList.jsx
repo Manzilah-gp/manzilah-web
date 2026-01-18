@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Avatar, Badge, Button, Input, Empty, Spin } from 'antd';
-import { PlusOutlined, SearchOutlined, UserOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, UserOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 import './Chat.css';
 
@@ -12,6 +13,7 @@ const ConversationList = ({
   onlineUsers,
   loading
 }) => {
+  const navigate = useNavigate();
   const [searchText, setSearchText] = React.useState('');
 
   // Filter conversations by search
@@ -25,6 +27,18 @@ const ConversationList = ({
   return (
     <div className="conversation-list">
       {/* Header */}
+      <div>
+        <Button
+          style={{
+            border: 'none',
+            cursor: 'pointer'
+          }}
+          icon={<ArrowLeftOutlined />}
+          onClick={() => navigate(-1)}
+        >
+          Back
+        </Button>
+      </div>
       <div className="conversation-header">
         <h2>Messages</h2>
         <Button
@@ -60,9 +74,8 @@ const ConversationList = ({
           dataSource={filteredConversations}
           renderItem={(conv) => (
             <List.Item
-              className={`conversation-item ${
-                selectedConversation?.id === conv.id ? 'active' : ''
-              }`}
+              className={`conversation-item ${selectedConversation?.id === conv.id ? 'active' : ''
+                }`}
               onClick={() => onSelectConversation(conv)}
             >
               <List.Item.Meta
@@ -87,9 +100,9 @@ const ConversationList = ({
                     </span>
                     {/* LARGE VISIBLE UNREAD BADGE */}
                     {conv.unread_count > 0 && (
-                      <Badge 
-                        count={conv.unread_count} 
-                        style={{ 
+                      <Badge
+                        count={conv.unread_count}
+                        style={{
                           backgroundColor: '#ff4d4f',
                           fontWeight: 'bold',
                           fontSize: '12px',

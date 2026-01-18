@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 import { getEnrollmentDetails, withdrawFromCourse } from '../../../api/studentDashboard';
 import JoinMeetingButton from '../../../components/Course/JoinMeetingButton';
+import useAuth from '../../../hooks/useAuth';
 import './ViewCoursePage.css';
 
 const ViewCoursePage = () => {
@@ -19,6 +20,7 @@ const ViewCoursePage = () => {
     const navigate = useNavigate();
     const [enrollment, setEnrollment] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { user } = useAuth();
 
     useEffect(() => {
         fetchEnrollmentDetails();
@@ -200,14 +202,16 @@ const ViewCoursePage = () => {
                         )}
 
                         {/* Course Materials Button (Placeholder) */}
-                        <div className="content-card">
-                            <h2 className="card-title">
-                                <BookOutlined /> Course Materials
-                            </h2>
-                            <button className="materials-button" onClick={() => navigate(`/course/${enrollment.course_id}/materials`)}>
-                                View Materials
-                            </button>
-                        </div>
+                        {enrollment.status === 'active' && user.roles.includes('student') && (
+                            <div className="content-card">
+                                <h2 className="card-title">
+                                    <BookOutlined /> Course Materials
+                                </h2>
+                                <button className="materials-button" onClick={() => navigate(`/course/${enrollment.course_id}/materials`)}>
+                                    View Materials
+                                </button>
+                            </div>
+                        )}
                     </div>
 
                     {/* Sidebar */}
@@ -286,7 +290,7 @@ const ViewCoursePage = () => {
                         </div>
 
                         {/* Actions */}
-                        {enrollment.status === 'active' && (
+                        {enrollment.status === 'active' && user.roles.includes('student') && (
                             <>
                                 <div className="sidebar-card">
                                     <h3 className="sidebar-title">Join Online Meeting</h3>

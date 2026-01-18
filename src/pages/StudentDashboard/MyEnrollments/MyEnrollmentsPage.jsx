@@ -408,7 +408,7 @@ const MyEnrollmentsPage = () => {
                                     </button>
                                     {enrollment.enrollment_status === 'active' && (
                                         <>
-                                            {enrollment.is_online_enabled ? (
+                                            {enrollment.is_online_enabled && user.roles.includes('student') ? (
                                                 <div style={{ height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                     <JoinMeetingButton
                                                         courseId={enrollment.course_id}

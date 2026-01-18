@@ -238,3 +238,38 @@
         gap: 8px;
     }
 }
+
+.btn-delete-child {
+    background: #fee2e2;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: auto;
+}
+
+.btn-delete-child:hover {
+    background: #fecaca;
+    transform: scale(1.1);
+}
+
+.btn-undo-request {
+    background: none;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-undo-request:hover {
+    background: #ef4444;
+    color: white;
+}

@@ -58,3 +58,12 @@ export const getCourseDetails = (courseId) => {
 export const getFilterOptions = () => {
     return api.get('/public/filter-options');
 };
+
+/**
+ * Get closest 3 mosques to user's location
+ * Requires authentication
+ * @returns {Promise} Array of closest mosques with distance
+ */
+export const getClosestMosques = () => {
+    return api.get('/public/mosques/closest');
+};

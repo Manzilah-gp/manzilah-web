@@ -1,0 +1,125 @@
+/* ===================================================== */
+/* Event Share Buttons Component Styles */
+/* ===================================================== */
+
+.event-share-buttons {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border: 2px solid #bae6fd;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.share-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.share-buttons-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.share-button {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    outline: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+}
+
+.share-button:hover {
+    transform: scale(1.1);
+}
+
+.share-button:active {
+    transform: scale(0.95);
+}
+
+/* Copy Link Button */
+.copy-link-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+    border: 2px solid #0ea5e9;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.copy-link-button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(135deg, #bae6fd 0%, #7dd3fc 100%);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.copy-link-button:active {
+    transform: scale(0.95);
+}
+
+/* Event URL Display */
+.event-url-display {
+    margin-top: 16px;
+}
+
+.url-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #475569;
+    background: white;
+    font-family: 'Courier New', monospace;
+    cursor: text;
+    transition: border-color 0.2s ease;
+}
+
+.url-input:hover {
+    border-color: #0ea5e9;
+}
+
+.url-input:focus {
+    outline: none;
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .event-share-buttons {
+        padding: 20px 16px;
+    }
+
+    .share-title {
+        font-size: 16px;
+    }
+
+    .share-buttons-row {
+        gap: 12px;
+    }
+
+    .url-input {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+}
+
+/* Accessibility: Focus states */
+.share-button:focus-visible,
+.copy-link-button:focus-visible {
+    outline: 2px solid #0ea5e9;
+    outline-offset: 2px;
+}

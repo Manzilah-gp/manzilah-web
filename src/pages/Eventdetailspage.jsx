@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import MainSideBar from '../components/MainSideBar/MainSideBar';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import EventShareButtons from '../components/Events/EventShareButtons';
 import useAuth from '../hooks/useAuth';
 import {
   CalendarOutlined,
@@ -237,6 +235,7 @@ function EventDetailsPage() {
               </div>
             )}
           </div>
+          <EventShareButtons event={event} />
 
           {/* Description */}
           <div className="event-description">

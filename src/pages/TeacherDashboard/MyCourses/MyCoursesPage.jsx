@@ -139,7 +139,7 @@ const MyCoursesPage = () => {
                                 {course.is_online_enabled ? (
                                     <JoinMeetingButton
                                         courseId={course.course_id}
-                                        variant="secondary"
+                                        variant="primary"
                                     />
                                 ) : (
                                     null

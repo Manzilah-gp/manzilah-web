@@ -32,6 +32,14 @@ export const getMyChildren = async () => {
 };
 
 /**
+ * Get student's verified parents
+ * @returns {Promise} List of parents
+ */
+export const getMyParents = async () => {
+    return await api.get('/parent/my-parents');
+};
+
+/**
  * Get pending relationship requests (for students)
  * @returns {Promise} List of pending requests
  */
@@ -55,4 +63,13 @@ export const acceptRequest = async (requestId) => {
  */
 export const rejectRequest = async (requestId) => {
     return await api.delete(`/parent/reject-request/${requestId}`);
+};
+
+/**
+ * Delete/Cancel parent-child relationship
+ * @param {number} relationshipId - Relationship ID to delete
+ * @returns {Promise} API response
+ */
+export const deleteRelationship = async (relationshipId) => {
+    return await api.delete(`/parent/delete-relationship/${relationshipId}`);
 };
