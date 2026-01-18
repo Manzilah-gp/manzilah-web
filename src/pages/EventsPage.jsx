@@ -67,56 +67,69 @@ function EventsPage() {
   }, [filterType, filterScope]);
 
   // Fetch events from API
-  const fetchEvents = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      let url = 'http://localhost:5000/api/events';
+  // Replace the fetchEvents function in your EventsPage.js
 
-      // ⭐ Handle enrolled mosques filter for students/parents
-      if (filterScope === 'enrolled_mosques') {
-        url = 'http://localhost:5000/api/events/my-enrolled-mosques';
-        console.log('🌐 Fetching from enrolled mosques endpoint');
-      }
+const fetchEvents = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    let url = 'http://localhost:5000/api/events';
 
-      const params = new URLSearchParams();
-      if (filterType !== 'all') params.append('event_type', filterType);
-
-      // Only add filter param if NOT using enrolled mosques endpoint
-      if (filterScope !== 'all' && filterScope !== 'enrolled_mosques') {
-        params.append('filter', filterScope);
-      }
-
-      if (params.toString()) url += `?${params.toString()}`;
-
-      console.log('🌐 Fetching events from:', url);
-
-      const response = await fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      const data = await response.json();
-      console.log('📥 Events response:', data);
-
-      if (data.success) {
-        // Handle both response formats (events or data)
-        setEvents(data.events || data.data);
-      }
-
-      setLoading(false);
-    } catch (error) {
-      console.error('❌ Error fetching events:', error);
-      message.error('Failed to load events');
-      setLoading(false);
+    // Handle enrolled mosques filter for students/parents
+    if (filterScope === 'enrolled_mosques') {
+      url = 'http://localhost:5000/api/events/my-enrolled-mosques';
+      console.log('🌐 Fetching from enrolled mosques endpoint');
     }
-  };
 
-  // Handle create event button click
-  const handleCreateEvent = () => {
-    setCreateModalVisible(true);
-  };
+    const params = new URLSearchParams();
+    if (filterType !== 'all') params.append('event_type', filterType);
+
+    // Only add filter param if NOT using enrolled mosques endpoint
+    if (filterScope !== 'all' && filterScope !== 'enrolled_mosques') {
+      params.append('filter', filterScope);
+    }
+
+    if (params.toString()) url += `?${params.toString()}`;
+
+    console.log('🌐 Fetching events from:', url);
+
+    const response = await fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const data = await response.json();
+    console.log('📥 Events response:', data);
+
+    if (data.success) {
+      // ✅ NORMALIZE: Handle both response formats
+      let eventsData = data.events || data.data || [];
+      
+      // ✅ ADD MISSING FIELDS: Ensure all events have interaction counts
+      eventsData = eventsData.map(event => ({
+        ...event,
+        // Add default values if missing
+        likes_count: event.likes_count || 0,
+        going_count: event.going_count || 0,
+        maybe_count: event.maybe_count || 0,
+        not_going_count: event.not_going_count || 0,
+        comments_count: event.comments_count || 0,
+        user_liked: event.user_liked || false,
+        user_rsvp: event.user_rsvp || null
+      }));
+      
+      console.log('✅ Normalized events:', eventsData);
+      setEvents(eventsData);
+    }
+
+    setLoading(false);
+  } catch (error) {
+    console.error('❌ Error fetching events:', error);
+    message.error('Failed to load events');
+    setLoading(false);
+  }
+};
 
   // Handle event created successfully
   const handleEventCreated = () => {
