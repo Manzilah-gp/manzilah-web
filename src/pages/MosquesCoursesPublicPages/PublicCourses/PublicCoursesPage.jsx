@@ -65,7 +65,7 @@ const PublicCoursesPage = () => {
     };
 
     const formatPrice = (priceCents) => {
-        return priceCents === 0 ? 'Free' : `$${priceCents}`;
+        return priceCents === 0 ? 'Free' : `$${(priceCents / 100).toFixed(2)}`;
     };
 
     return (

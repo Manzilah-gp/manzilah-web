@@ -223,7 +223,7 @@ const CourseStudentsPage = () => {
                                             <span className="stat-label">Attendance Rate</span>
                                             <span className="stat-value">
                                                 {student.total_attendance_records > 0
-                                                    ? `${Math.round((student.present_count / student.total_attendance_records) * 100)}%`
+                                                    ? `${Math.round((student.present_count / student.total_attendance_records) * 100) || 0}%`
                                                     : 'N/A'}
                                             </span>
                                         </div>

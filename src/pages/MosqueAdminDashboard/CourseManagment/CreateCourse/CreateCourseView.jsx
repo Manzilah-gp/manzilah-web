@@ -546,13 +546,13 @@ const CreateCourseView = () => {
                                             fontWeight: '600',
                                             color: '#374151'
                                         }}>
-                                            Price (Shekel)
+                                            Price (Dollars)
                                         </label>
                                         <input
                                             type="number"
                                             step="0.01"
-                                            value={formData.price_cents}
-                                            onChange={(e) => handleInputChange('price_cents', e.target.value)}
+                                            value={formData.price_cents / 100 || ''}
+                                            onChange={(e) => handleInputChange('price_cents', Math.round(e.target.value * 100) || 0)}
                                             placeholder="0.00"
                                             style={{
                                                 width: '100%',

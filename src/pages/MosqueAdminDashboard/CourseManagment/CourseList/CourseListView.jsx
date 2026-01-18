@@ -8,9 +8,7 @@ import {
     HomeOutlined,
     GlobalOutlined,
     PlusOutlined,
-    EditOutlined,
-    DeleteOutlined,
-    EyeOutlined,
+    ScheduleOutlined,
     FilterOutlined,
     MoreOutlined,
     SearchOutlined
@@ -109,7 +107,7 @@ const CourseListView = () => {
     };
 
     const formatPrice = (price) => {
-        return price === 0 ? 'Free' : `$ ${price}`;
+        return price === 0 ? 'Free' : `$${(price / 100).toFixed(2)}`;
     };
 
     const getScheduleIcon = (type) => {
@@ -483,6 +481,18 @@ const CourseListView = () => {
                                         gap: '12px',
                                         marginBottom: '20px'
                                     }}>
+                                        {course.course_start_date && (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
+                                                <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                                <span style={{ fontSize: '14px' }}>Start: {new Date(course.course_start_date).toLocaleDateString()}</span>
+                                            </div>
+                                        )}
+                                        {course.course_end_date && (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
+                                                <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                                <span style={{ fontSize: '14px' }}>End: {new Date(course.course_end_date).toLocaleDateString()}</span>
+                                            </div>
+                                        )}
                                         {course.duration_weeks && (
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
                                                 <CalendarOutlined style={{ width: '16px', height: '16px' }} />

@@ -148,16 +148,16 @@ const MyChildrenPage = () => {
                             <div className="progress-section">
                                 <div className="progress-header">
                                     <span className="progress-label">Average Progress</span>
-                                    <span 
+                                    <span
                                         className="progress-percentage"
-                                        style={{ color: getProgressColor(Math.round(child.avg_progress)) }}
+                                        style={{ color: getProgressColor(Math.round(child.avg_progress || 0)) }}
                                     >
-                                        {Math.round(child.avg_progress)}%
+                                        {Math.round(child.avg_progress || 0)}%
                                     </span>
                                 </div>
                                 <Progress
-                                    percent={Math.round(child.avg_progress)}
-                                    strokeColor={getProgressColor(Math.round(child.avg_progress))}
+                                    percent={Math.round(child.avg_progress || 0)}
+                                    strokeColor={getProgressColor(Math.round(child.avg_progress || 0))}
                                     showInfo={false}
                                     strokeWidth={10}
                                 />

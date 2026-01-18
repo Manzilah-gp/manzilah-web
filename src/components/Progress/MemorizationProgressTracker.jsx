@@ -83,7 +83,7 @@ const MemorizationProgressTracker = ({
 
         return Math.round(
             ((page - levelInfo.startPage) / (levelInfo.endPage - levelInfo.startPage)) * 100
-        );
+        ) || 0;
     };
 
     const currentPercentage = calculatePercentage(currentPage);

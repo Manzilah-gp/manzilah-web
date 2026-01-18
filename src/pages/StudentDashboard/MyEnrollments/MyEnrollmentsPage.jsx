@@ -123,7 +123,7 @@ const MyEnrollmentsPage = () => {
     };
 
     const formatPrice = (cents) => {
-        return cents === 0 ? 'Free' : `$${cents}`;
+        return cents === 0 ? 'Free' : `$${(cents / 100).toFixed(2)}`;
     };
 
     if (initialLoading) {

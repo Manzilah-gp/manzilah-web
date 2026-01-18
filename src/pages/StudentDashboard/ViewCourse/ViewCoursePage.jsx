@@ -8,7 +8,8 @@ import {
     BankOutlined,
     BookOutlined,
     LoadingOutlined,
-    FileTextOutlined
+    FileTextOutlined,
+    CalendarOutlined
 } from '@ant-design/icons';
 import { getEnrollmentDetails, withdrawFromCourse } from '../../../api/studentDashboard';
 import JoinMeetingButton from '../../../components/Course/JoinMeetingButton';
@@ -58,7 +59,7 @@ const ViewCoursePage = () => {
     };
 
     const formatPrice = (cents) => {
-        return cents === 0 ? 'Free' : `$${cents}`;
+        return cents === 0 ? 'Free' : `$${(cents / 100).toFixed(2)}`;
     };
 
     const formatDate = (date) => {
@@ -169,7 +170,14 @@ const ViewCoursePage = () => {
                                 <h2 className="card-title">
                                     <ClockCircleOutlined /> Class Schedule
                                 </h2>
+                                <h3
+                                    style={{ color: '#3b82f6', fontSize: '16px', marginBottom: '10px' }}
+
+                                ><CalendarOutlined /> Start Date: {new Date(enrollment.course_start_date).toLocaleDateString()
+                                    } - End Date: {new Date(enrollment.course_end_date).toLocaleDateString()}</h3>
+
                                 <div className="schedule-list">
+
                                     {enrollment.schedule.map((slot, index) => (
                                         <div key={index} className="schedule-item">
                                             <div className="schedule-day">

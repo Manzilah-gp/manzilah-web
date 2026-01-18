@@ -182,7 +182,7 @@ const CalendarPage = () => {
         }
 
         return events.filter(event =>
-            event.resource.type === 'course' &&
+            // Check if event belongs to the selected child (works for both courses and events)
             event.resource.child_info?.name === children.find(c => c.id === parseInt(selectedChild))?.name
         );
     }, [events, selectedChild, children, user]);
@@ -248,10 +248,19 @@ const CalendarPage = () => {
      */
     const EventComponent = ({ event }) => (
         <div style={{ fontSize: '13px', fontWeight: '500' }}>
-            <div>{event.title}</div>
+            <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {event.title}
+            </div>
+            {/* Show teacher for courses */}
             {event.resource.teacher_name && (
                 <div style={{ fontSize: '11px', opacity: 0.9 }}>
                     {event.resource.teacher_name}
+                </div>
+            )}
+            {/* Show child name for parents */}
+            {event.resource.child_info && (
+                <div style={{ fontSize: '11px', opacity: 0.9, fontStyle: 'italic' }}>
+                    {event.resource.child_info.name}
                 </div>
             )}
         </div>
@@ -358,8 +367,8 @@ const CalendarPage = () => {
                         startAccessor="start"
                         endAccessor="end"
                         style={{ height: '700px' }}
-                        defaultView="week"
-                        views={['week']}
+                        defaultView="month"
+                        views={['month', 'week', 'day', 'agenda']}
                         onSelectEvent={handleEventClick}
                         eventPropGetter={eventStyleGetter}
                         components={{
@@ -369,6 +378,7 @@ const CalendarPage = () => {
                         max={moment().hour(22).minute(0).toDate()}
                         step={30}
                         timeslots={2}
+                        popup // Enable popup for days with many events in month view
                     />
                 )}
             </Card>
@@ -382,17 +392,17 @@ const CalendarPage = () => {
                         <Tag color="#3498db">Tajweed</Tag>
                         <Tag color="#2ecc71">Feqh</Tag>
                     </Space>
-                    {user?.roles?.includes('mosque_admin') && (
-                        <>
-                            <Title level={5} style={{ marginTop: '15px' }}>Event Types</Title>
-                            <Space wrap>
-                                <Tag color="#e67e22">Religious</Tag>
-                                <Tag color="#db34b7ff">Educational</Tag>
-                                <Tag color="#1abc9c">Social</Tag>
-                                <Tag color="#e74c3c">Fundraising</Tag>
-                            </Space>
-                        </>
-                    )}
+
+                    <>
+                        <Title level={5} style={{ marginTop: '15px' }}>Event Types</Title>
+                        <Space wrap>
+                            <Tag color="#e67e22">Religious</Tag>
+                            <Tag color="#db34b7ff">Educational</Tag>
+                            <Tag color="#1abc9c">Social</Tag>
+                            <Tag color="#e74c3c">Fundraising</Tag>
+                        </Space>
+                    </>
+
                 </Card>
             )}
         </div>

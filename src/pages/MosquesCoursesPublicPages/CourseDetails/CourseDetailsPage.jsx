@@ -86,7 +86,7 @@ const CourseDetailsPage = () => {
     };
 
     const formatPrice = (priceCents) => {
-        return priceCents === 0 ? 'Free' : `$${priceCents}`;
+        return priceCents === 0 ? 'Free' : `$${(priceCents / 100).toFixed(2)}`;
     };
 
     if (loading) {
@@ -194,9 +194,25 @@ const CourseDetailsPage = () => {
 
                             {/* Schedule */}
                             <div>
+
                                 <h3 className="sub-title">Weekly Schedule</h3>
                                 {course.schedule && course.schedule.length > 0 ? (
+
                                     <div className="schedule-list">
+
+                                        {course.course_start_date && (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
+                                                <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                                <span style={{ fontSize: '14px' }}>Start: {new Date(course.course_start_date).toLocaleDateString()}</span>
+                                            </div>
+                                        )}
+                                        {course.course_end_date && (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
+                                                <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                                <span style={{ fontSize: '14px' }}>End: {new Date(course.course_end_date).toLocaleDateString()}</span>
+                                            </div>
+                                        )}
+
                                         {course.schedule.map((slot, idx) => (
                                             <div key={idx} className="schedule-item">
                                                 <div className="day-name">

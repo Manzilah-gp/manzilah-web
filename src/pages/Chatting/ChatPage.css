@@ -6,7 +6,7 @@
 /* Main container - covers entire viewport */
 .chat-page-container {
   position: fixed;
-  top: 0px;
+  top: 100px;
   /* Below header */
   left: 0;
   /* Start from left edge */
@@ -99,7 +99,7 @@
 /* Mobile Toggle Button */
 .mobile-toggle-btn {
   position: fixed;
-  top: 70px;
+  top: 90px;
   left: 16px;
   z-index: 1000;
   display: none;

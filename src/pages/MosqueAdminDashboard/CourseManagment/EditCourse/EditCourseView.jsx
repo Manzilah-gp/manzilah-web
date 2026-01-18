@@ -592,13 +592,13 @@ const EditCourseView = () => {
                                         color: '#374151',
                                         marginBottom: '8px'
                                     }}>
-                                        Price (Shekel)
+                                        Price (Dollars)
                                     </label>
                                     <input
                                         type="number"
-                                        step="1"
-                                        value={formData.price_cents}
-                                        onChange={(e) => handleInputChange('price_cents', e.target.value)}
+                                        step="0.01"
+                                        value={formData.price_cents ? formData.price_cents / 100 : ''}
+                                        onChange={(e) => handleInputChange('price_cents', Math.round(e.target.value * 100) || 0)}
                                         style={{
                                             width: '100%',
                                             padding: '12px 16px',

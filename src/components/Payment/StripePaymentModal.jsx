@@ -52,7 +52,7 @@ const StripePaymentModal = ({ visible, onCancel, course }) => {
      * REASON: Display price in user-friendly format
      */
     const formatPrice = (cents) => {
-        return cents;
+        return (cents / 100).toFixed(2);
     };
 
     return (

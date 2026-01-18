@@ -1,7 +1,7 @@
 // src/pages/TeacherDashboard/MyCourses/MyCoursesPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LoadingOutlined, TeamOutlined, CalendarOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { LoadingOutlined, TeamOutlined, CalendarOutlined, VideoCameraOutlined, ScheduleOutlined } from '@ant-design/icons';
 import { getMyCourses } from '../../../api/teacherCourses';
 import JoinMeetingButton from '../../../components/Course/JoinMeetingButton';
 import './MyCoursesPage.css';
@@ -95,6 +95,22 @@ const MyCoursesPage = () => {
                             {/* Schedule */}
                             {course.schedule && course.schedule.length > 0 && (
                                 <div className="course-schedule">
+                                    {course.course_start_date && (
+                                        <div style={{
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            color: '#6b7280',
+                                            marginBottom: '8px',
+                                        }}>
+                                            <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                            <span style={{ fontSize: '14px' }}>Start: {new Date(course.course_start_date).toLocaleDateString()}</span>
+                                            <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                            <span style={{ fontSize: '14px' }}>End: {new Date(course.course_end_date).toLocaleDateString()}</span>
+                                        </div>
+                                    )}
+
                                     <strong>Schedule:</strong>
                                     {course.schedule.map((s, idx) => (
                                         <div key={idx} className="schedule-item">
@@ -148,8 +164,9 @@ const MyCoursesPage = () => {
                         </div>
                     ))}
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 };
 

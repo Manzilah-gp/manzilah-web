@@ -22,7 +22,7 @@ const MemorizationProgressDisplay = ({ progressData }) => {
 
     // Calculate exam checkpoint markers (every 20 pages)
     const examCheckpoints = [20, 40, 60, 80, 100];
-    
+
     // Get exam scores from exams object
     const examScores = {
         1: exams.exam_1_score,
@@ -37,7 +37,7 @@ const MemorizationProgressDisplay = ({ progressData }) => {
     // Calculate progress within level range
     const levelRange = level_end_page - level_start_page;
     const progressInLevel = current_page - level_start_page;
-    const progressPercentage = levelRange > 0 
+    const progressPercentage = levelRange > 0
         ? Math.min(100, (progressInLevel / levelRange) * 100)
         : 0;
 
@@ -63,19 +63,19 @@ const MemorizationProgressDisplay = ({ progressData }) => {
             {/* Visual Progress Bar */}
             <div className="progress-visual">
                 <div className="progress-bar-container">
-                    <div 
+                    <div
                         className="progress-fill"
                         style={{ width: `${progressPercentage}%` }}
                     />
-                    
+
                     {/* Exam Checkpoint Markers (read-only, no click) */}
                     {examCheckpoints.map((checkpoint, idx) => {
                         const examNum = idx + 1;
                         const status = getExamStatus(examScores[examNum]);
                         const position = ((checkpoint - level_start_page) / levelRange) * 100;
-                        
+
                         if (position < 0 || position > 100) return null;
-                        
+
                         return (
                             <div
                                 key={checkpoint}
@@ -88,7 +88,7 @@ const MemorizationProgressDisplay = ({ progressData }) => {
                         );
                     })}
                 </div>
-                
+
                 <div className="page-labels">
                     <span>Page {level_start_page}</span>
                     <span>Page {level_end_page}</span>
@@ -103,7 +103,7 @@ const MemorizationProgressDisplay = ({ progressData }) => {
                 </div>
                 <div className="info-item">
                     <span className="info-label">Completion:</span>
-                    <span className="info-value">{Math.round(progressPercentage)}%</span>
+                    <span className="info-value">{Math.round(progressPercentage) || 0}%</span>
                 </div>
                 {level_info?.level_name && (
                     <div className="info-item">

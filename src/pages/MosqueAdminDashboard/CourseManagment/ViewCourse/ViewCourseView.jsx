@@ -11,7 +11,8 @@ import {
     UserOutlined,
     EnvironmentOutlined,
     BookOutlined,
-    CheckCircleOutlined
+    CheckCircleOutlined,
+    ScheduleOutlined
 } from '@ant-design/icons';
 import { getCourseById, deleteCourse } from '../../../../api/course';
 import EnableMeetingToggle from '../../../../components/Course/EnableMeetingToggle';
@@ -72,7 +73,7 @@ const ViewCourseView = () => {
     };
 
     const formatPrice = (cents) => {
-        return cents > 0 ? `$${cents}` : 'Free';
+        return cents > 0 ? `$${(cents / 100).toFixed(2)}` : 'Free';
     };
 
     const getCourseTypeColor = (type) => {
@@ -448,6 +449,18 @@ const ViewCourseView = () => {
                             <CalendarOutlined />
                             Class Schedule
                         </h2>
+                        {course.course_start_date && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
+                                <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                <span style={{ fontSize: '14px' }}>Start: {new Date(course.course_start_date).toLocaleDateString()}</span>
+                            </div>
+                        )}
+                        {course.course_end_date && (
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#6b7280' }}>
+                                <ScheduleOutlined style={{ width: '16px', height: '16px' }} />
+                                <span style={{ fontSize: '14px' }}>End: {new Date(course.course_end_date).toLocaleDateString()}</span>
+                            </div>
+                        )}
 
                         {course.schedule && course.schedule.length > 0 ? (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

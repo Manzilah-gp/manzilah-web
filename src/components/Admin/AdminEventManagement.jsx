@@ -7,16 +7,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  Card, 
-  Button, 
-  Tag, 
-  message, 
-  Space, 
+import {
+  Card,
+  Button,
+  Tag,
+  message,
+  Space,
   Spin,
   Modal,
   Popconfirm,
-  Empty 
+  Empty
 } from 'antd';
 import {
   PlusOutlined,
@@ -56,13 +56,13 @@ const AdminEventManagement = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setEvents(data.events || []);
       } else {
         message.error('Failed to load events');
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -108,7 +108,7 @@ const AdminEventManagement = () => {
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         message.success('Event deleted successfully');
         fetchEvents(); // Refresh list
@@ -175,9 +175,9 @@ const AdminEventManagement = () => {
           <h2>Manage Events</h2>
           <p>Create and manage events for your mosque</p>
         </div>
-        <Button 
-          type="primary" 
-          icon={<PlusOutlined />} 
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
           size="large"
           onClick={handleCreateEvent}
         >
@@ -200,8 +200,8 @@ const AdminEventManagement = () => {
       ) : (
         <div className="admin-events-grid">
           {events.map((event) => (
-            <Card 
-              key={event.id} 
+            <Card
+              key={event.id}
               className="admin-event-card"
               hoverable
             >
@@ -255,20 +255,20 @@ const AdminEventManagement = () => {
                       of ${(event.fundraising_goal_cents / 100).toLocaleString('en-US', { minimumFractionDigits: 0 })}
                     </span>
                   </div>
-                  
+
                   {/* Mini Progress Bar */}
                   <div className="mini-progress-bar">
-                    <div 
+                    <div
                       className="mini-progress-fill"
-                      style={{ 
-                        width: `${Math.min((event.current_donations_cents / event.fundraising_goal_cents) * 100, 100)}%` 
+                      style={{
+                        width: `${Math.min((event.current_donations_cents / event.fundraising_goal_cents) * 100, 100)}%`
                       }}
                     />
                   </div>
-                  
+
                   {/* Progress Percentage */}
                   <div className="progress-percentage">
-                    {Math.round((event.current_donations_cents / event.fundraising_goal_cents) * 100)}% complete
+                    {Math.round((event.current_donations_cents / event.fundraising_goal_cents) * 100) || 0}% complete
                   </div>
                 </div>
               )}
@@ -276,20 +276,20 @@ const AdminEventManagement = () => {
               {/* ===================================================== */}
               {/* Event Actions - FIXED with proper spacing */}
               {/* ===================================================== */}
-              <div style={{ 
-                display: 'flex', 
-                gap: '8px', 
+              <div style={{
+                display: 'flex',
+                gap: '8px',
                 flexWrap: 'wrap',
                 marginTop: '16px'
               }}>
-                <Button 
+                <Button
                   icon={<EyeOutlined />}
                   onClick={() => handleViewEvent(event.id)}
                 >
                   View
                 </Button>
 
-                <Button 
+                <Button
                   icon={<EditOutlined />}
                   onClick={() => handleEditEvent(event.id)}
                 >
@@ -298,11 +298,11 @@ const AdminEventManagement = () => {
 
                 {/* Manage Goal Button (ONLY for fundraising events) */}
                 {event.event_type === 'fundraising' && (
-                  <Button 
+                  <Button
                     type="primary"
                     icon={<DollarOutlined />}
                     onClick={() => handleManageGoal(event)}
-                    style={{ 
+                    style={{
                       background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
                       border: 'none'
                     }}
@@ -312,9 +312,9 @@ const AdminEventManagement = () => {
                 )}
 
                 {/* Mark as Completed Button */}
-                <EventStatusButton 
-                  event={event} 
-                  onStatusChanged={() => fetchEvents()} 
+                <EventStatusButton
+                  event={event}
+                  onStatusChanged={() => fetchEvents()}
                 />
 
                 {/* Delete Button */}
@@ -326,7 +326,7 @@ const AdminEventManagement = () => {
                   cancelText="Cancel"
                   okButtonProps={{ danger: true }}
                 >
-                  <Button 
+                  <Button
                     danger
                     icon={<DeleteOutlined />}
                   >
@@ -358,3 +358,5 @@ const AdminEventManagement = () => {
 };
 
 export default AdminEventManagement;
+
+
