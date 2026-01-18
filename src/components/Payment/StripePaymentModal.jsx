@@ -52,7 +52,7 @@ const StripePaymentModal = ({ visible, onCancel, course }) => {
      * REASON: Display price in user-friendly format
      */
     const formatPrice = (cents) => {
-        return (cents / 100).toFixed(2);
+        return cents;
     };
 
     return (
@@ -77,7 +77,7 @@ const StripePaymentModal = ({ visible, onCancel, course }) => {
                 {/* Course Details Section */}
                 <div className="course-details-section">
                     <Title level={4}>Course Details</Title>
-                    
+
                     <Row className="detail-row">
                         <Col span={12}>
                             <Text strong>Course Name:</Text>

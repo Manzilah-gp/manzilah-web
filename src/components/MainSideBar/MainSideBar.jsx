@@ -45,14 +45,14 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             key: 'profile',
             icon: <ProfileOutlined />,
             label: t('sidebar.profile') || 'Profile',
-            roles: ['student', 'mosque_admin', 'ministry_admin', 'parent', 'teacher'],
+            roles: [], // Accessible to all (even if user has no role)
             link: '/profile'
         },
         {
             key: 'calendar',
             icon: <CalendarOutlined />,
             label: t('sidebar.calendar') || 'Calendar',
-            roles: ['ministry_admin', 'mosque_admin', 'teacher', 'student', 'parent', 'donor'],
+            roles: ['mosque_admin', 'teacher', 'student', 'parent', 'donor'],
             link: '/calendar',
         },
         {
@@ -102,47 +102,6 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             link: '/fundraising-approvals',
             roles: ['ministry_admin']
         },
-        {
-            key: 'user-management',
-            icon: <TeamOutlined />,
-            label: t('sidebar.userManagement') || 'User Management',
-            roles: ['ministry_admin'],
-            children: [
-                {
-                    key: 'add-user',
-                    label: 'Add User',
-                    link: '/dashboard/users/add',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'user-list',
-                    label: 'User List',
-                    link: '/dashboard/users/list',
-                    roles: ['ministry_admin']
-                }
-            ]
-        },
-        {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: t('sidebar.systemSettings') || 'Settings',
-            roles: ['ministry_admin'],
-            children: [
-                {
-                    key: 'general-settings',
-                    label: 'General',
-                    link: '/settings/general',
-                    roles: ['ministry_admin']
-                },
-                {
-                    key: 'notifications',
-                    label: 'Notifications',
-                    link: '/settings/notifications',
-                    roles: ['ministry_admin']
-                }
-            ]
-        },
-
         // ==================== MOSQUE ADMIN ONLY ====================
         {
             key: 'my-mosque',
@@ -195,7 +154,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             link: '/teacher/students'
         },
 
-        // ==================== STUDENT ONLY ====================
+        // ==================== STUDENT & PARENT ONLY ====================
         {
             key: 'my-enrollments',
             icon: <BookOutlined />,
@@ -210,14 +169,14 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <TeamOutlined />,
             label: 'My Children',
             roles: ['parent'],
-            link: '/children'
+            link: 'parent/children'
         },
         {
             key: 'progress',
             icon: <BarChartOutlined />,
             label: 'Progress Reports',
             roles: ['parent'],
-            link: '/progress'
+            link: 'parent/progress'
         },
 
     ];
@@ -235,7 +194,7 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             userRoles = [user.role];
         }
 
-        if (!user || userRoles.length === 0) return [];
+        if (!user) return [];
 
         const hasAccess = (item) => {
             // If item has no role restrictions, allow access

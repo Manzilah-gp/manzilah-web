@@ -1,15 +1,16 @@
 
-
 import React, { useState, useEffect } from 'react';
 import { message, Modal, Input, Select } from 'antd';
-import { 
-    requestRelationship, 
+import {
+    requestRelationship,
     getMyRequests,
-    getMyChildren 
+    getMyChildren,
+    deleteRelationship
 } from '../../api/parent';
 import './ParentRelationshipSection.css';
 import { Button } from 'antd';
 
+const { confirm } = Modal;
 
 const { Option } = Select;
 
@@ -76,7 +77,7 @@ const ParentRelationshipSection = () => {
         setSubmitting(true);
         try {
             const response = await requestRelationship(childEmail, relationshipType);
-            
+
             if (response.data.success) {
                 message.success(response.data.message);
                 setShowModal(false);
@@ -91,6 +92,60 @@ const ParentRelationshipSection = () => {
         } finally {
             setSubmitting(false);
         }
+    };
+
+    /**
+     * Handle delete verified child relationship
+     */
+    const handleDeleteChild = (relationshipId, childName) => {
+        confirm({
+            title: 'Remove Child Relationship?',
+            content: `Are you sure you want to remove your relationship with ${childName}? This action cannot be undone.`,
+            okText: 'Remove',
+            okType: 'danger',
+            cancelText: 'Cancel',
+            onOk: async () => {
+                try {
+                    const response = await deleteRelationship(relationshipId);
+
+                    if (response.data.success) {
+                        message.success(response.data.message);
+                        fetchData(); // Refresh list
+                    }
+                } catch (error) {
+                    message.error(
+                        error.response?.data?.message || 'Failed to remove relationship'
+                    );
+                }
+            }
+        });
+    };
+
+    /**
+     * Handle cancel pending request (undo)
+     */
+    const handleCancelRequest = (relationshipId, childName) => {
+        confirm({
+            title: 'Cancel Request?',
+            content: `Are you sure you want to cancel your relationship request to ${childName}?`,
+            okText: 'Cancel Request',
+            okType: 'danger',
+            cancelText: 'Keep Request',
+            onOk: async () => {
+                try {
+                    const response = await deleteRelationship(relationshipId);
+
+                    if (response.data.success) {
+                        message.success(response.data.message);
+                        fetchData(); // Refresh list
+                    }
+                } catch (error) {
+                    message.error(
+                        error.response?.data?.message || 'Failed to cancel request'
+                    );
+                }
+            }
+        });
     };
 
     /**
@@ -121,14 +176,14 @@ const ParentRelationshipSection = () => {
                     <h2>My Children</h2>
                     <p>Manage your children's accounts and track their progress</p>
                 </div>
-               <Button
-    type="primary"
-    className="btn-add-child"
-    onClick={() => setShowModal(true)}
->
-    <span className="icon">➕</span>
-    Add Child
-</Button>
+                <Button
+                    type="primary"
+                    className="btn-add-child"
+                    onClick={() => setShowModal(true)}
+                >
+                    <span className="icon">➕</span>
+                    Add Child
+                </Button>
 
             </div>
 
@@ -137,7 +192,7 @@ const ParentRelationshipSection = () => {
                 <h3 className="subsection-title">
                     Verified Children ({children.length})
                 </h3>
-                
+
                 {children.length === 0 ? (
                     <div className="empty-state">
                         <div className="empty-icon">👨‍👧‍👦</div>
@@ -166,6 +221,13 @@ const ParentRelationshipSection = () => {
                                         Verified: {formatDate(child.verified_at)}
                                     </p>
                                 </div>
+                                <button
+                                    className="btn-delete-child"
+                                    onClick={() => handleDeleteChild(child.relationship_id, child.child_name)}
+                                    title="Remove relationship"
+                                >
+                                    🗑️
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -178,7 +240,7 @@ const ParentRelationshipSection = () => {
                     <h3 className="subsection-title">
                         Pending Requests ({requests.filter(r => !r.is_verified).length})
                     </h3>
-                    
+
                     <div className="requests-table">
                         {requests.map(request => (
                             <div key={request.id} className="request-row">
@@ -201,9 +263,18 @@ const ParentRelationshipSection = () => {
                                             ✓ Verified
                                         </span>
                                     ) : (
-                                        <span className="status pending">
-                                            ⏳ Pending
-                                        </span>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <span className="status pending">
+                                                ⏳ Pending
+                                            </span>
+                                            <button
+                                                className="btn-undo-request"
+                                                onClick={() => handleCancelRequest(request.id, request.child_name)}
+                                                title="Cancel this request"
+                                            >
+                                                Undo
+                                            </button>
+                                        </div>
                                     )}
                                 </div>
                                 <div className="request-date">
@@ -232,10 +303,10 @@ const ParentRelationshipSection = () => {
             >
                 <div className="modal-content">
                     <p className="modal-description">
-                        Enter your child's email address to send a relationship request. 
+                        Enter your child's email address to send a relationship request.
                         They will need to accept the request from their profile.
                     </p>
-                    
+
                     <div className="form-group">
                         <label>Child's Email Address</label>
                         <Input

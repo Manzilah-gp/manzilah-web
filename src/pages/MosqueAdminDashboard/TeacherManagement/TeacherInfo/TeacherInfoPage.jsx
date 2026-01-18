@@ -115,7 +115,7 @@ const TeacherInfoPage = () => {
             title: 'Hourly Rate',
             dataIndex: 'hourly_rate_cents',
             key: 'hourly_rate_cents',
-            render: (cents) => `₪${cents}`
+            render: (cents) => `$${cents}`
         },
         {
             title: 'Memorization',
@@ -265,6 +265,7 @@ const TeacherInfoPage = () => {
                         <Title level={5}><EnvironmentOutlined /> Certifications</Title>
                         {teacher.certification ? (
                             <div className="certifications-list">
+                                {/* Tajweed Certificate */}
                                 <div className="cert-item" style={{ marginBottom: 16 }}>
                                     <Space align="start">
                                         <FileProtectOutlined style={{ fontSize: 24, color: '#1890ff' }} />
@@ -281,6 +282,7 @@ const TeacherInfoPage = () => {
                                         </div>
                                     </Space>
                                 </div>
+                                {/* Sharea Certificate */}
                                 <div className="cert-item">
                                     <Space align="start">
                                         <FileProtectOutlined style={{ fontSize: 24, color: '#722ed1' }} />
@@ -301,6 +303,7 @@ const TeacherInfoPage = () => {
                         ) : (
                             <Text type="secondary">No certification information.</Text>
                         )}
+
                     </Card>
 
                 </Col>

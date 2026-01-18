@@ -11,7 +11,6 @@ import './Auth.css';
 
 const { Step } = Steps;
 
-// Memoized PersonalInfoStep component
 const PersonalInfoStep = React.memo(({ form, handleChange }) => {
     const { t } = useTranslation();
 
@@ -55,9 +54,7 @@ const PersonalInfoStep = React.memo(({ form, handleChange }) => {
 
             {form.password && form.confirmPassword && (form.password !== form.confirmPassword) && (
                 <div style={{ color: 'red', fontSize: '12px', marginTop: '20px', marginBottom: '-10px' }}>
-
                     {t('auth.passwordsDoNotMatch') || "Passwords do not match"}
-
                 </div>
             )}
 
@@ -90,6 +87,47 @@ const PersonalInfoStep = React.memo(({ form, handleChange }) => {
                 value={form.date_of_birth}
                 onChange={handleChange}
             />
+
+            {/* ✅ NEW: Parent Profile Checkbox */}
+            <div style={{
+                marginTop: '20px',
+                padding: '15px',
+                background: '#f0f8ff',
+                borderRadius: '12px',
+                border: '2px solid #3b82f6'
+            }}>
+                <label style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                    fontSize: '15px',
+                    fontWeight: '500',
+                    color: '#1e40af'
+                }}>
+                    <input
+                        type="checkbox"
+                        name="isParent"
+                        checked={form.isParent}
+                        onChange={handleChange}
+                        style={{
+                            marginRight: '10px',
+                            width: '18px',
+                            height: '18px',
+                            cursor: 'pointer'
+                        }}
+                    />
+                    {t('auth.registerAsParent') || '👨‍👩‍👧‍👦 Register as Parent/Guardian'}
+                </label>
+                <p style={{
+                    margin: '8px 0 0 28px',
+                    fontSize: '12px',
+                    color: '#6b7280',
+                    lineHeight: '1.4'
+                }}>
+                    {t('auth.parentCheckboxHint') ||
+                        'Check this if you are registering to monitor your children\'s progress. You can add your children after logging in.'}
+                </p>
+            </div>
         </div>
     );
 });
@@ -104,6 +142,7 @@ const Register = () => {
         phone: "",
         gender: "",
         date_of_birth: "",
+        isParent: false,
         address: {
             address_line1: "",
             address_line2: "",
@@ -123,7 +162,10 @@ const Register = () => {
 
     // Use useCallback to memoize the handleChange function
     const handleChange = useCallback((e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
+
+        // ✅ Determine the value based on input type
+        const fieldValue = type === 'checkbox' ? checked : value;
 
         if (name.includes('.')) {
             const [parent, child] = name.split('.');
@@ -131,13 +173,19 @@ const Register = () => {
                 ...prev,
                 [parent]: {
                     ...prev[parent],
-                    [child]: value
+                    [child]: fieldValue
                 }
             }));
         } else {
-            setForm(prev => ({ ...prev, [name]: value }));
+            setForm(prev => ({ ...prev, [name]: fieldValue }));
         }
     }, []);
+
+    // ✅ DEBUG: Log form state changes to verify checkbox behavior
+    React.useEffect(() => {
+        console.log('Form state updated:', form);
+        console.log('isParent value:', form.isParent);
+    }, [form]);
 
     // Add this function inside the Register component, after handleChange
 
@@ -177,9 +225,26 @@ const Register = () => {
         setMessage("");
 
         try {
-            const res = await registerUser(form);
-            setMessage("Registration successful! You can now log in.");
+            const registrationData = {
+                name: form.name,
+                email: form.email,
+                password: form.password,
+                phone: form.phone,
+                gender: form.gender,
+                date_of_birth: form.date_of_birth,
+                address: form.address,
+                roles: form.isParent ? ['parent'] : []
+            };
 
+            const res = await registerUser(registrationData);
+
+            const successMessage = form.isParent
+                ? "Parent account registered successfully! You can now log in and add your children."
+                : "Registration successful! You can now log in.";
+
+            setMessage(successMessage);
+
+            // Reset form
             setForm({
                 name: "",
                 email: "",
@@ -188,10 +253,10 @@ const Register = () => {
                 phone: "",
                 gender: "",
                 date_of_birth: "",
+                isParent: false,
                 address: {
                     address_line1: "",
                     address_line2: "",
-                    // city: "",
                     region: "",
                     governorate: "",
                     postal_code: "",
@@ -288,22 +353,6 @@ const Register = () => {
                             {message}
                         </div>
                     )}
-
-                    <div className="social-account-container">
-                        <span className="title">{t('auth.orSignUpWith')}</span>
-                        <div className="social-accounts">
-                            <button className="social-button google" type="button">
-                                <svg className="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 488 512">
-                                    <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
-                                </svg>
-                            </button>
-                            <button className="social-button apple" type="button">
-                                <svg className="svg" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
-                                    <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
 
                     <span className="agreement">
                         <a href="/register/teacher">{t('auth.teacherRegister')}</a>

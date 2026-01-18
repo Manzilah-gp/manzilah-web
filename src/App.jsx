@@ -15,6 +15,7 @@ import Login from './pages/Auth/Login';
 import Register from './pages/Auth/Register';
 import Unauthorized from './pages/Auth/Unauthorized';
 import TeacherRegistrationPage from './pages/TeacherRegister/TeacherRegistrationPage';
+import ChangePassword from './pages/Auth/ChangePassword';
 
 // Dashboard Pages
 import StatisticsView from './components/Dashboard/Ministry/Statistics';
@@ -102,6 +103,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/unauthorized" element={<Unauthorized />} />
               <Route path="/register/teacher" element={<TeacherRegistrationPage />} />
+              <Route path="/change-password" element={<ChangePassword />} />
               {/* <Route path="/qibla" element={<QiblaPage />} />
               <Route path="/quran" element={<QuranReaderPage />} /> */}
 
@@ -314,7 +316,7 @@ function App() {
 
                 {/* Student Routes */}
                 <Route
-                  path="/my-enrollments"
+                  path="my-enrollments"
                   element={
                     <RoleProtectedRoute allowedRoles={['student', 'parent']}>
                       <MyEnrollmentsPage />
@@ -331,8 +333,8 @@ function App() {
                 />
 
                 {/* Parent Routes */}
-               <Route
-                  path="children"
+                <Route
+                  path="parent/children"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
                       <MyChildrenPage />
@@ -340,7 +342,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="children/:childId"
+                  path="parent/children/:childId"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
                       <ChildOverviewPage />
@@ -348,7 +350,15 @@ function App() {
                   }
                 />
                 <Route
-                  path="progress"
+                  path="parent/progress/:enrollmentId"
+                  element={
+                    <RoleProtectedRoute allowedRoles={['parent']}>
+                      <ChildProgressView />
+                    </RoleProtectedRoute>
+                  }
+                />
+                <Route
+                  path="parent/reports"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
                       <ProgressReportsPage />
@@ -356,13 +366,13 @@ function App() {
                   }
                 />
                 <Route
-                  path="progress/:enrollmentId"
+                  path="parent/children/:childId"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
-                      <ChildProgressView />
+                      <ChildOverviewPage />
                     </RoleProtectedRoute>
-                  }
-                />
+                  } />
+
                 {/* Calendar */}
                 <Route
                   path="/calendar"
@@ -426,11 +436,7 @@ function App() {
               {/* Enrollment Payment Route */}
               <Route path="/payment/success" element={<PaymentSuccess />} />
 
-{/* Parent/Children progress routes */}
-<Route path="/parent/children" element={<MyChildrenPage />} />
-<Route path="/parent/progress/:enrollmentId" element={<ChildProgressView />} />
-<Route path="/parent/reports" element={<ProgressReportsPage />} />
-<Route path="/parent/children/:childId" element={<ChildOverviewPage />} />
+
             </Routes>
           </div>
         </Router>

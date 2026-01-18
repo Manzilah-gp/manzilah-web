@@ -159,8 +159,8 @@ const MosquePreferencesForm = ({ formData, updateFormData }) => {
                                 >
                                     <InputNumber
                                         min={0}
-                                        formatter={value => `₪ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                        parser={value => value.replace(/₪\s?|(,*)/g, '')}
+                                        formatter={value => `$${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                        parser={value => value.replace(/$\s?|(,*)/g, '')}
                                         style={{ width: '100%' }}
                                         placeholder="0.00"
                                     />

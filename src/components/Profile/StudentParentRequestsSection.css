@@ -1,5 +1,3 @@
-
-
 .student-parent-requests-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 16px;
@@ -206,4 +204,16 @@
         height: 48px;
         font-size: 36px;
     }
+}
+
+/* Added Styles */
+.section-block {
+    margin-bottom: 32px;
+}
+
+.verified-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
 }

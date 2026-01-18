@@ -6,7 +6,7 @@ import { getCourseDetails } from '../../../api/publicBrowsing';
 import './CourseDetailsPage.css';
 import { checkEnrollmentEligibility, enrollInFreeCourse } from '../../../api/enrollment';
 import useAuth from '../../../hooks/useAuth';
-import StripePaymentModal from '../../../components/Payment/StripePaymentModal';  
+import StripePaymentModal from '../../../components/Payment/StripePaymentModal';
 
 const CourseDetailsPage = () => {
     const { id } = useParams();
@@ -15,7 +15,7 @@ const CourseDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
     const [enrolling, setEnrolling] = useState(false);
-    const [showPaymentModal, setShowPaymentModal] = useState(false);  
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -86,7 +86,7 @@ const CourseDetailsPage = () => {
     };
 
     const formatPrice = (priceCents) => {
-        return priceCents === 0 ? 'Free' : `₪${(priceCents / 100).toFixed(2)}`;
+        return priceCents === 0 ? 'Free' : `$${priceCents}`;
     };
 
     if (loading) {

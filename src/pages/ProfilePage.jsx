@@ -803,12 +803,13 @@ const renderStudentInfo = () => {
             <DashboardOutlined /> Manage Events
           </button>
         )}
-        <button
-          className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
-          onClick={() => setActiveTab('calendar')}
-        >
-          Calendar
-        </button>
+        {userData.activeRoles?.includes(['student', 'teacher', 'parent', 'mosque_admin']) && (
+          <button
+            className={`tab ${activeTab === 'calendar' ? 'active' : ''}`}
+            onClick={() => setActiveTab('calendar')}
+          >
+            Calendar
+          </button>)}
       </div>
 
       {/* Tab Content */}

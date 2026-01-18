@@ -41,6 +41,7 @@ const CalendarPage = () => {
 
             if (response.data.success) {
                 const data = response.data.data;
+                console.log("calender data", data);
 
                 // Process courses into calendar events
                 const calendarEvents = processScheduleData(data);
@@ -193,7 +194,7 @@ const CalendarPage = () => {
     const handleEventClick = async (event) => {
         const { resource } = event;
         const canManageContent = user?.roles?.some(role =>
-            ['admin', 'teacher', 'student'].includes(role)
+            ['mosque_admin', 'teacher', 'student'].includes(role)
         );
 
 

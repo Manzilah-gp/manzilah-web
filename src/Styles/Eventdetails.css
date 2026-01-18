@@ -6,13 +6,15 @@
 
 .event-details-page {
   width: 100%;
-  max-width: 1400px; /* Wider max-width */
+  max-width: 1400px;
+  /* Wider max-width */
   margin: 0 auto;
-  padding: 40px 60px; /* Better side padding */
+  padding: 40px 60px;
+  /* Better side padding */
   box-sizing: border-box;
 }
 
-.loading-container {
+.event-details-page.loading-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,12 +25,12 @@
 /* Event Details Card - Full Width */
 /* ============================================ */
 
-.event-details-card {
+.event-details-page .event-details-card {
   margin-bottom: 24px;
   width: 100%;
 }
 
-.event-details-header {
+.event-details-page .event-details-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -36,14 +38,14 @@
   width: 100%;
 }
 
-.event-details-header h1 {
+.event-details-page .event-details-header h1 {
   font-size: 36px;
   font-weight: bold;
   margin: 12px 0;
   color: #262626;
 }
 
-.mosque-info {
+.event-details-page .mosque-info {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -55,7 +57,7 @@
 /* Event Info Grid - Better Layout */
 /* ============================================ */
 
-.event-info {
+.event-details-page .event-info {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
@@ -66,7 +68,7 @@
   width: 100%;
 }
 
-.info-item {
+.event-details-page .info-item {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -74,7 +76,7 @@
   color: #595959;
 }
 
-.info-item .anticon {
+.event-details-page .info-item .anticon {
   font-size: 20px;
   color: #1890ff;
   flex-shrink: 0;
@@ -96,7 +98,7 @@
   color: #262626;
 }
 
-.event-description p {
+.event-details-page .event-description p {
   font-size: 16px;
   line-height: 1.8;
   color: #595959;
@@ -107,7 +109,7 @@
 /* Event Stats - Better Grid */
 /* ============================================ */
 
-.event-stats {
+.event-details-page .event-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 20px;
@@ -118,7 +120,7 @@
   width: 100%;
 }
 
-.stat-item {
+.event-details-page .stat-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -131,12 +133,12 @@
   transition: all 0.3s ease;
 }
 
-.stat-item:hover {
+.event-details-page .stat-item:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.stat-item .anticon {
+.event-details-page .stat-item .anticon {
   font-size: 22px;
 }
 
@@ -144,14 +146,14 @@
 /* Event Actions - Responsive Buttons */
 /* ============================================ */
 
-.event-actions {
+.event-details-page .event-actions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
   width: 100%;
 }
 
-.event-actions button {
+.event-details-page .event-actions button {
   width: 100%;
   min-height: 40px;
 }
@@ -165,7 +167,7 @@
   width: 100%;
 }
 
-.add-comment {
+.event-details-page .add-comment {
   display: flex;
   gap: 12px;
   margin-bottom: 24px;
@@ -174,25 +176,25 @@
   width: 100%;
 }
 
-.comment-input-wrapper {
+.event-details-page .comment-input-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.comment-input-wrapper button {
+.event-details-page .comment-input-wrapper button {
   align-self: flex-end;
 }
 
-.comments-list {
+.event-details-page .comments-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
 }
 
-.comment-item {
+.event-details-page .comment-item {
   display: flex;
   gap: 12px;
   padding: 20px;
@@ -201,12 +203,12 @@
   transition: all 0.3s ease;
 }
 
-.comment-item:hover {
+.event-details-page .comment-item:hover {
   background: #f0f0f0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.comment-content {
+.event-details-page .comment-content {
   flex: 1;
 }
 
@@ -525,11 +527,11 @@
 }
 
 /* Better spacing */
-.event-details-page > * {
+.event-details-page>* {
   margin-bottom: 24px;
 }
 
-.event-details-page > *:last-child {
+.event-details-page>*:last-child {
   margin-bottom: 0;
 }
 

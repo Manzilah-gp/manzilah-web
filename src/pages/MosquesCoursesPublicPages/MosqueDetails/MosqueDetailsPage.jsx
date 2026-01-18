@@ -32,7 +32,7 @@ const MosqueDetailsPage = () => {
     };
 
     const formatPrice = (price) => {
-        return price === 0 ? 'Free' : `₪${price}`;
+        return price === 0 ? 'Free' : `$${price}`;
     };
 
     const getAgeGroupLabel = (ageGroup) => {

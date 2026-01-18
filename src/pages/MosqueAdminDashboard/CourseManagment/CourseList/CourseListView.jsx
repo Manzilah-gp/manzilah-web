@@ -109,7 +109,7 @@ const CourseListView = () => {
     };
 
     const formatPrice = (price) => {
-        return price === 0 ? 'Free' : `₪ ${price}`;
+        return price === 0 ? 'Free' : `$ ${price}`;
     };
 
     const getScheduleIcon = (type) => {

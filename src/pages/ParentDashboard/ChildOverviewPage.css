@@ -159,7 +159,7 @@
 /* Enrollment Card */
 /* ============================================ */
 
-.enrollment-card {
+.enrollments-grid .enrollment-card {
     border-radius: 20px;
     border: none;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
@@ -169,12 +169,12 @@
     flex-direction: column;
 }
 
-.enrollment-card:hover {
+.enrollments-grid .enrollment-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
-.enrollment-card .ant-card-body {
+.enrollments-grid .enrollment-card .ant-card-body {
     padding: 28px;
     display: flex;
     flex-direction: column;
@@ -363,7 +363,7 @@
         font-size: 24px;
     }
 
-    .enrollment-card .ant-card-body {
+    .enrollments-grid .enrollment-card .ant-card-body {
         padding: 24px;
     }
 }
@@ -409,7 +409,7 @@
         font-size: 22px;
     }
 
-    .enrollment-card .ant-card-body {
+    .enrollments-grid .enrollment-card .ant-card-body {
         padding: 24px 20px;
         gap: 16px;
     }
@@ -458,7 +458,7 @@
         font-size: 20px;
     }
 
-    .enrollment-card .ant-card-body {
+    .enrollments-grid .enrollment-card .ant-card-body {
         padding: 20px 16px;
     }
 

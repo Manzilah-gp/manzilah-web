@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Tabs, Button, Spin, Alert, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { getChildProgress ,getChildProgressHistory } from '../../api/parentProgressApi';
+import { getChildProgress, getChildProgressHistory } from '../../api/parentProgressApi';
 import MemorizationProgressDisplay from '../../components/Parent/MemorizationProgressDisplay';
 import AttendanceDisplay from '../../components/Parent/AttendanceDisplay';
 import ProgressHistoryDisplay from '../../components/Parent/ProgressHistoryDisplay';
@@ -16,7 +16,7 @@ import ProgressHistoryDisplay from '../../components/Parent/ProgressHistoryDispl
 import './ChildProgressView.css';
 
 const ChildProgressView = () => {
-    const { enrollmentId } = useParams(); 
+    const { enrollmentId } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [progressData, setProgressData] = useState(null);
@@ -65,8 +65,8 @@ const ChildProgressView = () => {
                         type="error"
                         showIcon
                     />
-                    <Button 
-                        onClick={() => navigate('/parent/my-children')} 
+                    <Button
+                        onClick={() => navigate('/parent/my-children')}
                         style={{ marginTop: 16 }}
                     >
                         Back to My Children
@@ -107,16 +107,6 @@ const ChildProgressView = () => {
                 </div>
             </div>
 
-            {/* Read-only notice */}
-            <Alert
-                message="View Only"
-                description="This is a read-only view of your child's progress. Only the teacher can update progress and exam scores."
-                type="info"
-                showIcon
-                closable
-                style={{ marginBottom: 24 }}
-            />
-
             {/* Progress Content */}
             <Card className="progress-card">
                 <Tabs
@@ -136,16 +126,16 @@ const ChildProgressView = () => {
                             )
                         },
                         {
-    key: 'history',
-    label: '📜 History',
-    children: (
-        <ProgressHistoryDisplay
-            enrollmentId={enrollmentId}
-            apiCall={getChildProgressHistory}
-        />
-    )
-}
-                   
+                            key: 'history',
+                            label: '📜 History',
+                            children: (
+                                <ProgressHistoryDisplay
+                                    enrollmentId={enrollmentId}
+                                    apiCall={getChildProgressHistory}
+                                />
+                            )
+                        }
+
                     ]}
                 />
             </Card>
