@@ -127,7 +127,7 @@ const MyChildrenPage = () => {
                             </div>
 
                             {/* Enrollment Stats */}
-                            <div className="stats-section">
+                            <div className="stats-sectionn">
                                 <div className="stat-item">
                                     <BookOutlined className="stat-icon active" />
                                     <div className="stat-content">
