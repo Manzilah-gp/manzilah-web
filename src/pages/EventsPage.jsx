@@ -42,6 +42,7 @@ function EventsPage() {
   const isMinistryAdmin = user?.roles?.includes('ministry_admin');
   const isStudent = user?.roles?.includes('student');
   const isParent = user?.roles?.includes('parent');
+  const isTeacher = user?.roles?.includes('teacher');
 
   // ⭐ ADD DEBUGGING
   useEffect(() => {
@@ -56,9 +57,11 @@ function EventsPage() {
     console.log('isMinistryAdmin:', isMinistryAdmin);
     console.log('isStudent:', isStudent);
     console.log('isParent:', isParent);
+    console.log('isTeacher:', isTeacher);
     console.log('---');
-    console.log('Should show filter section?', (isMosqueAdmin || isStudent || isParent));
+    console.log('Should show filter section?', (isMosqueAdmin || isStudent || isParent || isTeacher));
     console.log('Should show enrolled mosques button?', (isStudent || isParent));
+    console.log('Should show teaching mosque button?', isTeacher);
     console.log('==========================================');
   }, [user, isMosqueAdmin, isMinistryAdmin, isStudent, isParent]);
 
@@ -77,12 +80,18 @@ function EventsPage() {
         url = 'http://localhost:5000/api/events/my-enrolled-mosques';
         console.log('🌐 Fetching from enrolled mosques endpoint');
       }
+      
+      // Handle teaching mosque filter for teachers
+      if (filterScope === 'teaching_mosque') {
+        url = 'http://localhost:5000/api/events/my-teaching-mosque';
+        console.log('🌐 Fetching from teaching mosque endpoint');
+      }
 
       const params = new URLSearchParams();
       if (filterType !== 'all') params.append('event_type', filterType);
 
-      // Only add filter param if NOT using enrolled mosques endpoint
-      if (filterScope !== 'all' && filterScope !== 'enrolled_mosques') {
+      // Only add filter param if NOT using enrolled mosques or teaching mosque endpoint
+      if (filterScope !== 'all' && filterScope !== 'enrolled_mosques' && filterScope !== 'teaching_mosque') {
         params.append('filter', filterScope);
       }
 
@@ -291,8 +300,8 @@ function EventsPage() {
 
         {/* Filters Section */}
         <div className="events-filters">
-          {/* ⭐ Show scope filter for mosque admins AND students/parents */}
-          {(isMosqueAdmin || isStudent || isParent) ? (
+          {/* ⭐ Show scope filter for mosque admins, students, parents, AND teachers */}
+          {(isMosqueAdmin || isStudent || isParent || isTeacher) ? (
             <div className="filter-item scope-filter">
               <FilterOutlined className="filter-icon" />
               <span>Show:</span>
@@ -312,6 +321,13 @@ function EventsPage() {
                 {(isStudent || isParent) && (
                   <Radio.Button value="enrolled_mosques">
                     <BankOutlined /> My Enrolled Mosques
+                  </Radio.Button>
+                )}
+                
+                {/* ⭐ Teaching Mosque option for teachers */}
+                {isTeacher && (
+                  <Radio.Button value="teaching_mosque">
+                    <BankOutlined /> My Teaching Mosque
                   </Radio.Button>
                 )}
                 
@@ -365,6 +381,15 @@ function EventsPage() {
           </div>
         )}
 
+        {/* ⭐ Info message for teaching mosque filter */}
+        {isTeacher && filterScope === 'teaching_mosque' && (
+          <div className="filter-info">
+            <p>
+              <BankOutlined /> Showing events from the mosque where you teach
+            </p>
+          </div>
+        )}
+
         {/* Events Grid */}
         <div className="events-grid">
           {events.length > 0 ? (
@@ -388,6 +413,8 @@ function EventsPage() {
               <p>
                 {filterScope === 'enrolled_mosques'
                   ? 'No events from your enrolled mosques yet'
+                  : filterScope === 'teaching_mosque'
+                  ? 'No events from your teaching mosque yet'
                   : 'No events available at the moment'
                 }
               </p>
