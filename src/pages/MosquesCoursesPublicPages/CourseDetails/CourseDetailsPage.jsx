@@ -7,6 +7,7 @@ import './CourseDetailsPage.css';
 import { checkEnrollmentEligibility, enrollInFreeCourse } from '../../../api/enrollment';
 import useAuth from '../../../hooks/useAuth';
 import StripePaymentModal from '../../../components/Payment/StripePaymentModal';
+import { ScheduleOutlined } from '@ant-design/icons';
 
 const CourseDetailsPage = () => {
     const { id } = useParams();

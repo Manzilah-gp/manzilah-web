@@ -223,6 +223,9 @@ const CalendarPage = () => {
             }
 
         }
+        else if (resource.type === 'event') {
+            navigate(`/events/${resource.event_id}`);
+        }
         // For events, you can add event details page later
     };
 

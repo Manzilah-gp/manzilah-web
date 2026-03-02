@@ -224,7 +224,7 @@ const CourseStudentsPage = () => {
                                             <span className="stat-value">
                                                 {student.total_attendance_records > 0
                                                     ? `${Math.round((student.present_count / student.total_attendance_records) * 100) || 0}%`
-                                                    : 'N/A'}
+                                                    : '0%'}
                                             </span>
                                         </div>
                                     </>

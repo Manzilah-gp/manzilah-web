@@ -82,7 +82,7 @@ const AllStudentsPage = () => {
                     ...s,
                     attendance_rate: s.total_attendance_records > 0
                         ? `${Math.round((s.present_count / s.total_attendance_records) * 100) || 0}%`
-                        : 'N/A',
+                        : '0%',
                     exams_passed_display: `${s.exams_passed || 0}/5`,
                 }));
                 setStudents(studentsData);

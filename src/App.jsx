@@ -358,20 +358,13 @@ function App() {
                   }
                 />
                 <Route
-                  path="parent/reports"
+                  path="parent/progress"
                   element={
                     <RoleProtectedRoute allowedRoles={['parent']}>
                       <ProgressReportsPage />
                     </RoleProtectedRoute>
                   }
                 />
-                <Route
-                  path="parent/children/:childId"
-                  element={
-                    <RoleProtectedRoute allowedRoles={['parent']}>
-                      <ChildOverviewPage />
-                    </RoleProtectedRoute>
-                  } />
 
                 {/* Calendar */}
                 <Route

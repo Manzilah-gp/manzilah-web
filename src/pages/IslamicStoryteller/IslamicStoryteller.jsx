@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect, Suspense } from 'react';
 // import { ISLAMIC_STORIES, STORY_CATEGORIES, AGE_GROUPS } from '../../util/stories.ar';
-import * as storiesAR from '../../util/stories.ar';
-import * as storiesEN from '../../util/stories.en';
+import * as storiesAR from '../../util/storiesar';
+import * as storiesEN from '../../util/storiesen';
 
 import useAuth from '../../hooks/useAuth';
 import BirdAvatar from './BirdAvatar';
 import { useTranslation } from 'react-i18next';
-import KidAvatar from './KidAvatar';
 
 const IslamicStoryteller = () => {
     const { user } = useAuth();
@@ -86,10 +85,21 @@ const IslamicStoryteller = () => {
         }
     };
 
+    const sanitizeTextForTTS = (text) => {
+        return text
+            .normalize('NFC')
+            .replace(/[\u200E\u200F\u202A-\u202E]/g, '') // RTL/LTR marks
+            .replace(/\uFEFF/g, '') // BOM
+            .replace(/\s+/g, ' ')
+            .trim();
+    };
+
+
     // VIP Text-to-Speech (ElevenLabs)
-    const speakWithAI = async (text) => {
+    const speakWithAI = async (rawText) => {
+        const text = sanitizeTextForTTS(rawText);
         if (!isVIP) {
-            alert('⭐ هذه الميزة متاحة للمشتركين VIP فقط');
+            speakWithBrowser(text);
             return;
         }
 
@@ -97,11 +107,20 @@ const IslamicStoryteller = () => {
             setLoading(true);
             setSpeaking(true);
 
+            console.log('Speaking text (length):', text.length);
+
             // API key stored in environment variable (hidden from users)
             const API_KEY = import.meta.env.VITE_ELEVENLABS_API_KEY;
 
+            if (!API_KEY) {
+                console.warn('Missing ElevenLabs API Key, falling back to browser speech');
+                speakWithBrowser(text);
+                setLoading(false);
+                return;
+            }
+
             const response = await fetch(
-                'https://api.elevenlabs.io/v1/text-to-speech/EXAVITQu4vr4xnSDxMaL',
+                'https://api.elevenlabs.io/v1/text-to-speech/gjmrEqlBoh5agvpfP3M1',
                 {
                     method: 'POST',
                     headers: {
@@ -110,7 +129,7 @@ const IslamicStoryteller = () => {
                         'xi-api-key': API_KEY
                     },
                     body: JSON.stringify({
-                        text: text,
+                        text: text, // Send exact text
                         model_id: 'eleven_multilingual_v2',
                         voice_settings: {
                             stability: 0.5,
@@ -123,7 +142,18 @@ const IslamicStoryteller = () => {
             );
 
             if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
+                const errorStatus = response.status;
+                console.warn(`ElevenLabs API returned ${errorStatus}, falling back to browser speech`);
+
+                if (response.status === 401) {
+                    // Alert the user that the Premium voice is unavailable due to auth
+                    alert('⚠️ Premium voice unavailable (Unavailable). Using Standard voice.');
+                }
+
+                // Fallback for ANY API error (401, 400, 500 etc)
+                speakWithBrowser(text);
+                setLoading(false);
+                return;
             }
 
             const audioBlob = await response.blob();
@@ -150,10 +180,10 @@ const IslamicStoryteller = () => {
             setLoading(false);
 
         } catch (error) {
-            console.error('AI Speech error:', error);
+            console.error('AI Speech error details:', error);
+            // Fallback for network errors or other exceptions
+            speakWithBrowser(text);
             setLoading(false);
-            setSpeaking(false);
-            alert('❌ خطأ في الاتصال بالخدمة المميزة');
         }
     };
 
@@ -268,8 +298,7 @@ const IslamicStoryteller = () => {
                         alignItems: 'center',
                         gap: '8px'
                     }}>
-                        <span>⭐</span>
-                        <span>{t('storyteller.vipMember')}</span>
+
                     </div>
                 )}
             </div>
@@ -354,7 +383,7 @@ const IslamicStoryteller = () => {
                                 fontWeight: 'bold'
                             }}
                         >
-                            🇸🇦 عربي
+                            عربي
                         </button>
 
                         <button
@@ -368,7 +397,7 @@ const IslamicStoryteller = () => {
                                 fontWeight: 'bold'
                             }}
                         >
-                            🇬🇧 English
+                            English
                         </button>
                     </div>
 

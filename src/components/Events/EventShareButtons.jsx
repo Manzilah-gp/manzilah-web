@@ -30,7 +30,7 @@ const EventShareButtons = ({ event }) => {
     };
 
     // Create rich share text with event details
-    const shareTitle = `📅 ${event.title}`;
+    const shareTitle = `${event.title}`;
 
     const shareDescription = `
     ${event.description}
@@ -39,7 +39,7 @@ const EventShareButtons = ({ event }) => {
 ${event.event_time ? `🕐 Time: ${event.event_time}` : ''}
 ${event.location ? `📍 Location: ${event.location}` : ''}
 
-Join us at ${event.mosque_name}!
+🏛️ Organized by: ${event.mosque_name}! Join us!
   `.trim();
 
     // Copy link to clipboard
@@ -77,7 +77,7 @@ Join us at ${event.mosque_name}!
                 <Tooltip title="Share on WhatsApp">
                     <WhatsappShareButton
                         url={eventUrl}
-                        title={shareTitle}
+                        title={shareTitle + shareDescription}
                         separator=" - "
                         className="share-button"
                     >

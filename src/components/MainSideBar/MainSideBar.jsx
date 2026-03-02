@@ -169,14 +169,14 @@ const MainSideBar = ({ collapsed, onToggleCollapse }) => {
             icon: <TeamOutlined />,
             label: 'My Children',
             roles: ['parent'],
-            link: 'parent/children'
+            link: '/parent/children'
         },
         {
             key: 'progress',
             icon: <BarChartOutlined />,
             label: 'Progress Reports',
             roles: ['parent'],
-            link: 'parent/progress'
+            link: '/parent/progress'
         },
 
     ];

@@ -97,7 +97,7 @@ const AttendanceDisplay = ({ attendanceData = {} }) => {
             <div className="attendance-progress">
                 <div className="progress-header">
                     <span className="progress-label">Attendance Rate</span>
-                    <span className="progress-percentage">{attendanceRate}%</span>
+                    <span className="progress-percentage">{attendanceRate || 0}%</span>
                 </div>
                 <Progress
                     percent={attendanceRate}
@@ -118,13 +118,13 @@ const AttendanceDisplay = ({ attendanceData = {} }) => {
             <div className="attendance-calendar">
                 <div className="calendar-info">
                     <p className="info-text">
-                        📌 View your child's attendance history below. 
+                        📌 View your child's attendance history below.
                         Only teachers can mark attendance.
                     </p>
                 </div>
                 <Calendar
                     cellRender={dateCellRender}
-                    // No onSelect - read-only
+                // No onSelect - read-only
                 />
             </div>
         </div>
